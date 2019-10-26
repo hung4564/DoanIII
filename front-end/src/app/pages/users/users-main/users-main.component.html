@@ -1,0 +1,19 @@
+<adf-datatable [data]="data">
+  <data-columns>
+    <data-column key="icon" type="image" [sortable]="false"> </data-column>
+    <data-column key="firstName" title="First Name"> </data-column>
+    <data-column key="lastName" title="Last Name" class="full-width name-column"> </data-column>
+    <data-column key="status" title="Status">
+      <ng-template let-entry="$implicit">
+        <span
+          *ngIf="entry.data.getValue(entry.row, entry.col) == 'red'"
+          style="background-color: red; width: 20px; height: 20px"
+        ></span>
+        <span
+          *ngIf="entry.data.getValue(entry.row, entry.col) == 'green'"
+          style="background-color: green; width: 20px; height: 20px"
+        ></span>
+      </ng-template>
+    </data-column>
+  </data-columns>
+</adf-datatable>

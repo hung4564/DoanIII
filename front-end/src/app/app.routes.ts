@@ -15,41 +15,15 @@
  * limitations under the License.
  */
 
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardEcm } from '@alfresco/adf-core';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { DocumentlistComponent } from './documentlist/documentlist.component';
-import { AppLayoutComponent } from './app-layout/app-layout.component';
-import { FileViewComponent } from './file-view/file-view.component';
 
-export const appRoutes: Routes = [
-  { path: 'files/:nodeId/view', component: FileViewComponent, canActivate: [AuthGuardEcm], outlet: 'overlay' },
-  {
-    path: '',
-    component: AppLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: HomeComponent
-      },
-      {
-        path: 'home',
-        component: HomeComponent
-      },
-      {
-        path: 'documentlist',
-        component: DocumentlistComponent,
-        canActivate: [AuthGuardEcm]
-      }
+import { LoginComponent } from './pages/login/login.component';
 
-    ]
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  }
-];
-
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const appRoutes: Routes = [{ path: 'login', component: LoginComponent }];
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule],
+  providers: []
+})
+export class AppRoutingModule {}

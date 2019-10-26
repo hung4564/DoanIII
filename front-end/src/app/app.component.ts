@@ -9,17 +9,16 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-
-  constructor(translationService: TranslationService,
-              private authService: AuthenticationService,
-              private router: Router) {
+  constructor(
+    translationService: TranslationService,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {
     translationService.use('en');
   }
-
   logout() {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/login']);
     });
   }
-
 }
