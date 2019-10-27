@@ -1,0 +1,10 @@
+<mat-nav-list class="adf-sidenav-linklist">
+  <a mat-list-item class="adf-sidenav-link" routerLink="/login">
+    <mat-icon matListIcon class="sidenav-menu-icon">vpn_key</mat-icon>
+    <div class="sidenav-menu-label" [hidden]="isMenuMinimized">Login</div>
+  </a>
+  <a mat-list-item adf-logout class="adf-sidenav-link">
+    <mat-icon matListIcon class="sidenav-menu-icon">exit_to_app</mat-icon>
+    <div class="sidenav-menu-label" [hidden]="isMenuMinimized">Logout</div>
+  </a>
+</mat-nav-list>
