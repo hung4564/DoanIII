@@ -1,6 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { TranslationService, AuthenticationService } from '@alfresco/adf-core';
 import { Router } from '@angular/router';
+import { AppStore } from './store/states/app.state';
+import { Store } from '@ngrx/store';
+import { AuthenticationService,TranslationService } from '@alfresco/adf-core';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +12,11 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   constructor(
-    translationService: TranslationService,
+    private _translateSv: TranslationService,
     private authService: AuthenticationService,
+    private store: Store<AppStore>,
     private router: Router
   ) {
-    translationService.use('en');
-  }
-  logout() {
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
+    this._translateSv.use('en');
   }
 }

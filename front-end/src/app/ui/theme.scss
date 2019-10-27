@@ -1,0 +1,32 @@
+@import '~@angular/material/theming';
+
+@import '~@alfresco/adf-content-services/theming';
+@import '~@alfresco/adf-core/theming';
+
+@import 'custom-theme';
+
+@include mat-core($alfresco-typography);
+
+$primary: mat-palette($alfresco-accent-orange);
+$accent: mat-palette($alfresco-ecm-blue);
+$warn: mat-palette($alfresco-warn);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+
+@include adf-content-services-theme($theme);
+@include adf-core-theme($theme);
+
+// fixes [ACA-2069]
+$primary: map-get($theme, primary);
+.mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) {
+  .mat-slide-toggle-thumb,
+  .mat-slide-toggle-ripple .mat-ripple-element {
+    background-color: mat-color($primary);
+  }
+  .mat-slide-toggle-bar {
+    background-color: mat-color($primary, 0.54);
+  }
+}
+
+@include custom-theme($custom-theme);

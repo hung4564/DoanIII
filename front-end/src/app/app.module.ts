@@ -8,11 +8,16 @@ import { AppComponent } from './app.component';
 import { AdminModule } from './layout/admin/admin.module';
 import { SharesModule } from './layout/shares/shares.module';
 import { LoginModule } from './pages/login/login.Module';
-import { CoreModule, TRANSLATION_PROVIDER, TranslateLoaderService } from '@alfresco/adf-core';
+import { CoreModule, TRANSLATION_PROVIDER } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { AppStoreModule } from 'app/store/app-store.module';
+
+import { registerLocaleData } from '@angular/common';
+import localeVi from '@angular/common/locales/vi';
+registerLocaleData(localeVi);
 @NgModule({
   imports: [
+    AppStoreModule,
     SharesModule,
     AppRoutingModule,
     RouterModule,
@@ -21,10 +26,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
     LoginModule,
     // ADF modules
     CoreModule.forRoot(),
-    ContentModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: { provide: TranslateLoader, useClass: TranslateLoaderService }
-    })
+    ContentModule.forRoot()
   ],
   providers: [
     {
@@ -32,7 +34,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
       multi: true,
       useValue: {
         name: 'app',
-        source: 'resources'
+        source: 'assets'
       }
     }
   ],

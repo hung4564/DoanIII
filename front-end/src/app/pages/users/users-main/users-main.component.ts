@@ -20,9 +20,7 @@ export class UsersMainComponent implements OnInit {
         null
       )
       .then((response: any) => {
-        console.log('TCL: UsersMainComponent -> constructor -> response', response);
         const results = [];
-        console.log("TCL: UsersMainComponent -> constructor -> results", results)
         for (const entry of response.list.entries) {
           results.push({
             id: entry.entry.id,

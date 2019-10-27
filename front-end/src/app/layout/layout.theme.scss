@@ -1,0 +1,5 @@
+@import './admin/admin-layout.theme';
+
+@mixin layout-theme($theme) {
+  @include admin-layout-theme($theme);
+}

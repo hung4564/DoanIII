@@ -16,8 +16,8 @@
   },
   "private": true,
   "dependencies": {
-    "@alfresco/adf-core": "3.5.0",
     "@alfresco/adf-content-services": "3.5.0",
+    "@alfresco/adf-core": "3.5.0",
     "@alfresco/adf-extensions": "3.5.0",
     "@alfresco/js-api": "3.5.0",
     "@angular/animations": "7.0.3",
@@ -35,6 +35,7 @@
     "@angular/router": "7.0.3",
     "@mat-datetimepicker/core": "^2.0.1",
     "@mat-datetimepicker/moment": "^2.0.1",
+    "@ngrx/store": "^8.4.0",
     "@ngx-translate/core": "^11.0.0",
     "chart.js": "2.5.0",
     "classlist.js": "1.1.20150312",
