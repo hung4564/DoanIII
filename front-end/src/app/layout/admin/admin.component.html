@@ -6,6 +6,7 @@
   [hideSidenav]="false"
   [expandedSidenav]="false"
   [expandedSidenav]="expandedSidenav"
+  (expanded)="onExpanded($event)"
 >
   <adf-sidenav-layout-header>
     <ng-template let-toggleMenu="toggleMenu">
@@ -30,3 +31,4 @@
     </ng-template>
   </adf-sidenav-layout-content>
 </adf-sidenav-layout>
+<router-outlet name="viewer"></router-outlet>
