@@ -13,9 +13,17 @@ import { AppService } from 'app/services/app.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRouteReuseStrategy } from 'app/routing/app.routes.strategy';
 
+import { CoreModule } from '@alfresco/adf-core';
+import { ContentModule } from '@alfresco/adf-content-services';
 @NgModule({
   declarations: [AdminComponent, SidenavComponent, HeaderComponent, CurrentUserComponent],
-  imports: [SharesModule, AdminRoutingModule, UsersModule],
+  imports: [
+    SharesModule,
+    AdminRoutingModule,
+    UsersModule,
+    CoreModule.forChild(),
+    ContentModule.forChild()
+  ],
   providers: [AppService, { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy }]
 })
 export class AdminModule {}

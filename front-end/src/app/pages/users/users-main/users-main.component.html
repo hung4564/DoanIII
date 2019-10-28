@@ -1,4 +1,37 @@
-<adf-datatable [data]="data">
+<adf-toolbar title="Toolbar">
+  <adf-toolbar-divider></adf-toolbar-divider>
+
+  <div class="adf-toolbar--spacer"></div>
+  <button mat-icon-button (click)="createUser()">
+    <mat-icon>create_new_folder</mat-icon>
+  </button>
+  <mat-icon mat-icon-button>
+    <mat-icon>delete</mat-icon>
+  </mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>dialpad</mat-icon>
+      <span>Redial</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>voicemail</mat-icon>
+      <span>Check voicemail</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+</adf-toolbar>
+<adf-datatable
+  [data]="data"
+  [actions]="true"
+  (showRowActionsMenu)="onShowRowActionsMenu($event)"
+  (executeRowAction)="onExecuteRowAction($event)"
+  >>
   <data-columns>
     <data-column key="icon" type="image" [sortable]="false"> </data-column>
     <data-column key="firstName" title="First Name"> </data-column>

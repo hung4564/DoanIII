@@ -184,6 +184,7 @@
       }
     },
     "ACTIONS": {
+      "CREATE": "Create",
       "VIEW": "View",
       "EDIT": "Edit",
       "DOWNLOAD": "Download",
@@ -227,7 +228,8 @@
         "MESSAGE": "Leaving will remove your access.",
         "YES_LABEL": "OK",
         "NO_LABEL": "Cancel"
-      }
+      },
+      "CONFIRM_ACTION_USER": "Are you sure you want to {{ action }} user"
     },
     "DOCUMENT_LIST": {
       "COLUMNS": {
@@ -250,6 +252,17 @@
       }
     },
     "MESSAGES": {
+      "USERS": {
+        "CREATE_SUCCESS": "Create user success",
+        "CREATE_ERROR": "Create user error",
+        "EDIT_SUCCESS": "Edit user success",
+        "EDIT_ERROR": "Edit user error",
+        "DELETE_SUCCESS": "Delete user success",
+        "DELETE_ERROR": "Delete user error",
+        "409": "User already exists",
+        "403": "Current user does not have permission to update a person",
+        "404": "User does not exist"
+      },
       "ERRORS": {
         "CANNOT_NAVIGATE_LOCATION": "Cannot open this location",
         "MISSING_CONTENT": "This item no longer exists or you don't have permission to view it.",
