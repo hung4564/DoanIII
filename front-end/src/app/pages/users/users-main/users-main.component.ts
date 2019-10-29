@@ -16,7 +16,10 @@ import { ConfirmDialogComponent } from '@alfresco/adf-content-services';
 @Component({
   selector: 'app-users-main',
   templateUrl: './users-main.component.html',
-  styleUrls: ['./users-main.component.scss']
+  styleUrls: ['./users-main.component.scss'],
+  host: {
+    class: 'app-layout'
+  }
 })
 export class UsersMainComponent implements OnInit {
   data = new ObjectDataTableAdapter([], []);

@@ -9,6 +9,7 @@ import { CurrentUserComponent } from './part/current-user/current-user.component
 import { SharesModule } from 'app/layout/shares/shares.module';
 import { UsersModule } from 'app/pages/users/users.module';
 
+import { ContentApiService } from 'app/services/content-api.service';
 import { HandleService } from 'app/services/api.service';
 import { AppService } from 'app/services/app.service';
 import { RouteReuseStrategy } from '@angular/router';
@@ -30,6 +31,7 @@ import { GroupsModule } from 'app/pages/groups/groups.module';
   providers: [
     AppService,
     HandleService,
+    ContentApiService,
     { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy }
   ]
 })

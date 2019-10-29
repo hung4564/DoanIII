@@ -17,7 +17,10 @@ import { GroupViewListComponent } from '../group-view-list/group-view-list.compo
 @Component({
   selector: 'app-groups-main',
   templateUrl: './groups-main.component.html',
-  styleUrls: ['./groups-main.component.scss']
+  styleUrls: ['./groups-main.component.scss'],
+  host: {
+    class: 'app-layout'
+  }
 })
 export class GroupsMainComponent implements OnInit {
   data = new ObjectDataTableAdapter([], []);

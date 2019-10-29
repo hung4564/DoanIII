@@ -18,12 +18,13 @@ import { AppService } from 'app/services/app.service';
 import { Subject, Observable } from 'rxjs';
 import { Directionality } from '@angular/cdk/bidi';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { NodePermissionService } from '@alfresco/adf-content-services';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
   host: {
-    class: 'full-height'
+    class: 'app-layout'
   }
 })
 export class AdminComponent implements OnInit, OnDestroy {
@@ -42,18 +43,13 @@ export class AdminComponent implements OnInit, OnDestroy {
   private hideConditions: string[] = ['preview'];
 
   constructor(
-    private alfrescoApiService: AlfrescoApiService,
-    private authenticationService: AuthenticationService,
-    private store: Store<AppStore>,
-    private contentApi: PeopleContentService,
-    private route: ActivatedRoute,
+    protected store: Store<AppStore>,
+    private permission: NodePermissionService,
     private router: Router,
-    private appService: AppService,
+    private userPreferenceService: UserPreferencesService,
     private appConfigService: AppConfigService,
-    private breakpointObserver: BreakpointObserver,
-    private userPreferenceService: UserPreferencesService
+    private breakpointObserver: BreakpointObserver
   ) {}
-
   ngOnInit() {
     this.isSmallScreen$ = this.breakpointObserver
       .observe(['(max-width: 600px)'])
@@ -72,6 +68,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     } else {
       this.expandedSidenav = false;
     }
+
+    // this.store
+    //   .select(getCurrentFolder)
+    //   .pipe(takeUntil(this.onDestroy$))
+    //   .subscribe(node => {
+    //     this.currentFolderId = node ? node.id : null;
+    //     this.canUpload = node && this.permission.check(node, ['create']);
+    //   });
 
     this.router.events
       .pipe(
@@ -96,53 +100,22 @@ export class AdminComponent implements OnInit, OnDestroy {
 
         this.updateState();
       });
-    this.alfrescoApiService.getInstance().on('error', (error: { status: number }) => {
-      if (error.status === 401) {
-        if (!this.authenticationService.isLoggedIn()) {
-          let redirectUrl = this.route.snapshot.queryParams['redirectUrl'];
-          if (!redirectUrl) {
-            redirectUrl = this.router.url;
-          }
-          this.router.navigate(['/login'], {
-            queryParams: { redirectUrl: redirectUrl }
-          });
-        }
-      }
-    });
-    this.appService.ready$.pipe(takeUntil(this.onDestroy$)).subscribe(isReady => {
-      if (isReady) {
-        this.loadUserProfile();
-      }
-    });
-  }
-  private async loadUserProfile() {
-    const groupsApi = new GroupsApi(this.alfrescoApiService.getInstance());
-    const paging = await groupsApi.listGroupMembershipsForPerson('-me-');
-    const groups: Group[] = [];
 
-    if (paging && paging.list && paging.list.entries) {
-      groups.push(...paging.list.entries.map(obj => obj.entry));
-    }
-
-    this.contentApi.getCurrentPerson().subscribe(person => {
-      this.store.dispatch(new SetUserProfileAction({ person: person.entry, groups }));
-    });
+    // this.router.events
+    //   .pipe(
+    //     filter(event => event instanceof NavigationStart),
+    //     takeUntil(this.onDestroy$)
+    //   )
+    //   .subscribe(() => {
+    //     this.store.dispatch(new ResetSelectionAction());
+    //   });
   }
 
-  loadAppSettings() {
-    const state: AppState = {
-      ...INITIAL_APP_STATE,
-      languagePicker: this.appConfigService.get<boolean>('languagePicker'),
-      appName: this.appConfigService.get<string>('application.name'),
-      headerColor: this.appConfigService.get<string>('headerColor'),
-      logoPath: this.appConfigService.get<string>('application.logo')
-    };
-    this.store.dispatch(new SetInitialStateAction(state));
-  }
   ngOnDestroy() {
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
   }
+
   hideMenu(event: Event) {
     if (this.layout.container.isMobileScreenSize) {
       event.preventDefault();
