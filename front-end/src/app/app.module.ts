@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { AdminModule } from './layout/admin/admin.module';
 import { SharesModule } from './layout/shares/shares.module';
-import { LoginModule } from './pages/login/login.Module';
+import { LoginModule } from './pages/login/login.module';
 import { CoreModule, TRANSLATION_PROVIDER } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { AppStoreModule } from 'app/store/app-store.module';

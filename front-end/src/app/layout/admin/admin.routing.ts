@@ -4,6 +4,7 @@ import { AdminComponent } from './admin.component';
 import { AuthGuardEcm } from '@alfresco/adf-core';
 
 import { UsersRoutes } from 'app/pages/users/users.routing';
+import { GroupsRoutes } from 'app/pages/groups/groups.routing';
 const adminRoutes: Routes = [
   {
     path: '',
@@ -15,7 +16,8 @@ const adminRoutes: Routes = [
         redirectTo: '/users',
         pathMatch: 'full'
       },
-      ...UsersRoutes
+      ...UsersRoutes,
+      ...GroupsRoutes
     ]
   }
 ];

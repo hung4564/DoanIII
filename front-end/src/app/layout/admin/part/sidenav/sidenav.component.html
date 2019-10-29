@@ -1,10 +1,10 @@
 <mat-nav-list class="adf-sidenav-linklist">
-  <a mat-list-item class="adf-sidenav-link" routerLink="/login">
-    <mat-icon matListIcon class="sidenav-menu-icon">vpn_key</mat-icon>
-    <div class="sidenav-menu-label" [hidden]="isMenuMinimized">Login</div>
+  <a mat-list-item class="adf-sidenav-link" routerLink="/users">
+    <mat-icon matListIcon class="sidenav-menu-icon">user</mat-icon>
+    <div class="sidenav-menu-label" *ngIf="!isMenuMinimized">Users</div>
   </a>
-  <a mat-list-item adf-logout class="adf-sidenav-link">
-    <mat-icon matListIcon class="sidenav-menu-icon">exit_to_app</mat-icon>
-    <div class="sidenav-menu-label" [hidden]="isMenuMinimized">Logout</div>
+  <a mat-list-item class="adf-sidenav-link" routerLink="/groups">
+    <mat-icon matListIcon class="sidenav-menu-icon">groups</mat-icon>
+    <div class="sidenav-menu-label" *ngIf="!isMenuMinimized">Group</div>
   </a>
 </mat-nav-list>

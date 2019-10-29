@@ -152,9 +152,9 @@ export class UsersMainComponent implements OnInit {
     });
   }
   createUser() {
-    const createtrans = this._transSV.instant('APP.ACTIONS.CREATE');
+    const createtrans: string = this._transSV.instant('APP.ACTIONS.CREATE');
     const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: createtrans
+      action: createtrans.toLowerCase()
     });
 
     const dialogRef = this.dialog.open(UsersDetailComponent, {

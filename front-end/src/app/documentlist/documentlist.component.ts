@@ -2,7 +2,6 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { NotificationService } from '@alfresco/adf-core';
 import { DocumentListComponent } from '@alfresco/adf-content-services';
 import { PreviewService } from '../services/preview.service';
-
 @Component({
   selector: 'app-documentlist',
   templateUrl: './documentlist.component.html',

@@ -18,9 +18,6 @@ export class UsersDetailComponent implements OnInit {
     this.title = data.title;
     this.userForm = this._userSv.createForm(data);
   }
-  get email() {
-    return this.userForm.get('email');
-  }
   ngOnInit() {}
   revert() {
     this.userForm.reset();

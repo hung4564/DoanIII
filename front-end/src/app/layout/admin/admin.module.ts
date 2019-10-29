@@ -9,21 +9,28 @@ import { CurrentUserComponent } from './part/current-user/current-user.component
 import { SharesModule } from 'app/layout/shares/shares.module';
 import { UsersModule } from 'app/pages/users/users.module';
 
+import { ApiService } from 'app/services/api.service';
 import { AppService } from 'app/services/app.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRouteReuseStrategy } from 'app/routing/app.routes.strategy';
 
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
+import { GroupsModule } from 'app/pages/groups/groups.module';
 @NgModule({
   declarations: [AdminComponent, SidenavComponent, HeaderComponent, CurrentUserComponent],
   imports: [
     SharesModule,
     AdminRoutingModule,
     UsersModule,
+    GroupsModule,
     CoreModule.forChild(),
     ContentModule.forChild()
   ],
-  providers: [AppService, { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy }]
+  providers: [
+    AppService,
+    ApiService,
+    { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy }
+  ]
 })
 export class AdminModule {}

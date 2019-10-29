@@ -4,7 +4,7 @@
   "bpmHost": "http://{hostname}{:port}",
   "providers": "ECM",
   "application": {
-    "name": "Alfresco Content Application",
+    "name": "Application",
     "version": "1.9.0",
     "logo": "assets/images/alfresco-logo-flower.svg",
     "copyright": "APP.COPYRIGHT"
@@ -13,7 +13,7 @@
   "languagePicker": true,
   "pagination": {
     "size": 25,
-    "supportedPageSizes": [25, 50, 100]
+    "supportedPageSizes": [5, 10, 25, 50, 100]
   },
   "dateValues": {
     "defaultDateFormat": "mediumDate",
