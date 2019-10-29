@@ -4,15 +4,14 @@ import {
   ObjectDataRow,
   DataRowActionEvent,
   DataCellEvent,
-  TranslationService
+  TranslationService,
+  PaginationModel,
+  AppConfigService
 } from '@alfresco/adf-core';
 import { UsersService } from '../users.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UsersDetailComponent } from '../users-detail/users-detail.component';
 import { ConfirmDialogComponent } from '@alfresco/adf-content-services';
-import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store/states/app.state';
-import { SnackbarErrorAction, SnackbarInfoAction } from 'app/store/actions/snackbar.actions';
 
 @Component({
   selector: 'app-users-main',
@@ -21,31 +20,46 @@ import { SnackbarErrorAction, SnackbarInfoAction } from 'app/store/actions/snack
 })
 export class UsersMainComponent implements OnInit {
   data = new ObjectDataTableAdapter([], []);
+  pagination: PaginationModel = new PaginationModel();
+  sizes: number[];
+  loading = false;
   constructor(
-    private store: Store<AppStore>,
+    private appConfigService: AppConfigService,
     private _userSv: UsersService,
     public dialog: MatDialog,
     private _transSV: TranslationService
   ) {
-    this.getData();
+    this.sizes = this.appConfigService.get<number[]>('pagination.supportedPageSizes');
+    const pagination = {
+      skipCount: 0,
+      maxItems: this.sizes[0]
+    };
+    this.pagination = new PaginationModel(pagination);
+    this.getData(pagination);
   }
-  getData() {
-    this._userSv.getUsers().then((results: any) => {
+  getData(pagination: PaginationModel) {
+    this._userSv.getUsers(pagination).then((response: any) => {
+      const results = this._userSv.formatData(response.list.entries);
+      this.pagination = new PaginationModel(response.list.pagination);
       this.data.setRows(
         results.map(item => {
           return new ObjectDataRow(item);
         })
       );
+      this.loading = false;
     });
   }
 
+  onChangePagination(e: PaginationModel) {
+    this.getData(e);
+  }
   onShowRowActionsMenu(event: DataCellEvent) {
     const actionTrans = this._transSV.instant(['APP.ACTIONS.EDIT', 'APP.ACTIONS.DELETE']);
     const editMess = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: actionTrans['APP.ACTIONS.EDIT']
+      action: actionTrans['APP.ACTIONS.EDIT'].toLowerCase()
     });
     const deleteMess = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: actionTrans['APP.ACTIONS.DELETE']
+      action: actionTrans['APP.ACTIONS.DELETE'].toLowerCase()
     });
     event.value.actions = [
       {
@@ -60,127 +74,93 @@ export class UsersMainComponent implements OnInit {
       }
     ];
   }
-  confirm(data: { title: string; message: string }) {
-    return this.dialog.open(ConfirmDialogComponent, {
-      data: data,
-      minWidth: '250px'
-    });
-  }
   onExecuteRowAction(event: DataRowActionEvent) {
     const action = event.value.action;
     switch (action.type) {
       case 'APP.ACTIONS.EDIT':
-        this.editUser(event.value.row['obj'].id);
+        this.editUser(event.value.row['obj'].id, action);
         break;
       case 'APP.ACTIONS.DELETE':
-        this.confirm({ title: action.title, message: action.message })
-          .afterClosed()
-          .subscribe(isDelete => {
-            if (isDelete) {
-              this._userSv.deleteUser(event.value.row['obj'].id).then(
-                result => {
-                  this.handSuccess('DELETE');
-                },
-                error => {
-                  this.handleError(error, 'DELETE');
-                }
-              );
-            }
-          });
+        this.deleteUser(event.value.row['obj'].id, action);
         break;
       default:
         break;
     }
   }
   ngOnInit() {}
-  handSuccess(typeaction) {
-    const key = `APP.MESSAGES.USERS.${typeaction}_SUCCESS`;
-    this.store.dispatch(new SnackbarInfoAction(key));
-    this.getData();
-  }
-  handleError(error, typeaction) {
-    const err = JSON.parse(JSON.stringify(error));
-    let key = `APP.MESSAGES.USERS.${typeaction}_ERROR`;
-    switch (err.response.statusCode) {
-      case 409:
-        key = `APP.MESSAGES.USERS.409`;
-        break;
-      case 403:
-        key = `APP.MESSAGES.USERS.403`;
-        break;
-      case 404:
-        key = `APP.MESSAGES.USERS.404`;
-        break;
-      default:
-        break;
-    }
-    this.store.dispatch(new SnackbarErrorAction(key));
-    this.getData();
-  }
-  editUser(id) {
+  editUser(id: string, action) {
     this._userSv.getUser(id).then(result => {
-      const edittrans = this._transSV.instant('APP.ACTIONS.EDIT');
-      const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-        action: edittrans
-      });
-
-      const dialogRef = this.dialog.open(UsersDetailComponent, {
-        data: { title: edittrans, ...result },
-        width: '50%'
-      });
-      dialogRef.afterClosed().subscribe(doneEdit => {
-        if (doneEdit) {
-          this.confirm({
-            title: edittrans,
-            message: confirmtrans
-          })
-            .afterClosed()
-            .subscribe(isEdit => {
-              if (isEdit) {
-                this._userSv.updateUser(id, doneEdit).then(
-                  () => {
-                    this.handSuccess('EDIT');
-                  },
-                  error => {
-                    this.handleError(error, 'EDIT');
-                  }
-                );
-              }
-            });
-        }
-      });
-    });
-  }
-  createUser() {
-    const createtrans: string = this._transSV.instant('APP.ACTIONS.CREATE');
-    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: createtrans.toLowerCase()
-    });
-
-    const dialogRef = this.dialog.open(UsersDetailComponent, {
-      data: { title: createtrans },
-      width: '50%'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.confirm({
-          title: createtrans,
-          message: confirmtrans
-        })
-          .afterClosed()
-          .subscribe(isCreate => {
-            if (isCreate) {
-              this._userSv.createUser(result).then(
+      this.openDialog(action.title, result).subscribe(dataEdit => {
+        if (dataEdit) {
+          this.confirm({ title: action.title, message: action.message }).subscribe(isEdit => {
+            if (isEdit) {
+              this._userSv.updateUser(id, dataEdit).then(
                 () => {
-                  this.handSuccess('CREATE');
+                  this.loading = false;
+                  this.getData(this.pagination);
                 },
-                error => {
-                  this.handleError(error, 'CREATE');
+                () => {
+                  this.loading = false;
                 }
               );
             }
           });
+        }
+      });
+    });
+  }
+  deleteUser(id: string, action) {
+    this.confirm({ title: action.title, message: action.message }).subscribe(isDelete => {
+      if (isDelete) {
+        this._userSv.deleteUser(id).then(
+          () => {
+            this.loading = false;
+            this.pagination.skipCount = 0;
+            this.getData(this.pagination);
+          },
+          () => {
+            this.loading = false;
+          }
+        );
       }
     });
+  }
+  createUser() {
+    const createtrans: string = this._transSV.instant('APP.ACTIONS.CREATE');
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_GROUP', {
+      action: createtrans.toLowerCase()
+    });
+    this.openDialog(createtrans, undefined).subscribe(dataCreate => {
+      if (dataCreate) {
+        this.confirm({ title: createtrans, message: confirmtrans }).subscribe(isEdit => {
+          if (isEdit) {
+            this._userSv.createUser(dataCreate).then(
+              () => {
+                this.loading = false;
+                this.getData(this.pagination);
+              },
+              () => {
+                this.loading = false;
+              }
+            );
+          }
+        });
+      }
+    });
+  }
+  confirm(data: { title: string; message: string }) {
+    const dialog = this.dialog.open(ConfirmDialogComponent, {
+      data: data,
+      minWidth: '250px'
+    });
+    return dialog.afterClosed();
+  }
+  openDialog(titletrans, data?) {
+    return this.dialog
+      .open(UsersDetailComponent, {
+        data: { title: titletrans, ...data },
+        width: '50%'
+      })
+      .afterClosed();
   }
 }

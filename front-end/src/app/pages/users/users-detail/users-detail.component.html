@@ -14,25 +14,22 @@
       <mat-error *ngIf="hasError('email', 'email')"></mat-error>
     </mat-form-field>
     <mat-form-field>
-        <input
-          matInput
-          type="text"
-          placeholder="userName"
-          formControlName="userName"
-          id="userName"
-          required
-        />
-        <mat-error *ngIf="hasError('userName', 'required')">userName is required</mat-error>
-      </mat-form-field>
+      <input matInput type="text" placeholder="userName" formControlName="id" id="id" required />
+      <mat-error *ngIf="hasError('id', 'required')">userName is required</mat-error>
+    </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" placeholder="name" formControlName="firstName" id="firstName" />
+      <input
+        matInput
+        type="text"
+        placeholder="name"
+        formControlName="firstName"
+        id="firstName"
+        required
+      />
       <mat-error *ngIf="hasError('firstName', 'required')">First Name is required</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input matInput type="text" placeholder="lastName" formControlName="lastName" id="lastName" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="password" formControlName="password" id="password" />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions>

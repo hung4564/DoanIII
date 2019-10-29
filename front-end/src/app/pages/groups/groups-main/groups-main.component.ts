@@ -12,6 +12,7 @@ import { GroupsService } from '../groups.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '@alfresco/adf-content-services';
 import { GroupsDetailComponent } from '../groups-detail/groups-detail.component';
+import { GroupViewListComponent } from '../group-view-list/group-view-list.component';
 
 @Component({
   selector: 'app-groups-main',
@@ -55,7 +56,11 @@ export class GroupsMainComponent implements OnInit {
   }
 
   onShowRowActionsMenu(event: DataCellEvent) {
-    const actionTrans = this._transSV.instant(['APP.ACTIONS.EDIT', 'APP.ACTIONS.DELETE']);
+    const actionTrans = this._transSV.instant([
+      'APP.ACTIONS.EDIT',
+      'APP.ACTIONS.DELETE',
+      'APP.ACTIONS.ADD'
+    ]);
     const editMess = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
       action: actionTrans['APP.ACTIONS.EDIT']
     });
@@ -72,6 +77,11 @@ export class GroupsMainComponent implements OnInit {
         title: actionTrans['APP.ACTIONS.DELETE'],
         type: 'APP.ACTIONS.DELETE',
         message: deleteMess
+      },
+      {
+        title: actionTrans['APP.ACTIONS.ADD'],
+        type: 'APP.ACTIONS.ADD',
+        message: deleteMess
       }
     ];
   }
@@ -84,9 +94,15 @@ export class GroupsMainComponent implements OnInit {
       case 'APP.ACTIONS.DELETE':
         this.deleteGroup(action, event.value.row['obj'].id);
         break;
+      case 'APP.ACTIONS.ADD':
+        this.openViewDialog(action, event.value.row['obj'].id);
+        break;
       default:
         break;
     }
+  }
+  openViewDialog(action, id_group: string) {
+    this.dialog.open(GroupViewListComponent, { data: { title: action.title, id: id_group } });
   }
   deleteGroup(action, id) {
     this.confirm({ title: action.title, message: action.message }).subscribe(isDelete => {

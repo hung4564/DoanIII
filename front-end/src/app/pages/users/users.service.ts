@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AlfrescoApiService, IdentityUserService } from '@alfresco/adf-core';
+import { AlfrescoApiService } from '@alfresco/adf-core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  PersonBodyCreate,
+  Person,
+  PersonPaging,
+  PersonEntry,
+  PersonBodyUpdate
+} from '@alfresco/js-api';
+import { HandleService } from 'app/services/api.service';
 export interface User {
   id?: string;
-  userName: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -13,90 +20,78 @@ export interface User {
   providedIn: 'root'
 })
 export class UsersService {
-  constructor(private apiService: AlfrescoApiService) {}
-  createForm(
-    user: User = { email: '', userName: '', firstName: '', lastName: '', password: '12345678' }
-  ) {
+  get peopleApi() {
+    return this.apiService.peopleApi;
+  }
+  constructor(private apiService: AlfrescoApiService, private handleSV: HandleService) {
+    this.apiService.groupsApi.addGroupMember;
+  }
+  createForm(user: PersonBodyCreate) {
     return new FormGroup({
+      id: new FormControl(user.id, [Validators.required]),
       email: new FormControl(user.email, [Validators.required, Validators.email]),
-      userName: new FormControl(user.userName, [Validators.required]),
       firstName: new FormControl(user.firstName, [Validators.required]),
-      lastName: new FormControl(user.lastName),
-      password: new FormControl(user.password || '12345678')
+      lastName: new FormControl(user.lastName)
     });
   }
-  createUser(data: User) {
-    return this.apiService
-      .getInstance()
-      .webScript.executeWebScript(
-        'POST',
-        'people',
-        { contentType: 'application/json' },
-        null,
-        'service/api',
-        data
-      );
+  async createUser(data: PersonBodyCreate) {
+    try {
+      if (!data.password) {
+        data.password = '12345678';
+      }
+      await this.peopleApi.addPerson(data);
+      this.handleSuccess('CREATE');
+    } catch (error) {
+      this.handleError(error, 'CREATE');
+    }
   }
-  getUser(id: string) {
-    return this.apiService
-      .getInstance()
-      .webScript.executeWebScript(
-        'GET',
-        id,
-        { contentType: 'application/json' },
-        null,
-        'service/api/people',
-        null
-      );
+  getUser(id: string): Promise<Person> {
+    return this.peopleApi.getPerson(id).then(result => result.entry);
   }
-  updateUser(id, data: User) {
-    return this.apiService
-      .getInstance()
-      .webScript.executeWebScript(
-        'PUT',
-        id,
-        { contentType: 'application/json' },
-        null,
-        'service/api/people',
-        data
-      );
+  updateUser(id: string, data: PersonBodyUpdate): Promise<Person> {
+    delete data['id'];
+    delete data['password'];
+    return this.peopleApi.updatePerson(id, data).then(result => {
+      this.handleSuccess('EDIT');
+      return result.entry;
+    });
   }
-  deleteUser(id) {
-    return this.apiService
-      .getInstance()
-      .webScript.executeWebScript(
-        'DELETE',
-        id,
-        { contentType: 'application/json' },
-        null,
-        'service/api/people',
-        null
-      );
+  async deleteUser(id: string) {
+    try {
+      await this.apiService
+        .getInstance()
+        .webScript.executeWebScript(
+          'DELETE',
+          id,
+          { contentType: 'application/json' },
+          null,
+          'service/api/people',
+          null
+        );
+      this.handleSuccess('DELETE');
+    } catch (error) {
+      this.handleError(error, 'DELETE');
+    }
   }
-  getUsers() {
-    return this.apiService
-      .getInstance()
-      .webScript.executeWebScript(
-        'GET',
-        'people',
-        [],
-        null,
-        'api/-default-/public/alfresco/versions/1',
-        null
-      )
-      .then((response: any) => {
-        const results = [];
-        for (const entry of response.list.entries) {
-          results.push({
-            id: entry.entry.id,
-            email: entry.entry.email,
-            firstName: entry.entry.firstName,
-            lastName: entry.entry.lastName,
-            status: 'green',
-            icon: 'material-icons://accessibility'
-          });
-        }
-        return results;
+  formatData(items: PersonEntry[]) {
+    const results = [];
+    for (const entry of items) {
+      results.push({
+        ...entry.entry,
+        icon: 'material-icons://accessibility'
       });
+    }
+    return results;
+  }
+  getUsers(opts?) {
+    return this.peopleApi.getPersons(opts);
+  }
+
+  handleSuccess(typeaction) {
+    const key = `APP.MESSAGES.USERS.${typeaction}_SUCCESS`;
+    this.handleSV.showSuccess(key);
+  }
+  handleError(error, typeaction) {
+    this.handleSV.showError(error);
   }
 }

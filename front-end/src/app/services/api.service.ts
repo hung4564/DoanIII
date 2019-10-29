@@ -16,7 +16,7 @@ export interface Webscript {
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class HandleService {
   constructor(private apiService: AlfrescoApiService, private store: Store<AppStore>) {}
   async handleApi(webScript: Webscript): Promise<any> {
     return await this.apiService

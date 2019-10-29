@@ -184,6 +184,7 @@
       }
     },
     "ACTIONS": {
+      "ADD": "Add",
       "CREATE": "Create",
       "VIEW": "View",
       "EDIT": "Edit",
