@@ -18,6 +18,7 @@ import { AppRouteReuseStrategy } from 'app/routing/app.routes.strategy';
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { GroupsModule } from 'app/pages/groups/groups.module';
+import { SitesModule } from 'app/pages/sites/sites.module';
 @NgModule({
   declarations: [AdminComponent, SidenavComponent, HeaderComponent, CurrentUserComponent],
   imports: [
@@ -25,8 +26,9 @@ import { GroupsModule } from 'app/pages/groups/groups.module';
     AdminRoutingModule,
     UsersModule,
     GroupsModule,
-    CoreModule.forChild(),
-    ContentModule.forChild()
+    SitesModule,
+    CoreModule.forRoot(),
+    ContentModule.forRoot()
   ],
   providers: [
     AppService,

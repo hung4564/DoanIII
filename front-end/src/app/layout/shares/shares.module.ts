@@ -5,12 +5,7 @@ import { MainPipe } from 'app/pipes/pipe.module';
 import { MaterialModule } from './material.module';
 
 @NgModule({
-  exports: [
-    MaterialModule,
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MainPipe
-  ]
+  imports: [MainPipe],
+  exports: [MaterialModule, BrowserModule, FormsModule, ReactiveFormsModule, MainPipe]
 })
 export class SharesModule {}

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { EnumToArrayPipe } from './enumToArray.pipe';
 
 @NgModule({
-  declarations: [],
-  exports: []
+  declarations: [EnumToArrayPipe],
+  exports: [EnumToArrayPipe]
 })
 export class MainPipe {}

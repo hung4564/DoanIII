@@ -5,6 +5,7 @@ import { AuthGuardEcm } from '@alfresco/adf-core';
 
 import { UsersRoutes } from 'app/pages/users/users.routing';
 import { GroupsRoutes } from 'app/pages/groups/groups.routing';
+import { SitesRoutes } from 'app/pages/sites/sites.routing';
 const adminRoutes: Routes = [
   {
     path: '',
@@ -17,7 +18,8 @@ const adminRoutes: Routes = [
         pathMatch: 'full'
       },
       ...UsersRoutes,
-      ...GroupsRoutes
+      ...GroupsRoutes,
+      ...SitesRoutes
     ]
   }
 ];

@@ -1,0 +1,28 @@
+<form [formGroup]="siteForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <mat-dialog-content class="example-container">
+    <mat-form-field>
+      <input matInput type="text" placeholder="title" formControlName="title" id="title" required />
+      <mat-error *ngIf="hasError('title', 'required')">title is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="description"
+        formControlName="description"
+        id="description"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-radio-group aria-label="Select an visibility" formControlName="visibility" id="visibility">
+        <mat-radio-button *ngFor="let item of visibilities | enumsToArray"[value]="item.name" >{{item.name}}</mat-radio-button>
+      </mat-radio-group>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button type="reset" (click)="revert()">Revert</button>
+    <button mat-button [disabled]="!siteForm.valid" type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>

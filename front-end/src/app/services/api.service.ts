@@ -3,6 +3,8 @@ import { AlfrescoApiService } from '@alfresco/adf-core';
 import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { SnackbarErrorAction, SnackbarInfoAction } from 'app/store/actions/snackbar.actions';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '@alfresco/adf-content-services';
 
 export interface Webscript {
   httpMethod: string;
@@ -17,7 +19,11 @@ export interface Webscript {
   providedIn: 'root'
 })
 export class HandleService {
-  constructor(private apiService: AlfrescoApiService, private store: Store<AppStore>) {}
+  constructor(
+    private apiService: AlfrescoApiService,
+    private store: Store<AppStore>,
+    public dialog: MatDialog
+  ) {}
   async handleApi(webScript: Webscript): Promise<any> {
     return await this.apiService
       .getInstance()
@@ -37,5 +43,12 @@ export class HandleService {
   }
   showSuccess(key: string) {
     this.store.dispatch(new SnackbarInfoAction(key));
+  }
+  confirm(data: { title: string; message: string }) {
+    const dialog = this.dialog.open(ConfirmDialogComponent, {
+      data: data,
+      minWidth: '250px'
+    });
+    return dialog.afterClosed();
   }
 }

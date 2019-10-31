@@ -1,0 +1,27 @@
+<adf-toolbar title="Sites">
+  <div class="adf-toolbar--spacer"></div>
+  <button mat-icon-button (click)="createSite()">
+    <mat-icon>create</mat-icon>
+  </button>
+</adf-toolbar>
+<adf-datatable
+  [data]="data"
+  [actions]="true"
+  (showRowActionsMenu)="onShowRowActionsMenu($event)"
+  (executeRowAction)="onExecuteRowAction($event)"
+  [stickyHeader]="true"
+>
+  <data-columns>
+    <data-column key="id" title="id"> </data-column>
+    <data-column key="guid" title="guid"> </data-column>
+    <data-column key="title" title="title"> </data-column>
+    <data-column key="visibility" title="visibility"> </data-column>
+  </data-columns>
+</adf-datatable>
+<adf-pagination
+  acaPagination
+  [pagination]="pagination"
+  [supportedPageSizes]="sizes"
+  (change)="onChangePagination($event)"
+>
+</adf-pagination>

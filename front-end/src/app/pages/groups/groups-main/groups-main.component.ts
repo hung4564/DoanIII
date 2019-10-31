@@ -37,7 +37,7 @@ export class GroupsMainComponent implements OnInit {
 
     const pagination = {
       skipCount: 0,
-      maxItems: this.sizes[0]
+      maxItems: this.appConfigService.get<number[]>('pagination.size')
     };
     this.pagination = new PaginationModel(pagination);
     this.getData(pagination);

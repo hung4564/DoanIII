@@ -1,6 +1,10 @@
 @import '../mixins';
 
 @mixin adf-style-fixes($theme) {
+  .adf-datatable{
+    overflow-y: hidden;
+  }
+
   //  add here all ADF style overrides
   //  and create a task to move them to ADF
 }
