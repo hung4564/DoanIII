@@ -11,6 +11,7 @@ import {
 import { MatDialog } from '@angular/material';
 import { SitesService } from '../sites.service';
 import { SitesDetailComponent } from '../sites-detail/sites-detail.component';
+import { Site } from '@alfresco/js-api';
 @Component({
   selector: 'app-sites-main',
   templateUrl: './sites-main.component.html',
@@ -24,6 +25,13 @@ export class SitesMainComponent implements OnInit {
   pagination: PaginationModel = new PaginationModel();
   sizes: number[];
   loading = false;
+  ob = {
+    next(response) {},
+    error(err) {},
+    complete() {
+      this.getData(this.pagination);
+    }
+  };
   constructor(
     private _sitesSv: SitesService,
     private appConfigService: AppConfigService,
@@ -61,27 +69,18 @@ export class SitesMainComponent implements OnInit {
       'APP.ACTIONS.DELETE',
       'APP.ACTIONS.ADD'
     ]);
-    const editMess = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: actionTrans['APP.ACTIONS.EDIT']
-    });
-    const deleteMess = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_USER', {
-      action: actionTrans['APP.ACTIONS.DELETE']
-    });
     event.value.actions = [
       {
         title: actionTrans['APP.ACTIONS.EDIT'],
-        type: 'APP.ACTIONS.EDIT',
-        message: editMess
+        type: 'APP.ACTIONS.EDIT'
       },
       {
         title: actionTrans['APP.ACTIONS.DELETE'],
-        type: 'APP.ACTIONS.DELETE',
-        message: deleteMess
+        type: 'APP.ACTIONS.DELETE'
       },
       {
         title: actionTrans['APP.ACTIONS.ADD'],
-        type: 'APP.ACTIONS.ADD',
-        message: deleteMess
+        type: 'APP.ACTIONS.ADD'
       }
     ];
   }
@@ -89,9 +88,10 @@ export class SitesMainComponent implements OnInit {
     const action = event.value.action;
     switch (action.type) {
       case 'APP.ACTIONS.EDIT':
-        // this.editUser(event.value.row['obj'].id);
+        this.editSite(action, event.value.row['obj'].id);
         break;
       case 'APP.ACTIONS.DELETE':
+        this.deleteSite(event.value.row['obj'].id);
         // this.deleteGroup(action, event.value.row['obj'].id);
         break;
       case 'APP.ACTIONS.ADD':
@@ -103,16 +103,46 @@ export class SitesMainComponent implements OnInit {
   }
   createSite() {
     const createtrans: string = this._transSV.instant('APP.ACTIONS.CREATE');
-    this.openDialog(createtrans, {}).subscribe(dataCreate => {
+    this.openDialog(createtrans, undefined).subscribe(dataCreate => {
       if (dataCreate) {
-        this._sitesSv.createSite(dataCreate);
+        this._sitesSv.createSite(dataCreate).subscribe(
+          result => {},
+          e => {},
+          () => {
+            this.getData(this.pagination);
+          }
+        );
       }
     });
   }
-  openDialog(titletrans, data?) {
+  editSite(action: { title: string }, id: string) {
+    this._sitesSv.getSite(id).subscribe(result => {
+      this.openDialog(action.title, result).subscribe(dataEdit => {
+        if (dataEdit) {
+          this._sitesSv.updateSite(id, dataEdit).subscribe(
+            result => {},
+            e => {},
+            () => {
+              this.getData(this.pagination);
+            }
+          );
+        }
+      });
+    });
+  }
+  deleteSite(id: string) {
+    this._sitesSv.deleteSite(id).subscribe(
+      result => {},
+      e => {},
+      () => {
+        this.getData(this.pagination);
+      }
+    );
+  }
+  openDialog(titletrans: string, data?: Site) {
     return this.dialog
       .open(SitesDetailComponent, {
-        data: { title: titletrans, ...data },
+        data: { titledialog: titletrans, data: data || {} },
         width: '50%'
       })
       .afterClosed();

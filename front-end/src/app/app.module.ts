@@ -13,11 +13,9 @@ import { ContentModule } from '@alfresco/adf-content-services';
 import { AppStoreModule } from 'app/store/app-store.module';
 import { registerLocaleData } from '@angular/common';
 import localeVi from '@angular/common/locales/vi';
-import { MainPipe } from './pipes/pipe.module';
 registerLocaleData(localeVi);
 @NgModule({
   imports: [
-    MainPipe,
     AppStoreModule,
     SharesModule,
     AppRoutingModule,

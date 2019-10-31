@@ -19,7 +19,7 @@ export class SitesDetailComponent implements OnInit {
     public dialogRef: MatDialogRef<SitesDetailComponent>
   ) {
     this.title = data.title;
-    this.siteForm = this._sitesSv.createForm(data);
+    this.siteForm = this._sitesSv.createForm(data.data);
   }
 
   ngOnInit() {}

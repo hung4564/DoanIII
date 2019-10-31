@@ -6,18 +6,21 @@
       <mat-error *ngIf="hasError('title', 'required')">title is required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input
+      <textarea
         matInput
         type="text"
         placeholder="description"
         formControlName="description"
         id="description"
-      />
+      ></textarea>
     </mat-form-field>
     <mat-form-field>
-      <mat-radio-group aria-label="Select an visibility" formControlName="visibility" id="visibility">
-        <mat-radio-button *ngFor="let item of visibilities | enumsToArray"[value]="item.name" >{{item.name}}</mat-radio-button>
-      </mat-radio-group>
+      <mat-select placeholder="visibility" formControlName="visibility" required>
+        <mat-option *ngFor="let item of visibilities | keyvalue" [value]="item.value">
+          {{ item.value }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="hasError('visibility', 'required')">visibility is required</mat-error>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions>
