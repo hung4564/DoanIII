@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material';
 import { SitesService } from '../sites.service';
 import { SitesDetailComponent } from '../sites-detail/sites-detail.component';
 import { Site } from '@alfresco/js-api';
+import { Router } from '@angular/router';
+import { HandleService } from 'app/services/api.service';
 @Component({
   selector: 'app-sites-main',
   templateUrl: './sites-main.component.html',
@@ -25,18 +27,13 @@ export class SitesMainComponent implements OnInit {
   pagination: PaginationModel = new PaginationModel();
   sizes: number[];
   loading = false;
-  ob = {
-    next(response) {},
-    error(err) {},
-    complete() {
-      this.getData(this.pagination);
-    }
-  };
   constructor(
+    private router: Router,
     private _sitesSv: SitesService,
     private appConfigService: AppConfigService,
     public dialog: MatDialog,
-    private _transSV: TranslationService
+    private _transSV: TranslationService,
+    private handleSV: HandleService
   ) {
     this.sizes = this.appConfigService.get<number[]>('pagination.supportedPageSizes');
 
@@ -49,15 +46,20 @@ export class SitesMainComponent implements OnInit {
   }
   getData(pagination) {
     this.loading = true;
-    this._sitesSv.getSites(pagination).subscribe(response => {
-      this.data.setRows(
-        response.list.entries.map(x => {
-          return new ObjectDataRow(this._sitesSv.formatItem(x.entry));
-        })
-      );
-      this.pagination = new PaginationModel(response.list.pagination);
-      this.loading = false;
-    });
+    this._sitesSv.getSites(pagination).subscribe(
+      response => {
+        this.data.setRows(
+          response.list.entries.map(x => {
+            return new ObjectDataRow(this._sitesSv.formatItem(x.entry));
+          })
+        );
+        this.pagination = new PaginationModel(response.list.pagination);
+      },
+      err => {},
+      () => {
+        this.loading = false;
+      }
+    );
   }
   onChangePagination(e: PaginationModel) {
     this.getData(e);
@@ -92,10 +94,9 @@ export class SitesMainComponent implements OnInit {
         break;
       case 'APP.ACTIONS.DELETE':
         this.deleteSite(event.value.row['obj'].id);
-        // this.deleteGroup(action, event.value.row['obj'].id);
         break;
       case 'APP.ACTIONS.ADD':
-        // this.openViewDialog(action, event.value.row['obj'].id);
+        this.router.navigate([`sites/${event.value.row['obj'].id}/members`]);
         break;
       default:
         break;

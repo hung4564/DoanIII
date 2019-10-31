@@ -1,37 +1,43 @@
-<adf-toolbar title="Groups">
-  <div class="adf-toolbar--spacer"></div>
-  <button mat-icon-button (click)="createGroup()">
-    <mat-icon>create</mat-icon>
-  </button>
-</adf-toolbar>
-<adf-datatable
-  [data]="data"
-  [actions]="true"
-  (showRowActionsMenu)="onShowRowActionsMenu($event)"
-  (executeRowAction)="onExecuteRowAction($event)"
-  [stickyHeader]="true"
->
-  <data-columns>
-    <data-column key="icon" type="image" [sortable]="false"> </data-column>
-    <data-column key="displayName" title="Display Name"> </data-column>
-    <data-column key="isRoot" title="Root">
-      <ng-template let-entry="$implicit">
-        <span
-          *ngIf="!entry.data.getValue(entry.row, entry.col)"
-          style="background-color: red; width: 20px; height: 20px"
-        ></span>
-        <span
-          *ngIf="entry.data.getValue(entry.row, entry.col)"
-          style="background-color: green; width: 20px; height: 20px"
-        ></span>
-      </ng-template>
-    </data-column>
-  </data-columns>
-</adf-datatable>
-<adf-pagination
-  acaPagination
-  [pagination]="pagination"
-  [supportedPageSizes]="sizes"
-  (change)="onChangePagination($event)"
->
-</adf-pagination>
+<div class="overlay" *ngIf="loading; else loaded">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #loaded>
+  <adf-toolbar title="Groups">
+    <div class="adf-toolbar--spacer"></div>
+    <button mat-icon-button (click)="createGroup()">
+      <mat-icon>create</mat-icon>
+    </button>
+  </adf-toolbar>
+  <adf-datatable
+    [data]="data"
+    [actions]="true"
+    (showRowActionsMenu)="onShowRowActionsMenu($event)"
+    (executeRowAction)="onExecuteRowAction($event)"
+    [stickyHeader]="true"
+  >
+    <data-columns>
+      <data-column key="icon" type="image" [sortable]="false"> </data-column>
+      <data-column key="displayName" title="Display Name"> </data-column>
+      <data-column key="isRoot" title="Root">
+        <ng-template let-entry="$implicit">
+          <span
+            *ngIf="!entry.data.getValue(entry.row, entry.col)"
+            style="background-color: red; width: 20px; height: 20px"
+          ></span>
+          <span
+            *ngIf="entry.data.getValue(entry.row, entry.col)"
+            style="background-color: green; width: 20px; height: 20px"
+          ></span>
+        </ng-template>
+      </data-column>
+    </data-columns>
+  </adf-datatable>
+  <adf-pagination
+    acaPagination
+    [pagination]="pagination"
+    [supportedPageSizes]="sizes"
+    (change)="onChangePagination($event)"
+  >
+  </adf-pagination>
+</ng-template>

@@ -1,0 +1,13 @@
+<div class="overlay" *ngIf="loading; else loaded">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #loaded>
+  <mat-grid-list cols="12" rowHeight="fit" class="full-height">
+    <mat-grid-tile colspan="3"><mat-card><adf-card-view
+      [properties]="properties"
+      [editable]="false">
+  </adf-card-view></mat-card></mat-grid-tile>
+    <mat-grid-tile colspan="9"><mat-card>Simple card</mat-card></mat-grid-tile>
+  </mat-grid-list>
+</ng-template>

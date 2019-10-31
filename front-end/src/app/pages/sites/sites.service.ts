@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AlfrescoApiService, TranslationService } from '@alfresco/adf-core';
-import { Observable, observable } from 'rxjs';
-import { SitePaging, SiteEntry, Site, SiteBodyCreate, SiteBodyUpdate } from '@alfresco/js-api';
+import { Observable, observable, Subscriber } from 'rxjs';
+import {
+  SitePaging,
+  SiteEntry,
+  Site,
+  SiteBodyCreate,
+  SiteBodyUpdate,
+  SiteMemberPaging
+} from '@alfresco/js-api';
 import { HandleService } from 'app/services/api.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -18,8 +25,10 @@ export class SitesService {
     private _transSV: TranslationService
   ) {}
   createForm(data: Site): FormGroup {
+    if (!data.id) {
+      data.visibility = Site.VisibilityEnum.PRIVATE;
+    }
     return new FormGroup({
-      id: new FormControl(data.id, []),
       title: new FormControl(data.title, [Validators.required]),
       description: new FormControl(data.description),
       visibility: new FormControl(data.visibility, [Validators.required])
@@ -126,6 +135,17 @@ export class SitesService {
           observer.complete();
         }
       });
+    });
+  }
+  getSiteMembers(id: string): Observable<SiteMemberPaging> {
+    return new Observable(observable => {
+      this.sitesApi.getSiteMembers(id).then(
+        result => {
+          observable.next(result);
+          observable.complete;
+        },
+        err => observable.error(err)
+      );
     });
   }
   handleSuccess(typeaction) {

@@ -41,6 +41,7 @@ export class UsersMainComponent implements OnInit {
     this.getData(pagination);
   }
   getData(pagination: PaginationModel) {
+    this.loading = true;
     this._userSv.getUsers(pagination).then((response: any) => {
       const results = this._userSv.formatData(response.list.entries);
       this.pagination = new PaginationModel(response.list.pagination);

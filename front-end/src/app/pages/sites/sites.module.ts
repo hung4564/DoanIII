@@ -5,9 +5,10 @@ import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { SitesService } from './sites.service';
 import { SitesDetailComponent } from './sites-detail/sites-detail.component';
+import { SitesMemberComponent } from './sites-member/sites-member.component';
 @NgModule({
   imports: [SharesModule, CoreModule.forChild(), ContentModule.forChild()],
-  declarations: [SitesMainComponent, SitesDetailComponent],
+  declarations: [SitesMemberComponent, SitesMainComponent, SitesDetailComponent],
   providers: [SitesService],
   entryComponents: [SitesDetailComponent]
 })
