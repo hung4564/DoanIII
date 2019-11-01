@@ -28,11 +28,6 @@ spec:
           matchLabels:
             app: {{ template "content-services.shortname" . }}-share
 
-      # Allow traffic from transformers
-      - podSelector:
-          matchLabels:
-            component: transformers
-
       ports:
         - protocol: TCP
           port: 8080
@@ -71,12 +66,7 @@ spec:
       - podSelector:
           matchLabels:
              app: {{ template "content-services.shortname" . }}-share
-
-      # Transformers
-      - podSelector:
-          matchLabels:
-            component: transformers
-
+      
       # Activemq
       - podSelector:
           matchLabels:

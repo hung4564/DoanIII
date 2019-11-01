@@ -18,10 +18,10 @@ spec:
         release: {{ .Release.Name }}
         component: share
     spec:
-      {{- if .Values.global.alfrescoRegistryPullSecrets }}
+      {{- if .Values.registryPullSecrets }}
       # only set this secret if a private docker registry variable is defined
       imagePullSecrets:
-        - name: {{ .Values.global.alfrescoRegistryPullSecrets }}
+        - name: {{ .Values.registryPullSecrets }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}

@@ -13,12 +13,7 @@ metadata:
 
 spec:
   rules:
-  {{- if .Values.externalHost }}
-  - host: {{ tpl .Values.externalHost $ }}
-    http:
-  {{- else }}
   - http:
-  {{- end }}
       paths:
       - path: {{ .Values.share.ingress.path }}
         backend:
