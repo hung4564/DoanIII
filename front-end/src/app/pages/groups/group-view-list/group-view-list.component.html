@@ -1,9 +1,10 @@
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Favorite food" value="Sushi" />
-</mat-form-field>
+<person-search placeholder="Search person" (selectPerson)="selectPerson($event)"></person-search>
 <mat-list role="list">
-  <mat-list-item *ngFor="let member of members" role="listitem">
-    <mat-icon matListIcon>person</mat-icon>
-    <p matLine>{{ member.displayName }}</p></mat-list-item
-  >
+  <mat-list-item *ngFor="let member of members">
+    <mat-icon matListIcon>{{ getIcon(member.memberType) }}</mat-icon>
+    <h3 matLine>{{ member.displayName }}</h3>
+    <button mat-icon-button (click)="deleteGroupMember(member.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-list-item>
 </mat-list>

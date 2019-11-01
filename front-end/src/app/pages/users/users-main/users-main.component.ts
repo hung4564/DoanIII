@@ -35,7 +35,7 @@ export class UsersMainComponent implements OnInit {
     this.sizes = this.appConfigService.get<number[]>('pagination.supportedPageSizes');
     const pagination = {
       skipCount: 0,
-      maxItems: this.sizes[0]
+      maxItems: this.appConfigService.get<number>('pagination.size')
     };
     this.pagination = new PaginationModel(pagination);
     this.getData(pagination);

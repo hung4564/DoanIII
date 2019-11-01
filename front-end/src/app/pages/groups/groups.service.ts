@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { AlfrescoApiService, IdentityUserService } from '@alfresco/adf-core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { HandleService, Webscript } from 'app/services/api.service';
-import { GroupBodyCreate, GroupBodyUpdate, GroupMemberPaging, GroupPaging } from '@alfresco/js-api';
+import {
+  GroupBodyCreate,
+  GroupBodyUpdate,
+  GroupMemberPaging,
+  GroupPaging,
+  GroupMembershipBodyCreate
+} from '@alfresco/js-api';
 export interface Group {
   id: string;
   displayName: string;
@@ -77,7 +83,29 @@ export class GroupsService {
       this.handleError(error, 'GET');
     }
   }
-
+  async addGroupMember(
+    groupId: string,
+    personId: string,
+    memberType: GroupMembershipBodyCreate.MemberTypeEnum
+  ) {
+    try {
+      const data: GroupMembershipBodyCreate = { id: personId, memberType: memberType };
+      const result = await this.groupApi.addGroupMember(groupId, data);
+      this.handleSuccess('ADD_GROUP_MEMBER');
+      return result;
+    } catch (error) {
+      this.handleError(error, 'ADD_GROUP_MEMBER');
+    }
+  }
+  async deleteGroupMember(groupId: string, personId: string) {
+    try {
+      const result = await this.groupApi.deleteGroupMember(groupId, personId);
+      this.handleSuccess('EDIT_GROUP_MEMBER');
+      return result;
+    } catch (error) {
+      this.handleError(error, 'EDIT_GROUP_MEMBER');
+    }
+  }
   handleSuccess(typeaction) {
     const key = `APP.MESSAGES.GROUPS.${typeaction}_SUCCESS`;
     this.handleService.showSuccess(key);

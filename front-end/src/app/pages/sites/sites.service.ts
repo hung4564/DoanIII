@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AlfrescoApiService, TranslationService } from '@alfresco/adf-core';
-import { Observable, observable, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   SitePaging,
   SiteEntry,
   Site,
   SiteBodyCreate,
   SiteBodyUpdate,
-  SiteMemberPaging
+  SiteMemberPaging,
+  SiteMembershipBodyUpdate,
+  SiteMembershipBodyCreate
 } from '@alfresco/js-api';
 import { HandleService } from 'app/services/api.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -52,7 +54,7 @@ export class SitesService {
   }
   createSite(data: SiteBodyCreate) {
     const createtrans: string = this._transSV.instant('APP.ACTIONS.CREATE');
-    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_GROUP', {
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_SITE', {
       action: createtrans.toLowerCase()
     });
     return new Observable(observer => {
@@ -88,7 +90,7 @@ export class SitesService {
   }
   updateSite(id: string, data: SiteBodyUpdate) {
     const updatetrans: string = this._transSV.instant('APP.ACTIONS.EDIT');
-    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_GROUP', {
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_SITE', {
       action: updatetrans.toLowerCase()
     });
     delete data['id'];
@@ -114,7 +116,7 @@ export class SitesService {
   }
   deleteSite(id: string) {
     const updatetrans: string = this._transSV.instant('APP.ACTIONS.DELTE');
-    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_GROUP', {
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_SITE', {
       action: updatetrans.toLowerCase()
     });
     return new Observable(observer => {
@@ -137,15 +139,69 @@ export class SitesService {
       });
     });
   }
-  getSiteMembers(id: string): Observable<SiteMemberPaging> {
+  getSiteMembers(id: string, opts?): Observable<SiteMemberPaging> {
     return new Observable(observable => {
-      this.sitesApi.getSiteMembers(id).then(
+      this.sitesApi.getSiteMembers(id, opts).then(
         result => {
           observable.next(result);
           observable.complete;
         },
         err => observable.error(err)
       );
+    });
+  }
+  addSiteMember(siteId: string, body: SiteMembershipBodyCreate) {
+    const data = { id: body.id, role: body.role };
+    const updatetrans: string = this._transSV.instant('APP.ACTIONS.ADD');
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_SITE_MEMBER', {
+      action: updatetrans.toLowerCase()
+    });
+    return new Observable(observer => {
+      this.handleSV.confirm({ title: updatetrans, message: confirmtrans }).subscribe(isupdate => {
+        if (isupdate) {
+          this.sitesApi.addSiteMember(siteId, data).then(
+            result => {
+              observer.next(result);
+              this.handleSuccess('ADD');
+              observer.complete();
+            },
+            e => {
+              this.handleError(e);
+              observer.error(e);
+            }
+          );
+        } else {
+          observer.complete();
+        }
+      });
+    });
+  }
+  changeRoleOfMember(siteId: string, personId: string, role: SiteMembershipBodyUpdate.RoleEnum) {
+    return this.sitesApi.updateSiteMember(siteId, personId, { role });
+  }
+  deleteSiteMember(siteId: string, personId: string) {
+    const updatetrans: string = this._transSV.instant('APP.ACTIONS.DELTE');
+    const confirmtrans = this._transSV.instant('APP.DIALOGS.CONFIRM_ACTION_SITE_MEMBER', {
+      action: updatetrans.toLowerCase()
+    });
+    return new Observable(observer => {
+      this.handleSV.confirm({ title: updatetrans, message: confirmtrans }).subscribe(isupdate => {
+        if (isupdate) {
+          this.sitesApi.removeSiteMember(siteId, personId).then(
+            result => {
+              observer.next(result);
+              this.handleSuccess('DELETE');
+              observer.complete();
+            },
+            e => {
+              this.handleError(e);
+              observer.error(e);
+            }
+          );
+        } else {
+          observer.complete();
+        }
+      });
     });
   }
   handleSuccess(typeaction) {

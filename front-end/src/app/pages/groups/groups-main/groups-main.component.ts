@@ -37,7 +37,7 @@ export class GroupsMainComponent implements OnInit {
 
     const pagination = {
       skipCount: 0,
-      maxItems: this.appConfigService.get<number[]>('pagination.size')
+      maxItems: this.appConfigService.get<number>('pagination.size')
     };
     this.pagination = new PaginationModel(pagination);
     this.getData(pagination);
@@ -105,7 +105,10 @@ export class GroupsMainComponent implements OnInit {
     }
   }
   openViewDialog(action, id_group: string) {
-    this.dialog.open(GroupViewListComponent, { data: { title: action.title, id: id_group } });
+    this.dialog.open(GroupViewListComponent, {
+      data: { title: action.title, id: id_group },
+      minWidth: '550px'
+    });
   }
   deleteGroup(action, id) {
     this.confirm({ title: action.title, message: action.message }).subscribe(isDelete => {

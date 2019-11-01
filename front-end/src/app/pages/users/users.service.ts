@@ -8,7 +8,8 @@ import {
   PersonEntry,
   PersonBodyUpdate
 } from '@alfresco/js-api';
-import { HandleService } from 'app/services/api.service';
+import { HandleService, Webscript } from 'app/services/api.service';
+import { Observable, observable } from 'rxjs';
 export interface User {
   id?: string;
   email: string;
@@ -25,6 +26,10 @@ export class UsersService {
   }
   constructor(private apiService: AlfrescoApiService, private handleSV: HandleService) {
     this.apiService.groupsApi.addGroupMember;
+    this.apiService.searchApi;
+  }
+  getAvatar(avatar_id) {
+    return 'assets/images/no-user-photo-64.png';
   }
   createForm(user: PersonBodyCreate) {
     return new FormGroup({
@@ -32,6 +37,21 @@ export class UsersService {
       email: new FormControl(user.email, [Validators.required, Validators.email]),
       firstName: new FormControl(user.firstName, [Validators.required]),
       lastName: new FormControl(user.lastName)
+    });
+  }
+  searchUser(query) {
+    return new Observable(observable => {
+      const webScript: Webscript = {
+        httpMethod: 'GET',
+        scriptPath: '/queries/people',
+        scriptArgs: [],
+        contextRoot: null,
+        servicePath: 'api/-default-/public/alfresco/versions/1',
+        postBody: null
+      };
+      this.handleSV.handleApi(webScript).then(result => {
+        observable.next(result);
+      });
     });
   }
   async createUser(data: PersonBodyCreate) {

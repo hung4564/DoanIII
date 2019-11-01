@@ -1,0 +1,28 @@
+<div style="width: 100%;">
+  <mat-form-field style="width: 100%;">
+    <input
+      matInput
+      [placeholder]="placeholder"
+      aria-label="State"
+      [matAutocomplete]="auto"
+      [formControl]="searchPersonsCtrl"
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngIf="isLoading" class="is-loading" disabled>Loading...</mat-option>
+      <ng-container *ngIf="!isLoading">
+        <mat-option *ngIf="filteredPersons.length == 0" disabled>
+          No Result
+        </mat-option>
+        <mat-option
+          *ngFor="let person of filteredPersons"
+          (click)="selectPerson(person)"
+          [value]="person | fullName"
+        >
+          <span>
+            <b>{{ person | fullName }}</b>
+          </span>
+        </mat-option>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
