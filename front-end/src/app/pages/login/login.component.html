@@ -1,9 +1,9 @@
 <adf-login
   [copyrightText]="'application.copyright' | adfAppConfig | translate"
   providers="ECM"
-  successRoute="/users"
   logoImageUrl="./assets/images/alfresco-logo.svg"
   [showRememberMe]="false"
   [showLoginActions]="false"
+  (success)="mySuccessMethod($event)"
 >
 </adf-login>

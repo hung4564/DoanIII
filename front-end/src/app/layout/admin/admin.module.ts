@@ -3,24 +3,15 @@ import { AdminComponent } from './admin.component';
 import { AdminRoutingModule } from './admin.routing';
 
 import { SidenavComponent } from './part/sidenav/sidenav.component';
-import { HeaderComponent } from './part/header/header.component';
-import { CurrentUserComponent } from './part/current-user/current-user.component';
-
 import { SharesModule } from 'app/layout/shares/shares.module';
 import { UsersModule } from 'app/pages/users/users.module';
-
-import { ContentApiService } from 'app/services/content-api.service';
-import { HandleService } from 'app/services/api.service';
-import { AppService } from 'app/services/app.service';
-import { RouteReuseStrategy } from '@angular/router';
-import { AppRouteReuseStrategy } from 'app/routing/app.routes.strategy';
 
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { GroupsModule } from 'app/pages/groups/groups.module';
 import { SitesModule } from 'app/pages/sites/sites.module';
 @NgModule({
-  declarations: [AdminComponent, SidenavComponent, HeaderComponent, CurrentUserComponent],
+  declarations: [AdminComponent, SidenavComponent],
   imports: [
     SharesModule,
     AdminRoutingModule,
@@ -29,12 +20,6 @@ import { SitesModule } from 'app/pages/sites/sites.module';
     SitesModule,
     CoreModule.forRoot(),
     ContentModule.forRoot()
-  ],
-  providers: [
-    AppService,
-    HandleService,
-    ContentApiService,
-    { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy }
   ]
 })
-export class AdminModule {}
+export class AdminLayouModule {}

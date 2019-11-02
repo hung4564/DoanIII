@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppService } from 'app/services/app.service';
 import { getUserProfile, getLanguagePickerState } from 'app/store/selectors/app.selector';
 import { ProfileState } from '@alfresco/adf-extensions';
+import { LogoutAction } from 'app/store/actions/app.action';
 
 @Component({
   selector: 'app-current-user',
@@ -27,5 +28,7 @@ export class CurrentUserComponent implements OnInit {
     return !this.appService.withCredentials;
   }
 
-  onLogoutEvent() {}
+  onLogoutEvent() {
+    this.store.dispatch(new LogoutAction());
+  }
 }

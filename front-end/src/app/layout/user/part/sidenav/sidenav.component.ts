@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MENUS } from '../sidernav';
 @Component({
-  selector: 'app-sidenav',
+  selector: 'user-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })

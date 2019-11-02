@@ -1,33 +1,26 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  PeopleContentService,
-  AppConfigService,
-  AuthenticationService,
-  AlfrescoApiService,
   SidenavLayoutComponent,
-  UserPreferencesService
+  UserPreferencesService,
+  AppConfigService
 } from '@alfresco/adf-core';
-import { AppStore, AppState } from 'app/store/states/app.state';
-import { Store } from '@ngrx/store';
-import { GroupsApi, Group } from '@alfresco/js-api';
-import { takeUntil, map, filter, withLatestFrom } from 'rxjs/operators';
-import { INITIAL_APP_STATE } from 'app/store/states/initial-state';
-import { SetUserProfileAction, SetInitialStateAction } from 'app/store/actions/app.action';
-import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { AppService } from 'app/services/app.service';
 import { Subject, Observable } from 'rxjs';
 import { Directionality } from '@angular/cdk/bidi';
+import { Store } from '@ngrx/store';
+import { AppStore } from 'app/store/states/app.state';
+import { Router, NavigationEnd } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { NodePermissionService } from '@alfresco/adf-content-services';
+import { map, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
+
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
+  selector: 'layout-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss'],
   host: {
-    class: 'app-layout'
+    class: 'full-height'
   }
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
   @ViewChild('layout')
   layout: SidenavLayoutComponent;
 

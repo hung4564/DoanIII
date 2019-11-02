@@ -6,8 +6,10 @@ import { MaterialModule } from './material.module';
 import { PersonSearchComponent } from './person-search/person-search.component';
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
+import { HeaderComponent } from 'app/layout/partials/header/header.component';
+import { CurrentUserComponent } from 'app/layout/partials/current-user/current-user.component';
 @NgModule({
-  declarations: [PersonSearchComponent],
+  declarations: [PersonSearchComponent, HeaderComponent, CurrentUserComponent],
   imports: [
     MaterialModule,
     BrowserModule,
@@ -23,7 +25,9 @@ import { ContentModule } from '@alfresco/adf-content-services';
     FormsModule,
     ReactiveFormsModule,
     MainPipe,
-    PersonSearchComponent
+    PersonSearchComponent,
+    HeaderComponent,
+    CurrentUserComponent
   ]
 })
 export class SharesModule {}

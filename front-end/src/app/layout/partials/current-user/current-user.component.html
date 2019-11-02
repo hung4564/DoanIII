@@ -11,7 +11,7 @@
 </div>
 
 <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-  <button [hidden]="!languagePicker$" mat-menu-item [matMenuTriggerFor]="langMenu">
+  <button *ngIf="languagePicker$ | async" mat-menu-item [matMenuTriggerFor]="langMenu">
     {{ "APP.LANGUAGE" | translate }}
   </button>
 

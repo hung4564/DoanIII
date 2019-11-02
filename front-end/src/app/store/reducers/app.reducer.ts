@@ -17,6 +17,13 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
     case AppActionTypes.SetUserProfile:
       newState = updateUser(state, <SetUserProfileAction>action);
       break;
+    case AppActionTypes.Logout:
+      const temp: SetUserProfileAction = {
+        type: AppActionTypes.SetUserProfile,
+        payload: { person: undefined, groups: [] }
+      };
+      newState = updateUser(state, <SetUserProfileAction>temp);
+      break;
     default:
       newState = Object.assign({}, state);
       break;
@@ -26,28 +33,32 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
 
 function updateUser(state: AppState, action: SetUserProfileAction): AppState {
   const newState = Object.assign({}, state);
-  const user = action.payload.person;
-  const groups = [...(action.payload.groups || [])];
+  if (action.payload.person) {
+    const user = action.payload.person;
+    const groups = [...(action.payload.groups || [])];
 
-  const id = user.id;
-  const firstName = user.firstName || '';
-  const lastName = user.lastName || '';
-  const userName = `${firstName} ${lastName}`;
-  const initials = [firstName[0], lastName[0]].join('');
+    const id = user.id;
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
+    const userName = `${firstName} ${lastName}`;
+    const initials = [firstName[0], lastName[0]].join('');
 
-  const capabilities = (<any>user).capabilities;
-  const isAdmin = capabilities ? capabilities.isAdmin : true;
+    const capabilities = (<any>user).capabilities;
+    const isAdmin = capabilities ? capabilities.isAdmin : true;
 
-  // todo: remove <any>
-  newState.user = <any>{
-    firstName,
-    lastName,
-    userName,
-    initials,
-    isAdmin,
-    id,
-    groups
-  };
+    // todo: remove <any>
+    newState.user = <any>{
+      firstName,
+      lastName,
+      userName,
+      initials,
+      isAdmin,
+      id,
+      groups
+    };
+  } else {
+    newState.user = <any>{};
+  }
 
   return newState;
 }

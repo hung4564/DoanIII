@@ -8,13 +8,13 @@ import { GroupsRoutes } from 'app/pages/groups/groups.routing';
 import { SitesRoutes } from 'app/pages/sites/sites.routing';
 const adminRoutes: Routes = [
   {
-    path: '',
+    path: 'admin',
     component: AdminComponent,
     canActivate: [AuthGuardEcm],
     children: [
       {
         path: '',
-        redirectTo: '/users',
+        redirectTo: '/admin/users',
         pathMatch: 'full'
       },
       ...UsersRoutes,
