@@ -1,8 +1,14 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { PageComponent } from '../page.component';
 import { DocumentListComponent } from '@alfresco/adf-content-services';
-import { NotificationService } from '@alfresco/adf-core';
+import {
+  NotificationService,
+  TranslationService,
+  DataCellEvent,
+  DataRowActionEvent
+} from '@alfresco/adf-core';
 import { PreviewService } from 'app/services/preview.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-files',
@@ -17,7 +23,12 @@ export class FilesComponent extends PageComponent implements OnInit {
 
   @ViewChild('documentList')
   documentList: DocumentListComponent;
-  constructor(private notificationService: NotificationService, private preview: PreviewService) {
+  constructor(
+    private router: Router,
+    private notificationService: NotificationService,
+    private preview: PreviewService,
+    private _transSV: TranslationService
+  ) {
     super();
   }
 
@@ -39,4 +50,13 @@ export class FilesComponent extends PageComponent implements OnInit {
     this.showViewer = false;
     this.nodeId = null;
   }
+  editFile(e) {
+    if (e && e.value) {
+      const node = e.value.entry;
+      this.router.navigate([`file/${node.id}`]);
+    }
+  }
+  onContentActionError($event) {}
+  onContentActionSuccess($event) {}
+  onPermissionsFailed($event) {}
 }

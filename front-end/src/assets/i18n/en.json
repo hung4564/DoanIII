@@ -360,7 +360,8 @@
         "PROPERTIES": "Properties",
         "LIBRARY_PROPERTIES": "About",
         "VERSIONS": "Versions",
-        "COMMENTS": "Comments"
+        "COMMENTS": "Comments",
+        "PERMISSIONS": "Permissions"
       }
     }
   },
