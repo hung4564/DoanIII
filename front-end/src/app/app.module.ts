@@ -23,6 +23,7 @@ import { AppService } from './services/app.service';
 import { HandleService } from './services/api.service';
 import { ContentApiService } from './services/content-api.service';
 import { AppRouteReuseStrategy } from './routing/app.routes.strategy';
+import { PreviewService } from './services/preview.service';
 registerLocaleData(localeVi);
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ registerLocaleData(localeVi);
   providers: [
     AppService,
     HandleService,
+    PreviewService,
     ContentApiService,
     { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
     {

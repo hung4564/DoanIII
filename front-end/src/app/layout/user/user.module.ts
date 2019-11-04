@@ -8,7 +8,7 @@ import { SharesModule } from '../shares/shares.module';
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { HomeModule } from 'app/pages/home/home.module';
-
+import { FilesModule } from 'app/pages/files/files.module';
 @NgModule({
   declarations: [UserComponent, SidenavComponent],
   imports: [
@@ -16,7 +16,8 @@ import { HomeModule } from 'app/pages/home/home.module';
     UserRoutingModule,
     CoreModule.forRoot(),
     ContentModule.forRoot(),
-    HomeModule
+    HomeModule,
+    FilesModule
   ]
 })
 export class UserLayoutModule {}

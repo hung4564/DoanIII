@@ -40,6 +40,7 @@ export class FileViewComponent implements OnInit {
 
         this.route.params.subscribe(params => {
             const id = params.nodeId;
+            console.log("TCL: FileViewComponent -> ngOnInit -> id", id)
             if (id) {
                 this.apiService.getInstance().nodes.getNodeInfo(id).then(
                     (node) => {
