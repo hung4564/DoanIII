@@ -1,33 +1,27 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  PeopleContentService,
-  AppConfigService,
-  AuthenticationService,
-  AlfrescoApiService,
   SidenavLayoutComponent,
-  UserPreferencesService
+  UserPreferencesService,
+  AppConfigService
 } from '@alfresco/adf-core';
-import { AppStore, AppState } from 'app/store/states/app.state';
-import { Store } from '@ngrx/store';
-import { GroupsApi, Group } from '@alfresco/js-api';
-import { takeUntil, map, filter, withLatestFrom } from 'rxjs/operators';
-import { INITIAL_APP_STATE } from 'app/store/states/initial-state';
-import { SetUserProfileAction, SetInitialStateAction } from 'app/store/actions/app.action';
-import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { AppService } from 'app/services/app.service';
 import { Subject, Observable } from 'rxjs';
 import { Directionality } from '@angular/cdk/bidi';
+import { Store } from '@ngrx/store';
+import { AppStore } from 'app/store/states/app.state';
+import { Router, NavigationEnd } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { NodePermissionService } from '@alfresco/adf-content-services';
+import { map, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
+import { LayoutService } from './layout.service';
+
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss'],
   host: {
     class: 'app-layout'
   }
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit {
   @ViewChild('layout')
   layout: SidenavLayoutComponent;
 
@@ -47,8 +41,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private userPreferenceService: UserPreferencesService,
     private appConfigService: AppConfigService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private layoutSV: LayoutService
   ) {}
+
   ngOnInit() {
     this.isSmallScreen$ = this.breakpointObserver
       .observe(['(max-width: 600px)'])
@@ -67,15 +63,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     } else {
       this.expandedSidenav = false;
     }
-
-    // this.store
-    //   .select(getCurrentFolder)
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(node => {
-    //     this.currentFolderId = node ? node.id : null;
-    //     this.canUpload = node && this.permission.check(node, ['create']);
-    //   });
-
     this.router.events
       .pipe(
         withLatestFrom(this.isSmallScreen$),
@@ -99,15 +86,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
         this.updateState();
       });
-
-    // this.router.events
-    //   .pipe(
-    //     filter(event => event instanceof NavigationStart),
-    //     takeUntil(this.onDestroy$)
-    //   )
-    //   .subscribe(() => {
-    //     this.store.dispatch(new ResetSelectionAction());
-    //   });
   }
 
   ngOnDestroy() {
@@ -139,6 +117,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   onExpanded(state: boolean) {
+    this.layoutSV.toggleSide(state);
     if (!this.minimizeSidenav && this.appConfigService.get('sideNav.preserveState')) {
       this.userPreferenceService.set('expandedSidenav', state);
     }

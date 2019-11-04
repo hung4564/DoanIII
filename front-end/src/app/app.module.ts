@@ -5,16 +5,9 @@ import { AppRoutingModule } from './app.routes';
 
 // App components
 import { AppComponent } from './app.component';
-import { AdminLayouModule } from './layout/admin/admin.module';
-import { UserLayoutModule } from './layout/user/user.module';
 import { SharesModule } from './layout/shares/shares.module';
 import { LoginModule } from './pages/login/login.module';
-import {
-  CoreModule,
-  TRANSLATION_PROVIDER,
-  AppConfigService,
-  DebugAppConfigService
-} from '@alfresco/adf-core';
+import { CoreModule, TRANSLATION_PROVIDER } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { AppStoreModule } from 'app/store/app-store.module';
 import { registerLocaleData } from '@angular/common';
@@ -25,19 +18,30 @@ import { ContentApiService } from './services/content-api.service';
 import { AppRouteReuseStrategy } from './routing/app.routes.strategy';
 import { PreviewService } from './services/preview.service';
 registerLocaleData(localeVi);
+
+import { UsersModule } from 'app/pages/users/users.module';
+import { GroupsModule } from 'app/pages/groups/groups.module';
+import { SitesModule } from 'app/pages/sites/sites.module';
+import { LayoutModule } from './layout/layout.module';
+import { HomeModule } from './pages/home/home.module';
+import { FilesModule } from './pages/files/files.module';
 @NgModule({
   imports: [
     AppStoreModule,
     SharesModule,
     AppRoutingModule,
     RouterModule,
-    AdminLayouModule,
-    UserLayoutModule,
     BrowserAnimationsModule,
     LoginModule,
     // ADF modules
     CoreModule.forRoot(),
-    ContentModule.forRoot()
+    ContentModule.forRoot(),
+    LayoutModule,
+    UsersModule,
+    GroupsModule,
+    SitesModule,
+    HomeModule,
+    FilesModule
   ],
   providers: [
     AppService,

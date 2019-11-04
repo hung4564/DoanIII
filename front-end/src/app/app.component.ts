@@ -6,21 +6,24 @@ import {
   PageTitleService,
   UploadService,
   SharedLinksApiService,
-  TranslationService
+  TranslationService,
+  SidenavLayoutComponent,
+  UserPreferencesService
 } from '@alfresco/adf-core';
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, map } from 'rxjs/operators';
 import { AppService } from './services/app.service';
 import { ContentApiService } from './services/content-api.service';
 import { DiscoveryEntry, GroupsApi, Group } from '@alfresco/js-api';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { AppStore, AppState } from './store/states/app.state';
 import { SetUserProfileAction, SetInitialStateAction } from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
 import { SnackbarErrorAction } from './store/actions/snackbar.actions';
+import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,7 +33,6 @@ import { SnackbarErrorAction } from './store/actions/snackbar.actions';
 export class AppComponent implements OnInit {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   pageHeading = '';
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,

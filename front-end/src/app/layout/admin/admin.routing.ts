@@ -1,21 +1,22 @@
-import { Routes, RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { AdminComponent } from './admin.component';
-import { AuthGuardEcm } from '@alfresco/adf-core';
+import { Routes } from '@angular/router';
 
 import { UsersRoutes } from 'app/pages/users/users.routing';
 import { GroupsRoutes } from 'app/pages/groups/groups.routing';
 import { SitesRoutes } from 'app/pages/sites/sites.routing';
-const adminRoutes: Routes = [
+import { AdminSidenavComponent } from './part/sidenav/sidenav.component';
+export const adminRoutes: Routes = [
   {
     path: 'admin',
-    component: AdminComponent,
-    canActivate: [AuthGuardEcm],
     children: [
       {
         path: '',
         redirectTo: '/admin/users',
         pathMatch: 'full'
+      },
+      {
+        path: '',
+        component: AdminSidenavComponent,
+        outlet: 'sidebar'
       },
       ...UsersRoutes,
       ...GroupsRoutes,
@@ -23,10 +24,3 @@ const adminRoutes: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(adminRoutes)],
-  exports: [RouterModule],
-  providers: []
-})
-export class AdminRoutingModule {}

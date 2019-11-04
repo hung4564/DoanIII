@@ -7,7 +7,8 @@ import { PreviewService } from 'app/services/preview.service';
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
-  styleUrls: ['./files.component.scss']
+  styleUrls: ['./files.component.scss'],
+  host: { class: 'app-layout' }
 })
 export class FilesComponent extends PageComponent implements OnInit {
   @Input()

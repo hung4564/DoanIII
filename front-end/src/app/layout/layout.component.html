@@ -16,13 +16,15 @@
 
   <adf-sidenav-layout-navigation>
     <ng-template let-isMenuMinimized="isMenuMinimized">
-      <app-sidenav [isMenuMinimized]="isMenuMinimized()"></app-sidenav>
+      <router-outlet name="sidebar"></router-outlet>
+      <!-- <app-sidenav [isMenuMinimized]="isMenuMinimized()"></app-sidenav> -->
     </ng-template>
   </adf-sidenav-layout-navigation>
   <adf-sidenav-layout-content>
     <ng-template>
-      <router-outlet></router-outlet>
+      <div class="app-layout full-height">
+        <router-outlet></router-outlet>
+      </div>
     </ng-template>
   </adf-sidenav-layout-content>
 </adf-sidenav-layout>
-<router-outlet name="viewer"></router-outlet>
