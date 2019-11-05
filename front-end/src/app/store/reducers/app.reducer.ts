@@ -4,7 +4,8 @@ import {
   AppActionTypes,
   SetUserProfileAction,
   SetLanguagePickerAction,
-  SetInitialStateAction
+  SetInitialStateAction,
+  SetCurrentUrlAction
 } from '../actions/app.action';
 import { INITIAL_APP_STATE } from '../states/initial-state';
 
@@ -23,6 +24,9 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
         payload: { person: undefined, groups: [] }
       };
       newState = updateUser(state, <SetUserProfileAction>temp);
+      break;
+    case AppActionTypes.SetCurrentUrl:
+      newState = updateCurrentUrl(state, <SetCurrentUrlAction>action);
       break;
     default:
       newState = Object.assign({}, state);
@@ -60,5 +64,11 @@ function updateUser(state: AppState, action: SetUserProfileAction): AppState {
     newState.user = <any>{};
   }
 
+  return newState;
+}
+
+function updateCurrentUrl(state: AppState, action: SetCurrentUrlAction) {
+  const newState = Object.assign({}, state);
+  newState.navigation.url = action.payload;
   return newState;
 }

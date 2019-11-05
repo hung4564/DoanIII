@@ -17,7 +17,8 @@
       <button mat-raised-button color="primary" (click)="opendialog($event)">
         {{ "PERMISSIONS.DIALOG.ADD_USER_OR_GROUP" | translate }}
       </button>
-      <adf-permission-list [nodeId]="node.id" (update)="onSuccess($event)"> </adf-permission-list>
+      <adf-permission-list #permissionList [nodeId]="node.id" (update)="onSuccess($event)">
+      </adf-permission-list>
     </adf-info-drawer-tab>
   </adf-info-drawer>
 </ng-container>

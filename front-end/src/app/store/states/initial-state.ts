@@ -5,6 +5,7 @@ export const INITIAL_APP_STATE: AppState = {
   headerColor: '#2196F3',
   logoPath: 'assets/images/alfresco-logo-flower.svg',
   languagePicker: false,
+  sharedUrl: '',
   user: {
     isAdmin: null,
     id: null,

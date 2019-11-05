@@ -10,8 +10,15 @@
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
-
   <adf-upload-button
+    [uploadFolders]="true"
+    [rootFolderId]="documentList.currentFolderId || '-my-'"
+    [adf-check-allowable-operation]="'create'"
+    (success)="uploadSuccess($event)"
+  >
+  </adf-upload-button>
+  <adf-upload-button
+    [uploadFolders]="false"
     [rootFolderId]="documentList.currentFolderId || '-my-'"
     [adf-check-allowable-operation]="'create'"
     (success)="uploadSuccess($event)"
@@ -68,7 +75,6 @@
     </content-action>
     <content-action
       icon="delete"
-      target="document"
       title="Delete"
       permission="delete"
       disableWithNoPermission="true"
@@ -76,6 +82,7 @@
       (error)="onContentActionError($event)"
       (success)="onContentActionSuccess($event)"
       (permissionEvent)="onPermissionsFailed($event)"
+      (execute)="myCustomActionAfterDelete($event)"
     >
     </content-action>
   </content-actions>

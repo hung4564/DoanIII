@@ -6,7 +6,9 @@ export enum AppActionTypes {
   SetInitialState = 'SET_INITIAL_STATE',
   SetLanguagePicker = 'SET_LANGUAGE_PICKER',
   SetUserProfile = 'SET_USER_PROFILE',
-  Logout = 'LOGOUT'
+  Logout = 'LOGOUT',
+  ReloadDocumentList = 'RELOAD_DOCUMENT_LIST',
+  SetCurrentUrl = 'SET_CURRENT_URL'
 }
 
 export class SetInitialStateAction implements Action {
@@ -24,10 +26,20 @@ export class SetLanguagePickerAction implements Action {
 export class SetUserProfileAction implements Action {
   readonly type = AppActionTypes.SetUserProfile;
 
-  constructor(public payload: { person: Person; groups: Group[] }) {
-  }
+  constructor(public payload: { person: Person; groups: Group[] }) {}
 }
 
 export class LogoutAction implements Action {
   readonly type = AppActionTypes.Logout;
+}
+export class ReloadDocumentListAction implements Action {
+  readonly type = AppActionTypes.ReloadDocumentList;
+
+  constructor(public payload?: any) {}
+}
+
+export class SetCurrentUrlAction implements Action {
+  readonly type = AppActionTypes.SetCurrentUrl;
+
+  constructor(public payload: string) {}
 }

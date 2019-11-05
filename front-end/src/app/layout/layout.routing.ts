@@ -13,7 +13,14 @@ export const LayoutRoutes: Routes = [
     component: LayoutComponent,
     children: [...adminRoutes, ...userRoutes]
   },
-  { path: 'files/:nodeId/view', component: FileViewComponent, outlet: 'overlay' }
+  {
+    path: 'files/:nodeId/view',
+    component: FileViewComponent,
+    outlet: 'overlay',
+    data: {
+      title: 'APP.PREVIEW.TITLE'
+    }
+  }
 ];
 
 @NgModule({

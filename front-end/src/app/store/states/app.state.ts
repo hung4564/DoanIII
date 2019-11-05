@@ -12,6 +12,7 @@ export interface AppState {
   selection: SelectionState;
   user: ProfileState;
   navigation: NavigationState;
+  sharedUrl: string;
 }
 
 export interface AppStore {

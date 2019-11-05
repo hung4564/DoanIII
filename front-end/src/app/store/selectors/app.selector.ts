@@ -2,6 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { AppStore } from '../states/app.state';
 
 export const selectApp = (state: AppStore) => state.app;
+
 export const getHeaderColor = createSelector(
   selectApp,
   state => state.headerColor
@@ -25,4 +26,40 @@ export const getLanguagePickerState = createSelector(
 export const getUserProfile = createSelector(
   selectApp,
   state => state.user
+);
+
+export const getCurrentFolder = createSelector(
+  selectApp,
+  state => state.navigation.currentFolder
+);
+
+export const getAppSelection = createSelector(
+  selectApp,
+  state => state.selection
+);
+
+export const getSharedUrl = createSelector(
+  selectApp,
+  state => state.sharedUrl
+);
+
+export const getNavigationState = createSelector(
+  selectApp,
+  state => state.navigation
+);
+
+export const isAdmin = createSelector(
+  selectApp,
+  state => state.user.isAdmin
+);
+
+export const getSideNavState = createSelector(
+  getAppSelection,
+  getNavigationState,
+  (selection, navigation) => {
+    return {
+      selection,
+      navigation
+    };
+  }
 );

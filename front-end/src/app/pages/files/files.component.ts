@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { PageComponent } from '../page.component';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 import { DocumentListComponent } from '@alfresco/adf-content-services';
 import {
   NotificationService,
@@ -16,21 +15,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./files.component.scss'],
   host: { class: 'app-layout' }
 })
-export class FilesComponent extends PageComponent implements OnInit {
+export class FilesComponent implements OnInit {
   @Input()
   showViewer = false;
   nodeId: string = null;
 
-  @ViewChild('documentList')
-  documentList: DocumentListComponent;
+  @ViewChild('documentList') documentList: DocumentListComponent;
   constructor(
     private router: Router,
     private notificationService: NotificationService,
-    private preview: PreviewService,
-    private _transSV: TranslationService
-  ) {
-    super();
-  }
+    private preview: PreviewService
+  ) {}
 
   ngOnInit() {}
 
@@ -57,6 +52,21 @@ export class FilesComponent extends PageComponent implements OnInit {
     }
   }
   onContentActionError($event) {}
-  onContentActionSuccess($event) {}
+  onContentActionSuccess($event) {
+    this.documentList.reload();
+  }
   onPermissionsFailed($event) {}
+  myCustomActionAfterDelete(event) {
+    const entry = event.value.entry;
+
+    let item = '';
+
+    if (entry.isFile) {
+      item = 'file';
+    } else if (entry.isFolder) {
+      item = 'folder';
+    }
+
+    this.notificationService.openSnackMessage(`Deleted ${item} "${entry.name}" `, 20000);
+  }
 }

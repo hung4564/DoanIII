@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Node } from '@alfresco/js-api';
 import { AlfrescoApiService } from '@alfresco/adf-core';
 import { Location } from '@angular/common';
-import { NodePermissionDialogService } from '@alfresco/adf-content-services';
+import {
+  NodePermissionDialogService,
+  PermissionListComponent
+} from '@alfresco/adf-content-services';
 
 @Component({
   selector: 'app-file-detail',
@@ -13,6 +16,7 @@ import { NodePermissionDialogService } from '@alfresco/adf-content-services';
 export class FileDetailComponent implements OnInit {
   nodeId: string = null;
   node: Node;
+  @ViewChild('permissionList') permissionList: PermissionListComponent;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -45,6 +49,9 @@ export class FileDetailComponent implements OnInit {
   ngOnInit() {
     this.initialiseInvites();
   }
+  ngOnDestroy() {
+    this.router.onSameUrlNavigation = 'ignore';
+  }
   opendialog(e) {
     this.nodePermissionDialogService.updateNodePermissionByDialog(this.nodeId).subscribe(
       node => {
@@ -54,7 +61,6 @@ export class FileDetailComponent implements OnInit {
     );
   }
   onSuccess() {
-    this.nodeId = undefined;
-    this.initialiseInvites();
+    this.permissionList.reload();
   }
 }

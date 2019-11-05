@@ -6,24 +6,21 @@ import {
   PageTitleService,
   UploadService,
   SharedLinksApiService,
-  TranslationService,
-  SidenavLayoutComponent,
-  UserPreferencesService
+  TranslationService
 } from '@alfresco/adf-core';
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { filter, takeUntil, map } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { AppService } from './services/app.service';
 import { ContentApiService } from './services/content-api.service';
-import { DiscoveryEntry, GroupsApi, Group } from '@alfresco/js-api';
-import { Subject, Observable } from 'rxjs';
+import { GroupsApi, Group } from '@alfresco/js-api';
+import { Subject } from 'rxjs';
 import { AppStore, AppState } from './store/states/app.state';
 import { SetUserProfileAction, SetInitialStateAction } from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
 import { SnackbarErrorAction } from './store/actions/snackbar.actions';
-import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -72,7 +69,14 @@ export class AppComponent implements OnInit {
     const { router, pageTitle } = this;
 
     this.router.events
-      .pipe(filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0))
+      .pipe(
+        filter(
+          event =>
+            event instanceof ActivationEnd &&
+            event.snapshot.children.length === 0 &&
+            event.snapshot.outlet === 'primary'
+        )
+      )
       .subscribe((event: ActivationEnd) => {
         const snapshot: any = event.snapshot || {};
         const data: any = snapshot.data || {};

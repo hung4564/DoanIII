@@ -1,5 +1,7 @@
 @import './admin/admin-layout.theme';
+@import './shares/permission-manager/permission-manager.component.theme.scss';
 
 @mixin layout-theme($theme) {
   @include admin-layout-theme($theme);
+  @include app-permission-manager-theme($theme)
 }

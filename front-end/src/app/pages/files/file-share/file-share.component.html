@@ -1,0 +1,27 @@
+<adf-toolbar>
+  <adf-toolbar-title>
+    <adf-breadcrumb root="APP.BROWSE.SHARED.TITLE"> </adf-breadcrumb>
+  </adf-toolbar-title>
+
+  <div class="adf-toolbar--spacer"></div>
+</adf-toolbar>
+
+<adf-document-list
+  #documentList
+  currentFolderId="-shared-"
+  (preview)="showPreview($event)"
+  [stickyHeader]="true"
+  selectionMode="multiple"
+  [multiselect]="true"
+>
+  <adf-custom-empty-content-template>
+    <adf-empty-content icon="delete" [title]="'APP.BROWSE.SHARED.EMPTY_STATE.TITLE'">
+      <p class="adf-empty-content__text">
+        {{ "APP.BROWSE.SHARED.EMPTY_STATE.TEXT" | translate }}
+      </p>
+    </adf-empty-content>
+  </adf-custom-empty-content-template>
+  <data-columns> </data-columns>
+</adf-document-list>
+<adf-pagination [target]="documentList"> </adf-pagination>
+<adf-file-uploading-dialog></adf-file-uploading-dialog>
