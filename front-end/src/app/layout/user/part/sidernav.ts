@@ -1,4 +1,7 @@
-const file = { title: 'Files', icon: 'attachment', link: '/personal-files' };
-const trash = { title: 'Trash can', icon: 'delete', link: '/trash-can' };
-
-export const MENUS = [file, trash, { title: 'Shared', icon: 'shared', link: '/shared' }];
+export const MENUS = [
+  { title: 'Files', icon: 'folder', link: '/personal-files' },
+  { title: 'Shared', icon: 'shared', link: '/shared' },
+  { title: 'Favorites', icon: 'star', link: '/favorites' },
+  { title: 'Recent', icon: 'schedule', link: '/recent' },
+  { title: 'Trash can', icon: 'delete', link: '/trash-can' }
+];
