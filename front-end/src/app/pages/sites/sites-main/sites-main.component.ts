@@ -96,7 +96,7 @@ export class SitesMainComponent implements OnInit {
         this.deleteSite(event.value.row['obj'].id);
         break;
       case 'APP.ACTIONS.ADD':
-        this.router.navigate([`sites/${event.value.row['obj'].id}/members`]);
+        this.router.navigate([`admin/sites/${event.value.row['obj'].id}/members`]);
         break;
       default:
         break;

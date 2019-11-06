@@ -25,6 +25,7 @@ import { SitesModule } from 'app/pages/sites/sites.module';
 import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from './pages/home/home.module';
 import { FilesModule } from './pages/files/files.module';
+import { MySitesModule } from './pages/my-sites/my-sites.module';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -41,7 +42,8 @@ import { FilesModule } from './pages/files/files.module';
     GroupsModule,
     SitesModule,
     HomeModule,
-    FilesModule
+    FilesModule,
+    MySitesModule
   ],
   providers: [
     AppService,

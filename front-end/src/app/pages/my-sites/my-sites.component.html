@@ -1,0 +1,34 @@
+<adf-toolbar>
+  <adf-toolbar-title>
+    <adf-breadcrumb
+      class="files-breadcrumb"
+      root="APP.BROWSE.LIBRARIES.TITLE"
+      [target]="documentList"
+      [folderNode]="documentList.folderNode"
+    >
+    </adf-breadcrumb>
+  </adf-toolbar-title>
+
+  <div class="adf-toolbar--spacer"></div>
+</adf-toolbar>
+
+<adf-document-list
+  #documentList
+  currentFolderId="-mysites-"
+  (preview)="showPreview($event)"
+  [stickyHeader]="true"
+>
+  <adf-custom-empty-content-template>
+    <adf-empty-content
+      icon="delete"
+      [title]="'APP.BROWSE.LIBRARIES.EMPTY_STATE.FILE_LIBRARIES.TITLE'"
+    >
+      <p class="adf-empty-content__text">
+        {{ "APP.BROWSE.LIBRARIES.EMPTY_STATE.FILE_LIBRARIES.TEXT" | translate }}
+      </p>
+    </adf-empty-content>
+  </adf-custom-empty-content-template>
+  <data-columns> </data-columns>
+</adf-document-list>
+<adf-pagination [target]="documentList"> </adf-pagination>
+<adf-file-uploading-dialog></adf-file-uploading-dialog>
