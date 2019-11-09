@@ -15,8 +15,11 @@
 <adf-document-list
   #documentList
   currentFolderId="-mysites-"
-  (preview)="showPreview($event)"
   [stickyHeader]="true"
+  [contextMenuActions]="true"
+  [contentActions]="true"
+  [adf-context-menu]="menuItems"
+  [navigate]="false"
 >
   <adf-custom-empty-content-template>
     <adf-empty-content
@@ -28,7 +31,5 @@
       </p>
     </adf-empty-content>
   </adf-custom-empty-content-template>
-  <data-columns> </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
-<adf-file-uploading-dialog></adf-file-uploading-dialog>

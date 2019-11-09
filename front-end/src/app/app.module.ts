@@ -26,6 +26,7 @@ import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from './pages/home/home.module';
 import { FilesModule } from './pages/files/files.module';
 import { MySitesModule } from './pages/my-sites/my-sites.module';
+import { ErrorModule } from './pages/error/error.module';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -43,6 +44,7 @@ import { MySitesModule } from './pages/my-sites/my-sites.module';
     SitesModule,
     HomeModule,
     FilesModule,
+    ErrorModule,
     MySitesModule
   ],
   providers: [

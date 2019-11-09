@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <adf-error-content [errorCode]="errorCode">
+    <div adf-error-content-actions class="app-error-content-buttons">
+      <a id="adf-return-button" mat-raised-button color="primary" (click)="onReturnButton()">
+        {{ "ERROR_CONTENT." + errorCode + ".RETURN_BUTTON.TEXT" | translate | uppercase }}
+      </a>
+    </div>
+  </adf-error-content>
+</div>
