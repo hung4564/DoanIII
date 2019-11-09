@@ -7,10 +7,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { INITIAL_STATE } from './states/initial-state';
 import { environment } from 'environments/environment';
-import { NodeEffects } from './effects/node.effects';
+import { ViewerEffects } from './effects/viewer.effects';
+import { AppEffects } from './effects/app.efects';
 @NgModule({
   imports: [
-    EffectsModule.forRoot([SnackbarEffects, NodeEffects]),
+    EffectsModule.forRoot([SnackbarEffects, ViewerEffects, AppEffects]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

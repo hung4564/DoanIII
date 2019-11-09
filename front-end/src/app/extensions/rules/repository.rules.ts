@@ -23,12 +23,12 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { RuleContext } from '@alfresco/adf-extensions';
 
-@Component({
-  templateUrl: './node-version-upload.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./node-version-upload.component.scss'],
-  host: { class: 'aca-node-version-upload-dialog' }
-})
-export class NodeVersionUploadDialogComponent {}
+/**
+ * Checks if the quick share repository option is enabled or not.
+ * JSON ref: `repository.isQuickShareEnabled`
+ */
+export function hasQuickShareEnabled(context: RuleContext): boolean {
+  return context.repository.status.isQuickShareEnabled;
+}

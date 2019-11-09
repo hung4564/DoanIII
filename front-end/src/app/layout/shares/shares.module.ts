@@ -5,20 +5,16 @@ import { MaterialModule } from './material.module';
 import { PersonSearchComponent } from './person-search/person-search.component';
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
-import { NodeVersionsDialogComponent } from './node-versions/node-versions.component';
-import { NodeVersionUploadDialogComponent } from './node-version-upload/node-version-upload.component';
-import { NodePermissionsDialogComponent } from './permission-dialog/permission-dialog.component';
-import { AppNodeVersionFormComponent } from './node-version/node-version-form.component';
-import { PermissionsManagerComponent } from './permission-manager/permission-manager.component';
+import { CustomNameColumnComponent } from './name-column/name-column.component';
+import { LocationLinkComponent } from './location-link/location-link.component';
+import { LockByComponent } from './locked-by/locked-by.component';
 
 @NgModule({
   declarations: [
     PersonSearchComponent,
-    NodeVersionsDialogComponent,
-    NodeVersionUploadDialogComponent,
-    NodePermissionsDialogComponent,
-    AppNodeVersionFormComponent,
-    PermissionsManagerComponent
+    CustomNameColumnComponent,
+    LocationLinkComponent,
+    LockByComponent
   ],
   imports: [
     MaterialModule,
@@ -34,12 +30,10 @@ import { PermissionsManagerComponent } from './permission-manager/permission-man
     ReactiveFormsModule,
     MainPipe,
     PersonSearchComponent,
-    NodeVersionsDialogComponent,
-    NodeVersionUploadDialogComponent,
-    NodePermissionsDialogComponent,
-    AppNodeVersionFormComponent,
-    PermissionsManagerComponent
+    CustomNameColumnComponent,
+    LocationLinkComponent,
+    LockByComponent
   ],
-  entryComponents: [AppNodeVersionFormComponent]
+  entryComponents: [CustomNameColumnComponent, LocationLinkComponent, LockByComponent]
 })
 export class SharesModule {}

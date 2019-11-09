@@ -25,7 +25,6 @@ export class GroupViewListComponent implements OnInit {
   getMember() {
     this._groupSv.getMembers(this.groupId).then(result => {
       this.members = result.list.entries.map(x => x.entry);
-      console.log('TCL: GroupViewListComponent -> getMember -> this.members', this.members);
     });
   }
   deleteGroupMember(id) {

@@ -15,6 +15,8 @@ import { MatButton } from '@angular/material';
 export class FileTrashComponent implements OnInit {
   @ViewChild('documentList') documentList: DocumentListComponent;
   @ViewChild('btnRestore') btnRestore: MatButton;
+
+  columns: any[] = [];
   constructor(
     private preview: PreviewService,
     private notificationService: NotificationService,

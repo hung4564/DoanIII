@@ -23,10 +23,19 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface NodeInfo {
-  parentId?: string;
-  id: string;
-  name: string;
-  isFile?: boolean;
-  isFolder?: boolean;
-}
+export * from './actions/app.action';
+export * from './actions/node.action';
+export * from './actions/snackbar.actions';
+export * from './actions/viewer.actions';
+
+export * from './effects/app.efects';
+export * from './effects/snackbar.effects';
+export * from './effects/viewer.effects';
+
+export * from './reducers/app.reducer';
+
+export * from './selectors/app.selector';
+
+export * from './states/app.state';
+
+export * from './app-store.module';

@@ -14,7 +14,6 @@ import { registerLocaleData } from '@angular/common';
 import localeVi from '@angular/common/locales/vi';
 import { AppService } from './services/app.service';
 import { HandleService } from './services/api.service';
-import { ContentApiService } from './services/content-api.service';
 import { AppRouteReuseStrategy } from './routing/app.routes.strategy';
 import { PreviewService } from './services/preview.service';
 registerLocaleData(localeVi);
@@ -27,6 +26,10 @@ import { HomeModule } from './pages/home/home.module';
 import { FilesModule } from './pages/files/files.module';
 import { MySitesModule } from './pages/my-sites/my-sites.module';
 import { ErrorModule } from './pages/error/error.module';
+import { AppExtensionService } from './extensions/app-extension.service';
+import { CoreExtensionsModule } from './extensions/core.extensions.module';
+
+import { ContentApiService } from 'app/services/content-api.service';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -38,6 +41,7 @@ import { ErrorModule } from './pages/error/error.module';
     // ADF modules
     CoreModule.forRoot(),
     ContentModule.forRoot(),
+    CoreExtensionsModule.forRoot(),
     LayoutModule,
     UsersModule,
     GroupsModule,
@@ -51,6 +55,7 @@ import { ErrorModule } from './pages/error/error.module';
     AppService,
     HandleService,
     PreviewService,
+    AppExtensionService,
     ContentApiService,
     { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
     {

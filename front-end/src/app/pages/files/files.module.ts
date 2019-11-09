@@ -9,9 +9,15 @@ import { FileTrashComponent } from './file-trash/file-trash.component';
 import { FileShareComponent } from './file-share/file-share.component';
 import { FileFavoriteComponent } from './file-favorite/file-favorite.component';
 import { FileRecentComponent } from './file-recent/file-recent.component';
+import { ExtensionsModule } from '@alfresco/adf-extensions';
 
 @NgModule({
-  imports: [SharesModule, CoreModule.forChild(), ContentModule.forChild()],
+  imports: [
+    SharesModule,
+    ExtensionsModule.forChild(),
+    CoreModule.forChild(),
+    ContentModule.forChild()
+  ],
   declarations: [
     FilesComponent,
     FileViewComponent,

@@ -14,9 +14,8 @@ import { Store } from '@ngrx/store';
 
 import { filter, takeUntil } from 'rxjs/operators';
 import { AppService } from './services/app.service';
-import { ContentApiService } from './services/content-api.service';
 import { GroupsApi, Group } from '@alfresco/js-api';
-import { Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 import { AppStore, AppState } from './store/states/app.state';
 import { SetUserProfileAction, SetInitialStateAction } from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
@@ -39,7 +38,6 @@ export class AppComponent implements OnInit {
     private alfrescoApiService: AlfrescoApiService,
     private authenticationService: AuthenticationService,
     private uploadService: UploadService,
-    private contentApi: ContentApiService,
     private appService: AppService,
     private sharedLinksApiService: SharedLinksApiService,
     private transSV: TranslationService
@@ -114,8 +112,7 @@ export class AppComponent implements OnInit {
     if (paging && paging.list && paging.list.entries) {
       groups.push(...paging.list.entries.map(obj => obj.entry));
     }
-
-    this.contentApi.getPerson('-me-').subscribe(person => {
+    from(this.alfrescoApiService.peopleApi.getPerson('-me-')).subscribe(person => {
       this.store.dispatch(new SetUserProfileAction({ person: person.entry, groups }));
     });
   }

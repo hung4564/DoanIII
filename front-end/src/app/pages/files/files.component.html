@@ -1,12 +1,6 @@
 <adf-toolbar>
   <adf-toolbar-title>
-    <adf-breadcrumb
-      class="files-breadcrumb"
-      root="Personal Files"
-      [target]="documentList"
-      [folderNode]="documentList.folderNode"
-    >
-    </adf-breadcrumb>
+    <adf-breadcrumb class="files-breadcrumb" root="Personal Files"> </adf-breadcrumb>
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
@@ -29,63 +23,42 @@
 <adf-document-list
   #documentList
   currentFolderId="-my-"
-  (preview)="showPreview($event)"
   [contextMenuActions]="true"
   [contentActions]="true"
   [stickyHeader]="true"
+  (name-click)="goDetail($event.detail?.node)"
+  (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
 >
-  <content-actions>
-    <content-action icon="cloud_download" target="document" title="Download" handler="download">
-    </content-action>
+  <data-columns>
+    <ng-container *ngFor="let column of columns; trackBy: trackById">
+      <ng-container *ngIf="column.template && !(column.desktopOnly && isSmallScreen)">
+        <data-column
+          [key]="column.key"
+          [title]="column.title"
+          [type]="column.type"
+          [format]="column.format"
+          [class]="column.class"
+          [sortable]="column.sortable"
+        >
+          <ng-template let-context>
+            <adf-dynamic-column [id]="column.template" [context]="context"> </adf-dynamic-column>
+          </ng-template>
+        </data-column>
+      </ng-container>
 
-    <content-action
-      icon="edit"
-      target="document"
-      title="Edit"
-      permission="update"
-      [disableWithNoPermission]="true"
-      (execute)="editFile($event)"
-    >
-    </content-action>
-
-    <content-action
-      icon="content_copy"
-      target="document"
-      title="Copy"
-      permission="update"
-      [disableWithNoPermission]="true"
-      (error)="onContentActionError($event)"
-      (success)="onContentActionSuccess($event)"
-      (permissionEvent)="onPermissionsFailed($event)"
-      handler="copy"
-    >
-    </content-action>
-
-    <content-action
-      icon="redo"
-      target="folder"
-      title="Move"
-      permission="update"
-      [disableWithNoPermission]="true"
-      (error)="onContentActionError($event)"
-      (success)="onContentActionSuccess($event)"
-      (permissionEvent)="onPermissionsFailed($event)"
-      handler="move"
-    >
-    </content-action>
-    <content-action
-      icon="delete"
-      title="Delete"
-      permission="delete"
-      disableWithNoPermission="true"
-      handler="delete"
-      (error)="onContentActionError($event)"
-      (success)="onContentActionSuccess($event)"
-      (permissionEvent)="onPermissionsFailed($event)"
-      (execute)="myCustomActionAfterDelete($event)"
-    >
-    </content-action>
-  </content-actions>
+      <ng-container *ngIf="!column.template && !(column.desktopOnly && isSmallScreen)">
+        <data-column
+          [key]="column.key"
+          [title]="column.title"
+          [type]="column.type"
+          [format]="column.format"
+          [class]="column.class"
+          [sortable]="column.sortable"
+        >
+        </data-column>
+      </ng-container>
+    </ng-container>
+  </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
 <adf-file-uploading-dialog></adf-file-uploading-dialog>

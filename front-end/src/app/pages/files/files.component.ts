@@ -8,6 +8,11 @@ import {
 } from '@alfresco/adf-core';
 import { PreviewService } from 'app/services/preview.service';
 import { Router } from '@angular/router';
+import { PageComponent } from '../page.component';
+import { AppExtensionService } from 'app/extensions/app-extension.service';
+import { AppStore } from 'app/store';
+import { Store } from '@ngrx/store';
+import { MinimalNodeEntity } from '@alfresco/js-api';
 
 @Component({
   selector: 'app-files',
@@ -15,58 +20,47 @@ import { Router } from '@angular/router';
   styleUrls: ['./files.component.scss'],
   host: { class: 'app-layout' }
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent extends PageComponent implements OnInit {
   @Input()
   showViewer = false;
   nodeId: string = null;
 
+  columns: any[] = [];
   @ViewChild('documentList') documentList: DocumentListComponent;
   constructor(
+    protected store: Store<AppStore>,
+    protected extensions: AppExtensionService,
     private router: Router,
     private notificationService: NotificationService,
     private preview: PreviewService
-  ) {}
-
-  ngOnInit() {}
-
-  uploadSuccess(event: any) {
-    this.notificationService.openSnackMessage('File uploaded');
-    this.documentList.reload();
+  ) {
+    super(store, extensions);
   }
 
-  showPreview(event) {
-    const entry = event.value.entry;
-    if (entry && entry.isFile) {
-      this.preview.showResource(entry.id);
+  ngOnInit() {
+    super.ngOnInit();
+    this.columns = this.extensions.documentListPresets.files;
+  }
+  goDetail(e: MinimalNodeEntity) {
+    if (e && e.entry) {
+      if (e.entry.isFolder) {
+      }
+
+      if (e.entry.isFile) {
+        const node = e.entry;
+        this.router.navigate([`file/${node.id}`]);
+      }
     }
   }
+  onNodeDoubleClick(node: MinimalNodeEntity) {
+    if (node && node.entry) {
+      if (node.entry.isFolder) {
+        // this.navigate(node.entry);
+      }
 
-  onGoBack(event: any) {
-    this.showViewer = false;
-    this.nodeId = null;
-  }
-  editFile(e) {
-    if (e && e.value) {
-      const node = e.value.entry;
-      this.router.navigate([`file/${node.id}`]);
+      if (node.entry.isFile) {
+        this.showPreview(node);
+      }
     }
-  }
-  onContentActionError($event) {}
-  onContentActionSuccess($event) {
-    this.documentList.reload();
-  }
-  onPermissionsFailed($event) {}
-  myCustomActionAfterDelete(event) {
-    const entry = event.value.entry;
-
-    let item = '';
-
-    if (entry.isFile) {
-      item = 'file';
-    } else if (entry.isFolder) {
-      item = 'folder';
-    }
-
-    this.notificationService.openSnackMessage(`Deleted ${item} "${entry.name}" `, 20000);
   }
 }
