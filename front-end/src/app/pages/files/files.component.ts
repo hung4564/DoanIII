@@ -13,6 +13,7 @@ import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { AppStore } from 'app/store';
 import { Store } from '@ngrx/store';
 import { MinimalNodeEntity } from '@alfresco/js-api';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-files',

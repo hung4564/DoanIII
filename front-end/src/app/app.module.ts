@@ -30,6 +30,7 @@ import { AppExtensionService } from './extensions/app-extension.service';
 import { CoreExtensionsModule } from './extensions/core.extensions.module';
 
 import { ContentApiService } from 'app/services/content-api.service';
+import { NodePermissionService } from './services/node-permission.service';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -57,6 +58,7 @@ import { ContentApiService } from 'app/services/content-api.service';
     PreviewService,
     AppExtensionService,
     ContentApiService,
+    NodePermissionService,
     { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
     {
       provide: TRANSLATION_PROVIDER,

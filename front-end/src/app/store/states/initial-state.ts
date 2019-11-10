@@ -18,7 +18,11 @@ export const INITIAL_APP_STATE: AppState = {
     isEmpty: true,
     count: 0
   },
-  navigation: {
+  navigation: {},
+  repository: <any>{
+    status: <any>{
+      isQuickShareEnabled: true
+    }
   }
 };
 

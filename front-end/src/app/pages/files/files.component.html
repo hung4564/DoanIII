@@ -22,9 +22,9 @@
 
 <adf-document-list
   #documentList
+  acaDocumentList
+  acaContextActions
   currentFolderId="-my-"
-  [contextMenuActions]="true"
-  [contentActions]="true"
   [stickyHeader]="true"
   (name-click)="goDetail($event.detail?.node)"
   (node-dblclick)="onNodeDoubleClick($event.detail?.node)"

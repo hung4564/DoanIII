@@ -5,9 +5,11 @@ import {
   SetUserProfileAction,
   SetLanguagePickerAction,
   SetInitialStateAction,
-  SetCurrentUrlAction
+  SetCurrentUrlAction,
+  SetRepositoryInfoAction
 } from '../actions/app.action';
 import { INITIAL_APP_STATE } from '../states/initial-state';
+import { NodeActionTypes, SetSelectedNodesAction } from '../actions/node.action';
 
 export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action): AppState {
   let newState: AppState;
@@ -27,6 +29,12 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
       break;
     case AppActionTypes.SetCurrentUrl:
       newState = updateCurrentUrl(state, <SetCurrentUrlAction>action);
+      break;
+    case AppActionTypes.SetRepositoryInfo:
+      newState = updateRepositoryStatus(state, <SetRepositoryInfoAction>action);
+      break;
+    case NodeActionTypes.SetSelection:
+      newState = updateSelectedNodes(state, <SetSelectedNodesAction>action);
       break;
     default:
       newState = Object.assign({}, state);
@@ -70,5 +78,60 @@ function updateUser(state: AppState, action: SetUserProfileAction): AppState {
 function updateCurrentUrl(state: AppState, action: SetCurrentUrlAction) {
   const newState = Object.assign({}, state);
   newState.navigation.url = action.payload;
+  return newState;
+}
+
+function updateRepositoryStatus(state: AppState, action: SetRepositoryInfoAction) {
+  const newState = Object.assign({}, state);
+  newState.repository = action.payload;
+  return newState;
+}
+function updateSelectedNodes(state: AppState, action: SetSelectedNodesAction): AppState {
+  const newState = Object.assign({}, state);
+  const nodes = [...action.payload];
+  const count = nodes.length;
+  const isEmpty = nodes.length === 0;
+
+  let first = null;
+  let last = null;
+  let file = null;
+  let folder = null;
+  let library = null;
+
+  if (nodes.length > 0) {
+    first = nodes[0];
+    last = nodes[nodes.length - 1];
+
+    if (nodes.length === 1) {
+      file = nodes.find((entity: any) => {
+        // workaround Shared
+        return entity.entry.isFile || entity.entry.nodeId || entity.entry.sharedByUser
+          ? true
+          : false;
+      });
+      folder = nodes.find((entity: any) => entity.entry.isFolder);
+    }
+  }
+
+  const libraries: any[] = [...action.payload].filter((node: any) => node.isLibrary);
+  if (libraries.length === 1) {
+    library = libraries[0];
+  }
+
+  // if (isEmpty) {
+  //   newState.infoDrawerOpened = false;
+  // }
+
+  newState.selection = {
+    count,
+    nodes,
+    isEmpty,
+    first,
+    last,
+    file,
+    folder,
+    libraries,
+    library
+  };
   return newState;
 }

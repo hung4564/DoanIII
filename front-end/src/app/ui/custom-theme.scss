@@ -7,7 +7,7 @@
 @import "../layout/partials/current-user/current-user.component.theme";
 @import "../layout/layout.theme";
 @import "../layout/admin/part/sidenav/sidenav.component.theme";
-
+@import "../directives/ContextActions/context-menu/context-menu.component.theme";
 
 $grey-scale: (
   50: #e0e0e0,
@@ -58,6 +58,7 @@ $warn: map-get($custom-theme, warn);
   @include aca-current-user-theme($theme);
   @include snackbar-theme($theme);
   @include sidenav-component-theme($theme);
+  @include aca-context-menu-theme($theme);
   .mat-toolbar {
     color: var(--theme-text-color, rgba(0, 0, 0, 0.54));
   }

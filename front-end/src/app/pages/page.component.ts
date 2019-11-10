@@ -5,8 +5,9 @@ import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { MinimalNodeEntity, MinimalNodeEntryEntity } from '@alfresco/js-api';
-import { ViewNodeAction, ViewNodeExtras } from 'app/store';
-import { ContentActionRef } from '@alfresco/adf-extensions';
+import { ViewNodeAction, ViewNodeExtras, getAppSelection } from 'app/store';
+import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
+import { takeUntil } from 'rxjs/operators';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -15,6 +16,9 @@ export class PageComponent implements OnInit, OnDestroy {
   documentList: DocumentListComponent;
   node: MinimalNodeEntryEntity;
   protected subscriptions: Subscription[] = [];
+  actions: Array<ContentActionRef> = [];
+  viewerToolbarActions: Array<ContentActionRef> = [];
+  selection: SelectionState;
   constructor(protected store: Store<AppStore>, protected extensions: AppExtensionService) {}
   showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
     if (node && node.entry) {
@@ -38,7 +42,18 @@ export class PageComponent implements OnInit, OnDestroy {
   trackById(_: number, obj: { id: string }) {
     return obj.id;
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.store
+      .select(getAppSelection)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(selection => {
+        this.selection = selection;
+        this.actions = this.extensions.getAllowedToolbarActions();
+        this.viewerToolbarActions = this.extensions.getViewerToolbarActions();
+        // this.canUpdateNode =
+        //   this.selection.count === 1 && this.content.canUpdateNode(selection.first);
+      });
+  }
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.subscriptions = [];

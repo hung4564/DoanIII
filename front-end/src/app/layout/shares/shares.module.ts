@@ -8,6 +8,7 @@ import { ContentModule } from '@alfresco/adf-content-services';
 import { CustomNameColumnComponent } from './name-column/name-column.component';
 import { LocationLinkComponent } from './location-link/location-link.component';
 import { LockByComponent } from './locked-by/locked-by.component';
+import { DirectivesModule } from 'app/directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { LockByComponent } from './locked-by/locked-by.component';
     ContentModule.forRoot()
   ],
   exports: [
+    DirectivesModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

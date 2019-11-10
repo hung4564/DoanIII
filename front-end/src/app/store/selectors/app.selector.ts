@@ -63,3 +63,22 @@ export const getSideNavState = createSelector(
     };
   }
 );
+
+export const getRepositoryStatus = createSelector(
+  selectApp,
+  state => state.repository
+);
+export const getRuleContext = createSelector(
+  getAppSelection,
+  getNavigationState,
+  getUserProfile,
+  getRepositoryStatus,
+  (selection, navigation, profile, repository) => {
+    return {
+      selection,
+      navigation,
+      profile,
+      repository
+    };
+  }
+);

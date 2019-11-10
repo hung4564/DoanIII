@@ -14,12 +14,17 @@ import { Store } from '@ngrx/store';
 
 import { filter, takeUntil } from 'rxjs/operators';
 import { AppService } from './services/app.service';
-import { GroupsApi, Group } from '@alfresco/js-api';
+import { GroupsApi, Group, DiscoveryEntry } from '@alfresco/js-api';
 import { Subject, from } from 'rxjs';
 import { AppStore, AppState } from './store/states/app.state';
-import { SetUserProfileAction, SetInitialStateAction } from './store/actions/app.action';
+import {
+  SetUserProfileAction,
+  SetInitialStateAction,
+  SetRepositoryInfoAction
+} from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
 import { SnackbarErrorAction } from './store/actions/snackbar.actions';
+import { ContentApiService } from './services/content-api.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -40,7 +45,8 @@ export class AppComponent implements OnInit {
     private uploadService: UploadService,
     private appService: AppService,
     private sharedLinksApiService: SharedLinksApiService,
-    private transSV: TranslationService
+    private transSV: TranslationService,
+    private contentApi: ContentApiService
   ) {
     this.transSV.use('en');
   }
@@ -94,7 +100,7 @@ export class AppComponent implements OnInit {
 
     this.appService.ready$.pipe(takeUntil(this.onDestroy$)).subscribe(isReady => {
       if (isReady) {
-        // this.loadRepositoryStatus();
+        this.loadRepositoryStatus();
         this.loadUserProfile();
       }
     });
@@ -126,7 +132,11 @@ export class AppComponent implements OnInit {
     };
     this.store.dispatch(new SetInitialStateAction(state));
   }
-
+  private loadRepositoryStatus() {
+    this.contentApi.getRepositoryInformation().subscribe((response: DiscoveryEntry) => {
+      this.store.dispatch(new SetRepositoryInfoAction(response.entry.repository));
+    });
+  }
   onFileUploadedError(error: FileUploadErrorEvent) {
     let message = 'APP.MESSAGES.UPLOAD.ERROR.GENERIC';
 
