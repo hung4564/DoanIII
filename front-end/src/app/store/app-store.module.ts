@@ -9,9 +9,10 @@ import { INITIAL_STATE } from './states/initial-state';
 import { environment } from 'environments/environment';
 import { ViewerEffects } from './effects/viewer.effects';
 import { AppEffects } from './effects/app.efects';
+import { DownloadEffects } from './effects/download.effects';
 @NgModule({
   imports: [
-    EffectsModule.forRoot([SnackbarEffects, ViewerEffects, AppEffects]),
+    EffectsModule.forRoot([SnackbarEffects, ViewerEffects, AppEffects, DownloadEffects]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
