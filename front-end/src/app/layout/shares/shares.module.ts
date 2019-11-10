@@ -9,14 +9,26 @@ import { CustomNameColumnComponent } from './name-column/name-column.component';
 import { LocationLinkComponent } from './location-link/location-link.component';
 import { LockByComponent } from './locked-by/locked-by.component';
 import { DirectivesModule } from 'app/directives/directives.module';
-
-@NgModule({
-  declarations: [
-    PersonSearchComponent,
+import { NodePermissionsDialogComponent } from './permission-dialog/node-permissions.dialog';
+import { NodeVersionUploadDialogComponent } from './node-version-upload/node-version-upload.dialog';
+import { NodeVersionsDialogComponent } from './node-versions/node-versions.dialog';
+import { AppNodeVersionFormComponent } from './node-version-form/node-version-form.component';
+import { PermissionsManagerComponent } from './permission-manager/permission-manager.component';
+export function components() {
+  return [PersonSearchComponent, AppNodeVersionFormComponent, PermissionsManagerComponent];
+}
+export function dialogcomponents() {
+  return [
+    NodeVersionsDialogComponent,
+    NodeVersionUploadDialogComponent,
+    NodePermissionsDialogComponent,
     CustomNameColumnComponent,
     LocationLinkComponent,
     LockByComponent
-  ],
+  ];
+}
+@NgModule({
+  declarations: [...components(), ...dialogcomponents()],
   imports: [
     MaterialModule,
     FormsModule,
@@ -31,11 +43,9 @@ import { DirectivesModule } from 'app/directives/directives.module';
     FormsModule,
     ReactiveFormsModule,
     MainPipe,
-    PersonSearchComponent,
-    CustomNameColumnComponent,
-    LocationLinkComponent,
-    LockByComponent
+    ...components(),
+    ...dialogcomponents()
   ],
-  entryComponents: [CustomNameColumnComponent, LocationLinkComponent, LockByComponent]
+  entryComponents: [...dialogcomponents()]
 })
 export class SharesModule {}

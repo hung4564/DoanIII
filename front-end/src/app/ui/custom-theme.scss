@@ -8,6 +8,7 @@
 @import "../layout/layout.theme";
 @import "../layout/admin/part/sidenav/sidenav.component.theme";
 @import "../directives/ContextActions/context-menu/context-menu.component.theme";
+@import "../layout/shares/node-versions/node-versions.dialog.theme";
 
 $grey-scale: (
   50: #e0e0e0,
@@ -59,6 +60,8 @@ $warn: map-get($custom-theme, warn);
   @include snackbar-theme($theme);
   @include sidenav-component-theme($theme);
   @include aca-context-menu-theme($theme);
+  @include aca-node-versions-dialog-theme($theme);
+
   .mat-toolbar {
     color: var(--theme-text-color, rgba(0, 0, 0, 0.54));
   }

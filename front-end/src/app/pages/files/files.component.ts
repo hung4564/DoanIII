@@ -42,6 +42,9 @@ export class FilesComponent extends PageComponent implements OnInit {
     super.ngOnInit();
     this.columns = this.extensions.documentListPresets.files;
   }
+  uploadSuccess() {
+    this.documentList.reload();
+  }
   goDetail(e: MinimalNodeEntity) {
     if (e && e.entry) {
       if (e.entry.isFolder) {
