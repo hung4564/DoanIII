@@ -9,11 +9,23 @@ import { FileFavoriteComponent } from './file-favorite/file-favorite.component';
 export const FilesRoutes: Routes = [
   {
     path: 'personal-files',
-    component: FilesComponent,
-    data: {
-      title: 'APP.BROWSE.PERSONAL.TITLE',
-      defaultNodeId: '-my-'
-    }
+    children: [
+      {
+        path: '',
+        component: FilesComponent,
+        data: {
+          title: 'APP.BROWSE.PERSONAL.TITLE',
+          defaultNodeId: '-my-'
+        }
+      },
+      {
+        path: ':folderId',
+        component: FilesComponent,
+        data: {
+          title: 'APP.BROWSE.PERSONAL.TITLE'
+        }
+      }
+    ]
   },
   {
     path: 'file/:nodeId',

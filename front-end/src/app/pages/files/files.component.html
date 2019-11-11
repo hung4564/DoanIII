@@ -14,7 +14,9 @@
   #documentList
   acaDocumentList
   acaContextActions
-  currentFolderId="-my-"
+  [allowDropFiles]="true"
+  [navigate]="false"
+  [currentFolderId]="node?.id"
   [stickyHeader]="true"
   (name-click)="goDetail($event.detail?.node)"
   (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
@@ -51,4 +53,3 @@
   </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
-<adf-file-uploading-dialog></adf-file-uploading-dialog>

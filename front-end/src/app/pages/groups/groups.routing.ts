@@ -4,6 +4,11 @@ import { GroupsMainComponent } from './groups-main/groups-main.component';
 export const GroupsRoutes: Routes = [
   {
     path: 'groups',
-    children: [{ path: '', component: GroupsMainComponent }]
+    children: [
+      {
+        path: '',
+        component: GroupsMainComponent
+      }
+    ]
   }
 ];

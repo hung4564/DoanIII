@@ -15,7 +15,9 @@ import {
   NavigationState,
   ProfileState,
   RuleEvaluator,
-  IconRef
+  IconRef,
+  NavBarGroupRef,
+  SidebarTabRef
 } from '@alfresco/adf-extensions';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -55,6 +57,8 @@ export class AppExtensionService implements RuleContext {
   viewerToolbarActions: Array<ContentActionRef> = [];
   contextMenuActions: Array<ContentActionRef> = [];
   createActions: Array<ContentActionRef> = [];
+  navbar: Array<NavBarGroupRef> = [];
+  sidebar: Array<SidebarTabRef> = [];
 
   selection: SelectionState;
   navigation: NavigationState;
@@ -98,7 +102,8 @@ export class AppExtensionService implements RuleContext {
     );
     this.createActions = this.loader.getElements<ContentActionRef>(config, 'features.create');
     this.contextMenuActions = this.loader.getContentActions(config, 'features.contextMenu');
-
+    this.navbar = this.loadNavBar(config);
+    this.sidebar = this.loader.getElements<SidebarTabRef>(config, 'features.sidebar');
     this.documentListPresets = {
       files: this.getDocumentListPreset(config, 'files'),
       libraries: this.getDocumentListPreset(config, 'libraries'),
@@ -257,5 +262,74 @@ export class AppExtensionService implements RuleContext {
         );
       }
     }
+  }
+  protected loadNavBar(config: ExtensionConfig): Array<NavBarGroupRef> {
+    return this.loader.getElements<NavBarGroupRef>(config, 'features.navbar');
+  }
+  getSidebarTabs(): Array<SidebarTabRef> {
+    return this.sidebar.filter(action => this.filterVisible(<any>action));
+  }
+  getApplicationNavigation(elements) {
+    return elements.map(group => {
+      return {
+        ...group,
+        items: (group.items || [])
+          .filter(entry => !entry.disabled)
+          .filter(item => this.filterVisible(item))
+          .sort(sortByOrder)
+          .map(item => {
+            if (item.children && item.children.length > 0) {
+              item.children = item.children
+                .filter(entry => !entry.disabled)
+                .filter(child => this.filterVisible(child))
+                .sort(sortByOrder)
+                .map(child => {
+                  if (child.component) {
+                    return {
+                      ...child
+                    };
+                  }
+
+                  if (!child.click) {
+                    const childRouteRef = this.extensions.getRouteById(child.route);
+                    const childUrl = `/${childRouteRef ? childRouteRef.path : child.route}`;
+                    return {
+                      ...child,
+                      url: childUrl
+                    };
+                  }
+
+                  return {
+                    ...child,
+                    action: child.click
+                  };
+                });
+
+              return {
+                ...item
+              };
+            }
+
+            if (item.component) {
+              return { ...item };
+            }
+
+            if (!item.click) {
+              const routeRef = this.extensions.getRouteById(item.route);
+              const url = `/${routeRef ? routeRef.path : item.route}`;
+              return {
+                ...item,
+                url
+              };
+            }
+
+            return {
+              ...item,
+              action: item.click
+            };
+          })
+          .reduce(reduceEmptyMenus, [])
+      };
+    });
   }
 }

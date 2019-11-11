@@ -1,6 +1,0 @@
-<mat-nav-list class="adf-sidenav-linklist">
-  <a *ngFor="let menu of menus" mat-list-item class="adf-sidenav-link" [routerLink]="menu.link">
-    <mat-icon matListIcon class="sidenav-menu-icon">{{ menu.icon }}</mat-icon>
-    <div class="sidenav-menu-label" *ngIf="!isMenuMinimized">{{ menu.title }}</div>
-  </a>
-</mat-nav-list>

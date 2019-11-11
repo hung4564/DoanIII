@@ -6,7 +6,7 @@ export const SitesRoutes: Routes = [
   {
     path: 'sites',
     children: [
-      { path: '', component: SitesMainComponent, pathMatch: 'full' },
+      { path: '', component: SitesMainComponent },
       { path: ':id/members', component: SitesMemberComponent }
     ]
   }

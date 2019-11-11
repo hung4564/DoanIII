@@ -20,10 +20,10 @@ import { ContentManagementService } from 'app/services/content-management.servic
 })
 export class FilesComponent extends PageComponent implements OnInit {
   private nodePath: PathElement[];
-  nodeId: string = null;
   isValidPath = true;
   isAdmin = false;
   columns: any[] = [];
+  nodeId = '-my-';
   @ViewChild('documentList') documentList: DocumentListComponent;
   constructor(
     protected store: Store<AppStore>,
@@ -45,7 +45,7 @@ export class FilesComponent extends PageComponent implements OnInit {
     const { data } = route.snapshot;
     route.params.subscribe(({ folderId }: Params) => {
       const nodeId = folderId || data.defaultNodeId;
-
+      this.nodeId = nodeId;
       this.contentApi.getNode(nodeId).subscribe(
         node => {
           this.isValidPath = true;
@@ -193,6 +193,7 @@ export class FilesComponent extends PageComponent implements OnInit {
   goDetail(e: MinimalNodeEntity) {
     if (e && e.entry) {
       if (e.entry.isFolder) {
+        this.navigate(e.entry.id);
       }
 
       if (e.entry.isFile) {
@@ -204,13 +205,24 @@ export class FilesComponent extends PageComponent implements OnInit {
   onNodeDoubleClick(node: MinimalNodeEntity) {
     if (node && node.entry) {
       if (node.entry.isFolder) {
-        // this.navigate(node.entry);
+        this.navigate(node.entry.id);
       }
 
       if (node.entry.isFile) {
         this.showPreview(node);
       }
     }
+  }
+  navigate(nodeId: string = null) {
+    const commands = ['./'];
+
+    if (nodeId && !this.isRootNode(nodeId)) {
+      commands.push(nodeId);
+    }
+
+    this.router.navigate(commands, {
+      relativeTo: this.route.parent
+    });
   }
   isRootNode(nodeId: string): boolean {
     if (
