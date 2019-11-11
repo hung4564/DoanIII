@@ -5,8 +5,18 @@ import { ExtensionsModule, ExtensionService } from '@alfresco/adf-extensions';
 import { AppExtensionService } from './app-extension.service';
 import * as rules from './rules';
 import { CustomNameColumnComponent } from 'app/layout/shares/name-column/name-column.component';
-import { LibraryNameColumnComponent, LibraryRoleColumnComponent, LibraryStatusColumnComponent, TrashcanNameColumnComponent } from '@alfresco/adf-content-services';
+import {
+  LibraryNameColumnComponent,
+  LibraryRoleColumnComponent,
+  LibraryStatusColumnComponent,
+  TrashcanNameColumnComponent
+} from '@alfresco/adf-content-services';
 import { LocationLinkComponent } from 'app/layout/shares/location-link/location-link.component';
+import { ToggleFavoriteComponent } from 'app/layout/shares/toolbar/toggle-favorite/toggle-favorite.component';
+import { ToggleFavoriteLibraryComponent } from 'app/layout/shares/toolbar/toggle-favorite-library/toggle-favorite-library.component';
+import { ToggleJoinLibraryButtonComponent } from 'app/layout/shares/toolbar/toggle-join-library/toggle-join-library-button.component';
+import { ToggleJoinLibraryMenuComponent } from 'app/layout/shares/toolbar/toggle-join-library/toggle-join-library-menu.component';
+import { ToggleEditOfflineComponent } from 'app/layout/shares/toolbar/toggle-edit-offline/toggle-edit-offline.component';
 export function setupExtensions(service: AppExtensionService): Function {
   return () => service.load();
 }
@@ -37,12 +47,25 @@ export class CoreExtensionsModule {
 
   constructor(extensions: ExtensionService) {
     extensions.setComponents({
+      // 'app.layout.main': AppLayoutComponent,
+      // 'app.components.tabs.metadata': MetadataTabComponent,
+      // 'app.components.tabs.library.metadata': LibraryMetadataTabComponent,
+      // 'app.components.tabs.comments': CommentsTabComponent,
+      // 'app.components.tabs.versions': VersionsTabComponent,
+      // 'app.toolbar.toggleInfoDrawer': ToggleInfoDrawerComponent,
+      'app.toolbar.toggleFavorite': ToggleFavoriteComponent,
+      'app.toolbar.toggleFavoriteLibrary': ToggleFavoriteLibraryComponent,
+      'app.toolbar.toggleJoinLibrary': ToggleJoinLibraryButtonComponent,
+      // 'app.toolbar.cardView': DocumentDisplayModeComponent,
+      'app.menu.toggleJoinLibrary': ToggleJoinLibraryMenuComponent,
+      // 'app.shared-link.toggleSharedLink': ToggleSharedComponent,
       'app.columns.name': CustomNameColumnComponent,
       'app.columns.libraryName': LibraryNameColumnComponent,
       'app.columns.libraryRole': LibraryRoleColumnComponent,
       'app.columns.libraryStatus': LibraryStatusColumnComponent,
       'app.columns.trashcanName': TrashcanNameColumnComponent,
-      'app.columns.location': LocationLinkComponent
+      'app.columns.location': LocationLinkComponent,
+      'app.toolbar.toggleEditOffline': ToggleEditOfflineComponent
     });
 
     extensions.setAuthGuards({

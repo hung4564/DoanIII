@@ -4,20 +4,9 @@
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
-  <adf-upload-button
-    [uploadFolders]="true"
-    [rootFolderId]="documentList.currentFolderId || '-my-'"
-    [adf-check-allowable-operation]="'create'"
-    (success)="uploadSuccess($event)"
-  >
-  </adf-upload-button>
-  <adf-upload-button
-    [uploadFolders]="false"
-    [rootFolderId]="documentList.currentFolderId || '-my-'"
-    [adf-check-allowable-operation]="'create'"
-    (success)="uploadSuccess($event)"
-  >
-  </adf-upload-button>
+  <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
+    <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
+  </ng-container>
 </adf-toolbar>
 
 <adf-document-list

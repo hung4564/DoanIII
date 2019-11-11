@@ -10,9 +10,15 @@ import { CoreExtensionsModule } from 'app/extensions/core.extensions.module';
 import { OutsideEventDirective } from './ContextActions/context-menu-outside-event.directive';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { DocumentListDirective } from './document-list.directive';
+import { LibraryMembershipDirective } from './library-membership.directive';
+import { LibraryFavoriteDirective } from './library-favorite.directive';
+import { LockNodeDirective } from './lock-node.directive';
 
 export function directives() {
   return [
+    LockNodeDirective,
+    LibraryFavoriteDirective,
+    LibraryMembershipDirective,
     DocumentListDirective,
     ContextActionsDirective,
     OutsideEventDirective,

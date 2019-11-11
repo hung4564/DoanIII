@@ -6,6 +6,7 @@ import { DocumentListComponent } from '@alfresco/adf-content-services';
 import { UserPreferencesService } from '@alfresco/adf-core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { ContentManagementService } from 'app/services/content-management.service';
 
 @Directive({
   selector: '[acaDocumentList]'
@@ -21,6 +22,7 @@ export class DocumentListDirective {
 
   constructor(
     private store: Store<any>,
+    private content: ContentManagementService,
     private documentList: DocumentListComponent,
     private preferences: UserPreferencesService,
     private route: ActivatedRoute,
@@ -52,9 +54,9 @@ export class DocumentListDirective {
 
     this.documentList.ready.pipe(takeUntil(this.onDestroy$)).subscribe(() => this.onReady());
 
-    // this.content.reload.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-    //   this.reload();
-    // });
+    this.content.reload.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.reload();
+    });
   }
 
   ngOnDestroy() {

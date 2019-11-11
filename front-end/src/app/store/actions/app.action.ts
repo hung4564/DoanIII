@@ -9,7 +9,8 @@ export enum AppActionTypes {
   Logout = 'LOGOUT',
   ReloadDocumentList = 'RELOAD_DOCUMENT_LIST',
   SetCurrentUrl = 'SET_CURRENT_URL',
-  SetRepositoryInfo = 'SET_REPOSITORY_INFO'
+  SetRepositoryInfo = 'SET_REPOSITORY_INFO',
+  SetCurrentFolder = 'SET_CURRENT_FOLDER'
 }
 
 export class SetInitialStateAction implements Action {
@@ -49,4 +50,9 @@ export class SetRepositoryInfoAction implements Action {
   readonly type = AppActionTypes.SetRepositoryInfo;
 
   constructor(public payload: RepositoryInfo) {}
+}
+export class SetCurrentFolderAction implements Action {
+  readonly type = AppActionTypes.SetCurrentFolder;
+
+  constructor(public payload: Node) {}
 }

@@ -5,13 +5,21 @@ import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { MinimalNodeEntity, MinimalNodeEntryEntity } from '@alfresco/js-api';
-import { ViewNodeAction, ViewNodeExtras, getAppSelection } from 'app/store';
+import {
+  ViewNodeAction,
+  ViewNodeExtras,
+  getAppSelection,
+  ReloadDocumentListAction,
+  getCurrentFolder
+} from 'app/store';
 import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
 import { takeUntil } from 'rxjs/operators';
+import { ContentManagementService } from 'app/services/content-management.service';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
-
+  canUpdateNode = false;
+  canUpload = false;
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
   node: MinimalNodeEntryEntity;
@@ -19,7 +27,11 @@ export class PageComponent implements OnInit, OnDestroy {
   actions: Array<ContentActionRef> = [];
   viewerToolbarActions: Array<ContentActionRef> = [];
   selection: SelectionState;
-  constructor(protected store: Store<AppStore>, protected extensions: AppExtensionService) {}
+  constructor(
+    protected store: Store<AppStore>,
+    protected extensions: AppExtensionService,
+    protected content: ContentManagementService
+  ) {}
   showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
     if (node && node.entry) {
       const id = (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
@@ -31,8 +43,7 @@ export class PageComponent implements OnInit, OnDestroy {
     return this.node ? this.node.id : null;
   }
   reload(): void {
-    this.documentList.reload();
-    // this.store.dispatch(new ReloadDocumentListAction());
+    this.store.dispatch(new ReloadDocumentListAction());
   }
 
   trackByActionId(_: number, action: ContentActionRef) {
@@ -50,8 +61,14 @@ export class PageComponent implements OnInit, OnDestroy {
         this.selection = selection;
         this.actions = this.extensions.getAllowedToolbarActions();
         this.viewerToolbarActions = this.extensions.getViewerToolbarActions();
-        // this.canUpdateNode =
-        //   this.selection.count === 1 && this.content.canUpdateNode(selection.first);
+        this.canUpdateNode =
+          this.selection.count === 1 && this.content.canUpdateNode(selection.first);
+      });
+    this.store
+      .select(getCurrentFolder)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(node => {
+        this.canUpload = node && this.content.canUploadContent(node);
       });
   }
   ngOnDestroy() {

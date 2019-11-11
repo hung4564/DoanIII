@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout.component';
 import { LayoutRoutingModule } from './layout.routing';
 import { LayoutService } from './layout.service';
+import { CreateMenuComponent } from './partials/create-menu/create-menu.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { LayoutService } from './layout.service';
     LayoutRoutingModule
   ],
   declarations: [
+    CreateMenuComponent,
     AdminSidenavComponent,
     SidenavComponent,
     HeaderComponent,

@@ -11,7 +11,8 @@ export const FilesRoutes: Routes = [
     path: 'personal-files',
     component: FilesComponent,
     data: {
-      title: 'APP.BROWSE.PERSONAL.TITLE'
+      title: 'APP.BROWSE.PERSONAL.TITLE',
+      defaultNodeId: '-my-'
     }
   },
   {

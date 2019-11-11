@@ -54,6 +54,7 @@ export class AppExtensionService implements RuleContext {
   toolbarActions: Array<ContentActionRef> = [];
   viewerToolbarActions: Array<ContentActionRef> = [];
   contextMenuActions: Array<ContentActionRef> = [];
+  createActions: Array<ContentActionRef> = [];
 
   selection: SelectionState;
   navigation: NavigationState;
@@ -95,6 +96,7 @@ export class AppExtensionService implements RuleContext {
       config,
       'features.viewer.toolbarActions'
     );
+    this.createActions = this.loader.getElements<ContentActionRef>(config, 'features.create');
     this.contextMenuActions = this.loader.getContentActions(config, 'features.contextMenu');
 
     this.documentListPresets = {
@@ -124,7 +126,54 @@ export class AppExtensionService implements RuleContext {
       .getElements<DocumentListPresetRef>(config, `features.documentList.${key}`)
       .filter(entry => !entry.disabled);
   }
+  getCreateActions(): Array<ContentActionRef> {
+    return this.createActions
+      .filter(action => this.filterVisible(action))
+      .map(action => this.copyAction(action))
+      .map(action => this.buildMenu(action))
+      .map(action => {
+        let disabled = false;
 
+        if (action.rules && action.rules.enabled) {
+          disabled = !this.extensions.evaluateRule(action.rules.enabled, this);
+        }
+
+        return {
+          ...action,
+          disabled
+        };
+      });
+  }
+  private buildMenu(actionRef: ContentActionRef): ContentActionRef {
+    if (
+      actionRef.type === ContentActionType.menu &&
+      actionRef.children &&
+      actionRef.children.length > 0
+    ) {
+      const children = actionRef.children
+        .filter(action => this.filterVisible(action))
+        .map(action => this.buildMenu(action));
+
+      actionRef.children = children
+        .map(action => {
+          let disabled = false;
+
+          if (action.rules && action.rules.enabled) {
+            disabled = !this.extensions.evaluateRule(action.rules.enabled, this);
+          }
+
+          return {
+            ...action,
+            disabled
+          };
+        })
+        .sort(sortByOrder)
+        .reduce(reduceEmptyMenus, [])
+        .reduce(reduceSeparators, []);
+    }
+
+    return actionRef;
+  }
   getAllowedToolbarActions(): Array<ContentActionRef> {
     return this.getAllowedActions(this.toolbarActions);
   }
@@ -172,7 +221,9 @@ export class AppExtensionService implements RuleContext {
     return this.extensions.getEvaluator(key);
   }
   runActionById(id: string) {
+    console.log('TCL: AppExtensionService -> runActionById -> id', id);
     const action = this.extensions.getActionById(id);
+    console.log('TCL: AppExtensionService -> runActionById -> action', action);
     if (action) {
       const { type, payload } = action;
       const context = {

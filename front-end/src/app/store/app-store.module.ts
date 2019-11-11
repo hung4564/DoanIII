@@ -13,6 +13,7 @@ import {
 } from '.';
 import { environment } from 'environments/environment';
 import { INITIAL_STATE } from './states/initial-state';
+import { UploadEffects } from './effects/upload.effects';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { INITIAL_STATE } from './states/initial-state';
       AppEffects,
       DownloadEffects,
       NodeEffects,
-      RouterEffects
+      RouterEffects,
+      UploadEffects
     ]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({

@@ -14,6 +14,7 @@ import { NodeVersionUploadDialogComponent } from './node-version-upload/node-ver
 import { NodeVersionsDialogComponent } from './node-versions/node-versions.dialog';
 import { AppNodeVersionFormComponent } from './node-version-form/node-version-form.component';
 import { PermissionsManagerComponent } from './permission-manager/permission-manager.component';
+import { AppToolbarModule } from './toolbar/toolbar.module';
 export function components() {
   return [PersonSearchComponent, AppNodeVersionFormComponent, PermissionsManagerComponent];
 }
@@ -38,6 +39,7 @@ export function dialogcomponents() {
     ContentModule.forRoot()
   ],
   exports: [
+    AppToolbarModule,
     DirectivesModule,
     MaterialModule,
     FormsModule,

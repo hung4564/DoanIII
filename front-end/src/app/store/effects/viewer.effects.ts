@@ -45,25 +45,26 @@ export class ViewerEffects {
   viewNode$ = this.actions$.pipe(
     ofType<ViewNodeAction>(ViewerActionTypes.ViewNode),
     map(action => {
-      if (action.viewNodeExtras) {
-        const { location, path } = action.viewNodeExtras;
+      this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
+      // if (action.viewNodeExtras) {
+      //   const { location, path } = action.viewNodeExtras;
 
-        if (location) {
-          const navigation = this.getNavigationCommands(location);
+      //   if (location) {
+      //     const navigation = this.getNavigationCommands(location);
 
-          this.router.navigate([...navigation, { outlets: { overlay: ['view', action.nodeId] } }], {
-            queryParams: { location }
-          });
-        }
+      //     this.router.navigate([...navigation, { outlets: { overlay: ['view', action.nodeId] } }], {
+      //       queryParams: { location }
+      //     });
+      //   }
 
-        if (path) {
-          this.router.navigate(['view', { outlets: { overlay: [action.nodeId] } }], {
-            queryParams: { path }
-          });
-        }
-      } else {
-        this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
-      }
+      //   if (path) {
+      //     this.router.navigate(['view', { outlets: { overlay: [action.nodeId] } }], {
+      //       queryParams: { path }
+      //     });
+      //   }
+      // } else {
+      //   this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
+      // }
     })
   );
 
@@ -114,8 +115,9 @@ export class ViewerEffects {
     if (parentId) {
       path.push(parentId);
     }
-    path.push('preview', nodeId);
-    this.router.navigateByUrl(path.join('/'));
+    // path.push('preview', nodeId);
+    this.router.navigate([{ outlets: { overlay: ['files', nodeId, 'view'] } }]);
+    // this.router.navigateByUrl(path.join('/'));
   }
 
   enterFullScreen() {
