@@ -66,16 +66,6 @@
         "rules": {
           "enabled": "app.navigation.folder.canCreate"
         }
-      },
-      {
-        "id": "app.create.library",
-        "order": 600,
-        "title": "APP.NEW_MENU.MENU_ITEMS.CREATE_LIBRARY",
-        "description": "APP.NEW_MENU.TOOLTIPS.CREATE_LIBRARY",
-        "icon": "create_new_folder",
-        "actions": {
-          "click": "CREATE_LIBRARY"
-        }
       }
     ],
     "viewer": {

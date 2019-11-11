@@ -4,6 +4,7 @@
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
+  <app-create-menu [expanded]="false"></app-create-menu>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
     <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
   </ng-container>

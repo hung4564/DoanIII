@@ -1,6 +1,3 @@
-<div class="section action-menu">
-  <app-create-menu [expanded]="!isMenuMinimized"></app-create-menu>
-</div>
 <mat-nav-list class="adf-sidenav-linklist">
   <a *ngFor="let menu of menus" mat-list-item class="adf-sidenav-link" [routerLink]="menu.link">
     <mat-icon matListIcon class="sidenav-menu-icon">{{ menu.icon }}</mat-icon>

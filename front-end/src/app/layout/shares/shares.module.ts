@@ -15,8 +15,14 @@ import { NodeVersionsDialogComponent } from './node-versions/node-versions.dialo
 import { AppNodeVersionFormComponent } from './node-version-form/node-version-form.component';
 import { PermissionsManagerComponent } from './permission-manager/permission-manager.component';
 import { AppToolbarModule } from './toolbar/toolbar.module';
+import { CreateMenuComponent } from './create-menu/create-menu.component';
 export function components() {
-  return [PersonSearchComponent, AppNodeVersionFormComponent, PermissionsManagerComponent];
+  return [
+    CreateMenuComponent,
+    PersonSearchComponent,
+    AppNodeVersionFormComponent,
+    PermissionsManagerComponent
+  ];
 }
 export function dialogcomponents() {
   return [
@@ -31,6 +37,7 @@ export function dialogcomponents() {
 @NgModule({
   declarations: [...components(), ...dialogcomponents()],
   imports: [
+    AppToolbarModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

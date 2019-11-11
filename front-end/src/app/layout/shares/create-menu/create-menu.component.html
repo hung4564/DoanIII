@@ -5,12 +5,8 @@
     [matMenuTriggerFor]="rootMenu"
     title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
   >
-    <span class="app-create-menu__text">{{
-      'APP.NEW_MENU.LABEL' | translate
-    }}</span>
-    <mat-icon title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
-      >arrow_drop_down</mat-icon
-    >
+    <span class="app-create-menu__text">{{ "APP.NEW_MENU.LABEL" | translate }}</span>
+    <mat-icon title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}">arrow_drop_down</mat-icon>
   </button>
 </ng-container>
 
@@ -23,9 +19,7 @@
     #createMenu="matMenuTrigger"
     title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
   >
-    <mat-icon
-      class="app-create-menu--icon"
-      title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
+    <mat-icon class="app-create-menu--icon" title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
       >queue</mat-icon
     >
   </button>
