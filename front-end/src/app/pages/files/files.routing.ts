@@ -35,7 +35,7 @@ export const FilesRoutes: Routes = [
     }
   },
   {
-    path: 'trash-can',
+    path: 'trashcan',
     component: FileTrashComponent,
     data: {
       title: 'APP.BROWSE.TRASHCAN.TITLE'
@@ -56,7 +56,7 @@ export const FilesRoutes: Routes = [
     }
   },
   {
-    path: 'recent',
+    path: 'recent-files',
     component: FileRecentComponent,
     data: {
       title: 'APP.BROWSE.RECENT.TITLE'

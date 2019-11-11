@@ -228,7 +228,6 @@ export class AppExtensionService implements RuleContext {
   runActionById(id: string) {
     console.log('TCL: AppExtensionService -> runActionById -> id', id);
     const action = this.extensions.getActionById(id);
-    console.log('TCL: AppExtensionService -> runActionById -> action', action);
     if (action) {
       const { type, payload } = action;
       const context = {
