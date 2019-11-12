@@ -15,7 +15,6 @@ import {
   AlfrescoApiService
 } from '@alfresco/adf-core';
 import { Store } from '@ngrx/store';
-import { AppStore, ClosePreviewAction, ViewerActionTypes, SetSelectedNodesAction } from 'app/store';
 import { PageComponent } from '../page.component';
 import { ContentManagementService } from '../../services/content-management.service';
 import { ContentActionRef, ViewerExtensionRef } from '@alfresco/adf-extensions';
@@ -24,6 +23,8 @@ import { from } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { ContentApiService } from 'app/services/content-api.service';
+import { ClosePreviewAction, ViewerActionTypes } from 'app/store/actions/viewer.actions';
+import { SetSelectedNodesAction } from 'app/store/actions/node.action';
 
 @Component({
   selector: 'app-preview',
@@ -78,7 +79,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     private apiService: AlfrescoApiService,
     private uploadService: UploadService,
     private actions$: Actions,
-    store: Store<AppStore>,
+    store: Store<any>,
     extensions: AppExtensionService,
     content: ContentManagementService
   ) {

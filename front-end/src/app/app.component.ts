@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private pageTitle: PageTitleService,
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private config: AppConfigService,
     private alfrescoApiService: AlfrescoApiService,
     private authenticationService: AuthenticationService,

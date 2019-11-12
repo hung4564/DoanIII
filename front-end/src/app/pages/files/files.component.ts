@@ -4,13 +4,14 @@ import { UploadService, FileUploadEvent } from '@alfresco/adf-core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PageComponent } from '../page.component';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { AppStore, SetCurrentFolderAction, isAdmin } from 'app/store';
 import { Store } from '@ngrx/store';
 import { MinimalNodeEntity, PathElement, MinimalNodeEntryEntity } from '@alfresco/js-api';
 import { ContentApiService } from 'app/services/content-api.service';
 import { NodeActionsService } from 'app/services/node-actions.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ContentManagementService } from 'app/services/content-management.service';
+import { isAdmin } from 'app/store/selectors/app.selector';
+import { SetCurrentFolderAction } from 'app/store/actions/app.action';
 
 @Component({
   selector: 'app-files',
@@ -26,7 +27,7 @@ export class FilesComponent extends PageComponent implements OnInit {
   nodeId = '-my-';
   @ViewChild('documentList') documentList: DocumentListComponent;
   constructor(
-    protected store: Store<AppStore>,
+    protected store: Store<any>,
     protected extensions: AppExtensionService,
     private router: Router,
     private route: ActivatedRoute,

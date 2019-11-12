@@ -27,7 +27,7 @@ export const fileToPreview = createSelector(
 @Injectable()
 export class ViewerEffects {
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private actions$: Actions,
     private router: Router,
     private extensions: AppExtensionService

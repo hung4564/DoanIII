@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { AuthenticationService } from '@alfresco/adf-core';
 import { Router } from '@angular/router';
-import { ReloadDocumentListAction, AppActionTypes, LogoutAction } from '../actions/app.action';
 import { ContentManagementService } from 'app/services/content-management.service';
+import { AppActionTypes, ReloadDocumentListAction, LogoutAction } from '../actions/app.action';
 
 @Injectable()
 export class AppEffects {

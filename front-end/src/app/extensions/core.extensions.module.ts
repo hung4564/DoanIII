@@ -11,15 +11,14 @@ import {
   LibraryStatusColumnComponent,
   TrashcanNameColumnComponent
 } from '@alfresco/adf-content-services';
-import {
-  ToggleFavoriteComponent,
-  ToggleFavoriteLibraryComponent,
-  ToggleJoinLibraryButtonComponent,
-  ToggleJoinLibraryMenuComponent,
-  ToggleSharedComponent,
-  ToggleEditOfflineComponent,
-  LocationLinkComponent
-} from 'app/layout/shares';
+import { ToggleFavoriteComponent } from 'app/layout/shares/toolbar/toggle-favorite/toggle-favorite.component';
+import { ToggleFavoriteLibraryComponent } from 'app/layout/shares/toolbar/toggle-favorite-library/toggle-favorite-library.component';
+import { ToggleJoinLibraryButtonComponent } from 'app/layout/shares/toolbar/toggle-join-library/toggle-join-library-button.component';
+import { ToggleJoinLibraryMenuComponent } from 'app/layout/shares/toolbar/toggle-join-library/toggle-join-library-menu.component';
+import { ToggleSharedComponent } from 'app/layout/shares/toolbar/toggle-shared/toggle-shared.component';
+import { LocationLinkComponent } from 'app/layout/shares/location-link/location-link.component';
+import { ToggleEditOfflineComponent } from 'app/layout/shares/toolbar/toggle-edit-offline/toggle-edit-offline.component';
+
 export function setupExtensions(service: AppExtensionService): Function {
   return () => service.load();
 }

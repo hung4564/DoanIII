@@ -1,4 +1,3 @@
-import { AppStore, DownloadNodesAction, NodeActionTypes, getAppSelection } from '..';
 import { DownloadZipDialogComponent } from '@alfresco/adf-core';
 import { MinimalNodeEntity } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
@@ -8,11 +7,13 @@ import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { ContentApiService } from 'app/services/content-api.service';
 import { NodeInfo } from 'app/model/node-info.model';
+import { DownloadNodesAction, NodeActionTypes } from '../actions/node.action';
+import { getAppSelection } from '../selectors/app.selector';
 
 @Injectable()
 export class DownloadEffects {
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private actions$: Actions,
     private contentApi: ContentApiService,
     private dialog: MatDialog

@@ -18,7 +18,7 @@ export class CurrentUserComponent implements OnInit {
   profile$: Observable<ProfileState>;
   languagePicker$: Observable<boolean>;
 
-  constructor(private store: Store<AppStore>, private appService: AppService) {
+  constructor(private store: Store<any>, private appService: AppService) {
     this.profile$ = this.store.select(getUserProfile);
     this.languagePicker$ = store.select(getLanguagePickerState);
   }

@@ -75,7 +75,7 @@ export class AppExtensionService implements RuleContext {
 
   constructor(
     public auth: AuthenticationService,
-    protected store: Store<AppStore>,
+    protected store: Store<any>,
     protected appConfig: AppConfigService,
     protected loader: ExtensionLoaderService,
     protected extensions: ExtensionService,

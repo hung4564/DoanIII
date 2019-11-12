@@ -1,13 +1,3 @@
-import {
-  AppStore,
-  SnackbarErrorAction,
-  UnlockWriteAction,
-  UploadActionTypes,
-  UploadFilesAction,
-  UploadFileVersionAction,
-  UploadFolderAction,
-  getCurrentFolder
-} from '..';
 import { FileModel, FileUtils, UploadService } from '@alfresco/adf-core';
 import { Injectable, NgZone, RendererFactory2 } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -15,6 +5,10 @@ import { Store } from '@ngrx/store';
 import { forkJoin, of } from 'rxjs';
 import { tap, filter, catchError, flatMap, map, take } from 'rxjs/operators';
 import { ContentManagementService } from '../../services/content-management.service';
+import { UploadFilesAction, UploadActionTypes, UploadFolderAction, UploadFileVersionAction } from '../actions/upload.actions';
+import { SnackbarErrorAction } from '../actions/snackbar.actions';
+import { getCurrentFolder } from '../selectors/app.selector';
+import { UnlockWriteAction } from '../actions/node.action';
 
 @Injectable()
 export class UploadEffects {
@@ -23,7 +17,7 @@ export class UploadEffects {
   private fileVersionInput: HTMLInputElement;
 
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private actions$: Actions,
     private ngZone: NgZone,
     private uploadService: UploadService,

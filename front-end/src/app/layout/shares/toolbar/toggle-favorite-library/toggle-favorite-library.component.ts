@@ -1,11 +1,11 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore, getAppSelection } from 'app/store';
 import { Observable } from 'rxjs';
 import { SelectionState } from '@alfresco/adf-extensions';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { getAppSelection } from 'app/store/selectors/app.selector';
 
 @Component({
   selector: 'app-toggle-favorite-library',
@@ -36,7 +36,7 @@ export class ToggleFavoriteLibraryComponent implements OnInit {
   selection$: Observable<SelectionState>;
 
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private content: ContentManagementService,
     private router: Router
   ) {}

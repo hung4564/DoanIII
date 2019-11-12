@@ -1,19 +1,4 @@
 import {
-  AppStore,
-  getAppSelection,
-  getSharedUrl,
-  ReloadDocumentListAction,
-  SetSelectedNodesAction,
-  SnackbarAction,
-  SnackbarErrorAction,
-  SnackbarInfoAction,
-  SnackbarUserAction,
-  SnackbarWarningAction,
-  UndoDeleteNodesAction,
-  NavigateToParentFolder,
-  NavigateRouteAction
-} from 'app/store';
-import {
   ConfirmDialogComponent,
   FolderDialogComponent,
   LibraryDialogComponent,
@@ -45,7 +30,18 @@ import { DeletedNodeInfo } from 'app/model/deleted-node-info.model';
 import { NodePermissionsDialogComponent } from 'app/layout/shares/permission-dialog/node-permissions.dialog';
 import { NodeVersionsDialogComponent } from 'app/layout/shares/node-versions/node-versions.dialog';
 import { NodeVersionUploadDialogComponent } from 'app/layout/shares/node-version-upload/node-version-upload.dialog';
-
+import { AppStore } from 'app/store/states/app.state';
+import { SetSelectedNodesAction, UndoDeleteNodesAction } from 'app/store/actions/node.action';
+import { ReloadDocumentListAction } from 'app/store/actions/app.action';
+import {
+  SnackbarErrorAction,
+  SnackbarInfoAction,
+  SnackbarUserAction,
+  SnackbarAction,
+  SnackbarWarningAction
+} from 'app/store/actions/snackbar.actions';
+import { getSharedUrl, getAppSelection } from 'app/store/selectors/app.selector';
+import { NavigateToParentFolder, NavigateRouteAction } from 'app/store/actions/router.actions';
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;
@@ -70,7 +66,7 @@ export class ContentManagementService {
 
   constructor(
     private alfrescoApiService: AlfrescoApiService,
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private contentApi: ContentApiService,
     private permission: NodePermissionService,
     private dialogRef: MatDialog,

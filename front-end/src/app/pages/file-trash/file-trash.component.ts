@@ -9,9 +9,9 @@ import { PageComponent } from '../page.component';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { Store } from '@ngrx/store';
-import { AppStore, getUserProfile } from 'app/store';
 import { Observable } from 'rxjs';
 import { ProfileState } from '@alfresco/adf-extensions';
+import { getUserProfile } from 'app/store/selectors/app.selector';
 
 @Component({
   selector: 'app-file-trash',
@@ -26,7 +26,7 @@ export class FileTrashComponent extends PageComponent implements OnInit {
   constructor(
     content: ContentManagementService,
     extensions: AppExtensionService,
-    store: Store<AppStore>
+    store: Store<any>
   ) {
     super(store, extensions, content);
     this.user$ = this.store.select(getUserProfile);

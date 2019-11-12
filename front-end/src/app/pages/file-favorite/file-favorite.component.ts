@@ -3,9 +3,13 @@ import { PageComponent } from '../page.component';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { Router } from '@angular/router';
-import { AppStore } from 'app/store';
 import { Store } from '@ngrx/store';
-import { MinimalNodeEntity, MinimalNodeEntryEntity, PathInfo, PathElementEntity } from '@alfresco/js-api';
+import {
+  MinimalNodeEntity,
+  MinimalNodeEntryEntity,
+  PathInfo,
+  PathElementEntity
+} from '@alfresco/js-api';
 import { ContentApiService } from 'app/services/content-api.service';
 import { map } from 'rxjs/operators';
 
@@ -19,7 +23,7 @@ export class FileFavoriteComponent extends PageComponent implements OnInit {
   columns: any[] = [];
   constructor(
     private router: Router,
-    store: Store<AppStore>,
+    store: Store<any>,
     extensions: AppExtensionService,
     content: ContentManagementService,
     private contentApi: ContentApiService

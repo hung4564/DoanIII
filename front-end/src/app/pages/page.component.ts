@@ -5,18 +5,13 @@ import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { MinimalNodeEntity, MinimalNodeEntryEntity } from '@alfresco/js-api';
-import {
-  ViewNodeAction,
-  ViewNodeExtras,
-  getAppSelection,
-  ReloadDocumentListAction,
-  getCurrentFolder,
-  ViewFileAction
-} from 'app/store';
 import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
 import { takeUntil } from 'rxjs/operators';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { isLocked, isLibrary } from 'app/utils/node.utils';
+import { ViewFileAction } from 'app/store/actions/viewer.actions';
+import { ReloadDocumentListAction } from 'app/store/actions/app.action';
+import { getAppSelection, getCurrentFolder } from 'app/store/selectors/app.selector';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -30,7 +25,7 @@ export class PageComponent implements OnInit, OnDestroy {
   viewerToolbarActions: Array<ContentActionRef> = [];
   selection: SelectionState;
   constructor(
-    protected store: Store<AppStore>,
+    protected store: Store<any>,
     protected extensions: AppExtensionService,
     protected content: ContentManagementService
   ) {}

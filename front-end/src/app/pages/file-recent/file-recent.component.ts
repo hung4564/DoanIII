@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page.component';
 import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { MinimalNodeEntity } from '@alfresco/js-api';
@@ -15,7 +14,7 @@ import { MinimalNodeEntity } from '@alfresco/js-api';
 export class FileRecentComponent extends PageComponent implements OnInit {
   columns: any[] = [];
   constructor(
-    store: Store<AppStore>,
+    store: Store<any>,
     extensions: AppExtensionService,
     content: ContentManagementService
   ) {

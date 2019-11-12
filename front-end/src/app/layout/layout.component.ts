@@ -39,7 +39,7 @@ export class LayoutComponent implements OnInit {
   private hideConditions: string[] = ['preview'];
 
   constructor(
-    protected store: Store<AppStore>,
+    protected store: Store<any>,
     private router: Router,
     private pageTitle: PageTitleService,
     private userPreferenceService: UserPreferencesService,

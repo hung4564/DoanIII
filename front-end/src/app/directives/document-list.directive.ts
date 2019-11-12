@@ -1,5 +1,4 @@
 import { Directive, HostListener } from '@angular/core';
-import { SetSelectedNodesAction } from 'app/store';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { DocumentListComponent } from '@alfresco/adf-content-services';
@@ -7,6 +6,7 @@ import { UserPreferencesService } from '@alfresco/adf-core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ContentManagementService } from 'app/services/content-management.service';
+import { SetSelectedNodesAction } from 'app/store/actions/node.action';
 
 @Directive({
   selector: '[acaDocumentList]'

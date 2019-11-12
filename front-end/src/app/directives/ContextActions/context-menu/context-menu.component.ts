@@ -42,7 +42,8 @@ import { CONTEXT_MENU_DIRECTION } from '../direction.token';
 import { Directionality } from '@angular/cdk/bidi';
 import { ContextMenuOverlayRef } from '../context-menu-overlay';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { AppStore, getAppSelection } from 'app/store';
+import { AppStore } from 'app/store/states/app.state';
+import { getAppSelection } from 'app/store/selectors/app.selector';
 
 @Component({
   selector: 'aca-context-menu',
@@ -72,7 +73,7 @@ export class ContextMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private contextMenuOverlayRef: ContextMenuOverlayRef,
     private extensions: AppExtensionService,
-    private store: Store<AppStore>,
+    private store: Store<any>,
     @Inject(CONTEXT_MENU_DIRECTION) public direction: Directionality
   ) {}
 

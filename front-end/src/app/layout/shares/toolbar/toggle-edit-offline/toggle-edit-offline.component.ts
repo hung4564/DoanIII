@@ -1,13 +1,9 @@
-import {
-  AppStore,
-  DownloadNodesAction,
-  EditOfflineAction,
-  SnackbarErrorAction,
-  getAppSelection
-} from 'app/store';
 import { MinimalNodeEntity } from '@alfresco/js-api';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { getAppSelection } from 'app/store/selectors/app.selector';
+import { DownloadNodesAction, EditOfflineAction } from 'app/store/actions/node.action';
+import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
 
 @Component({
   selector: 'app-toggle-edit-offline',
@@ -42,7 +38,7 @@ import { Store } from '@ngrx/store';
 export class ToggleEditOfflineComponent implements OnInit {
   selection: MinimalNodeEntity;
 
-  constructor(private store: Store<AppStore>) {}
+  constructor(private store: Store<any>) {}
 
   ngOnInit() {
     this.store.select(getAppSelection).subscribe(({ file }) => {

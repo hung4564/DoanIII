@@ -12,7 +12,7 @@ import { getHeaderColor, getAppName, getLogoPath } from 'app/store/selectors/app
 export class HeaderComponent implements OnInit {
   @Output('toggleClicked') toggleClicked = new EventEmitter();
   constructor(
-    store: Store<AppStore>,) {
+    store: Store<any>,) {
       this.headerColor$ = store.select(getHeaderColor);
       this.appName$ = store.select(getAppName);
       this.logo$ = store.select(getLogoPath);}

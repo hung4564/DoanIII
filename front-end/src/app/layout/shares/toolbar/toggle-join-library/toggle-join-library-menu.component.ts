@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { ToggleJoinLibraryButtonComponent } from './toggle-join-library-button.component';
 
@@ -32,7 +31,7 @@ import { ToggleJoinLibraryButtonComponent } from './toggle-join-library-button.c
   host: { class: 'app-toggle-join-library' }
 })
 export class ToggleJoinLibraryMenuComponent extends ToggleJoinLibraryButtonComponent {
-  constructor(store: Store<AppStore>, content: ContentManagementService) {
+  constructor(store: Store<any>, content: ContentManagementService) {
     super(store, content);
   }
 }

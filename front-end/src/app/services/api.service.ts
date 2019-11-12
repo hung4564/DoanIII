@@ -21,7 +21,7 @@ export interface Webscript {
 export class HandleService {
   constructor(
     private apiService: AlfrescoApiService,
-    private store: Store<AppStore>,
+    private store: Store<any>,
     public dialog: MatDialog
   ) {}
   async handleApi(webScript: Webscript): Promise<any> {

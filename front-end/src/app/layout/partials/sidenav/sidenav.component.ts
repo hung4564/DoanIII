@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavBarGroupRef } from '@alfresco/adf-extensions';
 import { Store } from '@ngrx/store';
-import { AppStore, getSideNavState } from 'app/store';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { getSideNavState } from 'app/store/selectors/app.selector';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
@@ -14,7 +14,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   groups: Array<NavBarGroupRef> = [];
   private onDestroy$: Subject<boolean> = new Subject<boolean>();
   @Input() mode: 'collapsed' | 'expanded' = 'expanded';
-  constructor(private store: Store<AppStore>, private extensions: AppExtensionService) {}
+  constructor(private store: Store<any>, private extensions: AppExtensionService) {}
 
   ngOnInit() {
     this.store

@@ -1,4 +1,3 @@
-import { AppStore, SetSelectedNodesAction, getAppSelection } from 'app/store';
 import { AlfrescoApiService } from '@alfresco/adf-core';
 import { ContentActionRef } from '@alfresco/adf-extensions';
 import { SharedLinkEntry } from '@alfresco/js-api';
@@ -8,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { forkJoin, from, of } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
+import { SetSelectedNodesAction } from 'app/store/actions/node.action';
+import { getAppSelection } from 'app/store/selectors/app.selector';
 @Component({
   selector: 'app-shared-link-view',
   templateUrl: 'shared-link-view.component.html',
@@ -21,7 +22,7 @@ export class SharedLinkViewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private extensions: AppExtensionService,
     private alfrescoApiService: AlfrescoApiService
   ) {}

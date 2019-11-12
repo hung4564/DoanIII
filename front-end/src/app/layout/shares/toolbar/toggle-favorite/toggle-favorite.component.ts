@@ -2,11 +2,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SelectionState } from '@alfresco/adf-extensions';
-import {
-  AppStore,
-  ReloadDocumentListAction,
-  getAppSelection
-} from 'app/store';
+import { getAppSelection } from 'app/store/selectors/app.selector';
+import { ReloadDocumentListAction } from 'app/store/actions/app.action';
 
 @Component({
   selector: 'app-toggle-favorite',
@@ -32,7 +29,7 @@ import {
 export class ToggleFavoriteComponent {
   selection$: Observable<SelectionState>;
 
-  constructor(private store: Store<AppStore>) {
+  constructor(private store: Store<any>) {
     this.selection$ = this.store.select(getAppSelection);
   }
 

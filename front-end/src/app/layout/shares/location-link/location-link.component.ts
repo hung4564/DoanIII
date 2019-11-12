@@ -36,7 +36,6 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { TranslationService } from '@alfresco/adf-core';
-import { AppStore } from 'app/store';
 import { ContentApiService } from 'app/services/content-api.service';
 
 @Component({
@@ -80,7 +79,7 @@ export class LocationLinkComponent implements OnInit {
   }
 
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private contentApi: ContentApiService,
     private translationService: TranslationService
   ) {}

@@ -36,8 +36,8 @@ import {
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { NodeActionTypes } from 'app/store';
 import { isLocked } from 'app/utils/node.utils';
+import { NodeActionTypes } from 'app/store/actions/node.action';
 
 @Component({
   selector: 'aca-custom-name-column',

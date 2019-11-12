@@ -3,7 +3,7 @@ import { CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStore, isQuickShareEnabled } from 'app/store';
+import { isQuickShareEnabled } from 'app/store/selectors/app.selector';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { AppStore, isQuickShareEnabled } from 'app/store';
 export class AppSharedRuleGuard implements CanActivate {
   isQuickShareEnabled$: Observable<boolean>;
 
-  constructor(store: Store<AppStore>) {
+  constructor(store: Store<any>) {
     this.isQuickShareEnabled$ = store.select(isQuickShareEnabled);
   }
 

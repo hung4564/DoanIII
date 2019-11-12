@@ -2,33 +2,16 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import {
-  AppStore,
-  NodeActionTypes,
-  PurgeDeletedNodesAction,
-  DeleteNodesAction,
-  UndoDeleteNodesAction,
-  CreateFolderAction,
-  EditFolderAction,
-  RestoreDeletedNodesAction,
-  ShareNodeAction,
-  ManageVersionsAction,
-  UnlockWriteAction,
-  UnshareNodesAction,
-  CopyNodesAction,
-  MoveNodesAction,
-  ManagePermissionsAction,
-  PrintFileAction,
-  getCurrentFolder,
-  getAppSelection
-} from '..';
+
 import { ContentManagementService } from '../../services/content-management.service';
 import { ViewUtilService } from '@alfresco/adf-core';
+import { ShareNodeAction, NodeActionTypes, UnshareNodesAction, PurgeDeletedNodesAction, RestoreDeletedNodesAction, DeleteNodesAction, UndoDeleteNodesAction, CreateFolderAction, EditFolderAction, CopyNodesAction, MoveNodesAction, ManagePermissionsAction, ManageVersionsAction, PrintFileAction, UnlockWriteAction } from '../actions/node.action';
+import { getAppSelection, getCurrentFolder } from '../selectors/app.selector';
 
 @Injectable()
 export class NodeEffects {
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private actions$: Actions,
     private contentService: ContentManagementService,
     private viewUtils: ViewUtilService

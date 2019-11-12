@@ -4,19 +4,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import {
-  AppStore,
-  SnackbarInfoAction,
-  SnackbarActionTypes,
-  SnackbarWarningAction,
-  SnackbarErrorAction,
-  SnackbarAction
-} from '..';
+import { SnackbarInfoAction, SnackbarActionTypes, SnackbarWarningAction, SnackbarErrorAction, SnackbarAction } from '../actions/snackbar.actions';
 
 @Injectable()
 export class SnackbarEffects {
   constructor(
-    private store: Store<AppStore>,
+    private store: Store<any>,
     private actions$: Actions,
     private snackBar: MatSnackBar,
     private translationService: TranslationService

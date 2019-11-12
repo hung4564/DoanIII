@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   profile$: Observable<ProfileState>;
-  constructor(private router: Router, private store: Store<AppStore>) {}
+  constructor(private router: Router, private store: Store<any>) {}
   mySuccessMethod($event) {
     this.store.select(getUserProfile).subscribe(result => {
       if (result.isAdmin) {

@@ -1,8 +1,8 @@
-import { SnackbarErrorAction } from 'app/store';
 import { MinimalNodeEntryEntity } from '@alfresco/js-api';
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
 
 @Component({
   templateUrl: './node-versions.dialog.html',

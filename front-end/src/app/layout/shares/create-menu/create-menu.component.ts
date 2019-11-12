@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ContentActionRef } from '@alfresco/adf-extensions';
-import { AppStore, getCurrentFolder } from 'app/store';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AppStore } from 'app/store/states/app.state';
+import { getCurrentFolder } from 'app/store/selectors/app.selector';
 
 @Component({
   selector: 'app-create-menu',
@@ -23,7 +24,7 @@ export class CreateMenuComponent implements OnInit, OnDestroy {
   @Input()
   expanded: boolean;
 
-  constructor(private store: Store<AppStore>, private extensions: AppExtensionService) {}
+  constructor(private store: Store<any>, private extensions: AppExtensionService) {}
 
   ngOnInit() {
     this.store
