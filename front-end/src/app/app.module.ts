@@ -1,22 +1,19 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, RouteReuseStrategy } from '@angular/router';
-import { AppRoutingModule } from './app.routes';
+import { appRoutes } from './app.routes';
 
 // App components
 import { AppComponent } from './app.component';
 import { SharesModule } from './layout/shares/shares.module';
 import { LoginModule } from './pages/login/login.module';
-import { CoreModule, TRANSLATION_PROVIDER } from '@alfresco/adf-core';
+import { CoreModule, TRANSLATION_PROVIDER, DebugAppConfigService } from '@alfresco/adf-core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { AppStoreModule } from 'app/store/app-store.module';
-import { registerLocaleData } from '@angular/common';
-import localeVi from '@angular/common/locales/vi';
 import { AppService } from './services/app.service';
 import { HandleService } from './services/api.service';
 import { AppRouteReuseStrategy } from './routing/app.routes.strategy';
 import { PreviewService } from './services/preview.service';
-registerLocaleData(localeVi);
 
 import { UsersModule } from 'app/pages/users/users.module';
 import { GroupsModule } from 'app/pages/groups/groups.module';
@@ -33,14 +30,23 @@ import { ContentApiService } from 'app/services/content-api.service';
 import { NodePermissionService } from './services/node-permission.service';
 import { NodeActionsService } from './services/node-actions.service';
 import { ContentManagementService } from './services/content-management.service';
+import { PreviewComponent } from './pages/preview/preview.component';
+import { FileTrashModule } from './pages/file-trash/file-trash.module';
+import { AppSharedLinkViewModule } from './pages/shared-link-view/shared-link-view.module';
+import { FileShareModule } from './pages/file-share/file-share.module';
+import { FileRecentModule } from './pages/file-recent/file-recent.module';
+import { FileFavoriteModule } from './pages/file-favorite/file-favorite.module';
 @NgModule({
   imports: [
     AppStoreModule,
     SharesModule,
-    AppRoutingModule,
     RouterModule,
     BrowserAnimationsModule,
     LoginModule,
+    RouterModule.forRoot(appRoutes, {
+      useHash: false,
+      enableTracing: false // enable for debug only
+    }),
     // ADF modules
     CoreModule.forRoot(),
     ContentModule.forRoot(),
@@ -52,7 +58,12 @@ import { ContentManagementService } from './services/content-management.service'
     HomeModule,
     FilesModule,
     ErrorModule,
-    MySitesModule
+    MySitesModule,
+    FileTrashModule,
+    AppSharedLinkViewModule,
+    FileShareModule,
+    FileRecentModule,
+    FileFavoriteModule
   ],
   providers: [
     AppService,
@@ -73,7 +84,7 @@ import { ContentManagementService } from './services/content-management.service'
       }
     }
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, PreviewComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

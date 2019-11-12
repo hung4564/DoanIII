@@ -22,13 +22,15 @@ import {
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppConfigService, AuthenticationService } from '@alfresco/adf-core';
-import { RepositoryInfo } from '@alfresco/js-api';
+import { RepositoryInfo, NodeEntry } from '@alfresco/js-api';
 import { NodePermissionService } from 'app/services/node-permission.service';
 import { AppStore } from 'app/store/states/app.state';
 import { getRuleContext } from 'app/store/selectors/app.selector';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-
+export interface ViewerRules {
+  canPreview?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -53,12 +55,15 @@ export class AppExtensionService implements RuleContext {
     searchLibraries: []
   };
 
+  openWithActions: Array<ContentActionRef> = [];
   toolbarActions: Array<ContentActionRef> = [];
   viewerToolbarActions: Array<ContentActionRef> = [];
   contextMenuActions: Array<ContentActionRef> = [];
   createActions: Array<ContentActionRef> = [];
   navbar: Array<NavBarGroupRef> = [];
   sidebar: Array<SidebarTabRef> = [];
+  sharedLinkViewerToolbarActions: Array<ContentActionRef> = [];
+  viewerRules: ViewerRules = {};
 
   selection: SelectionState;
   navigation: NavigationState;
@@ -95,10 +100,15 @@ export class AppExtensionService implements RuleContext {
       console.error('Extension configuration not found');
       return;
     }
+    this.openWithActions = this.loader.getContentActions(config, 'features.viewer.openWith');
     this.toolbarActions = this.loader.getContentActions(config, 'features.toolbar');
     this.viewerToolbarActions = this.loader.getContentActions(
       config,
       'features.viewer.toolbarActions'
+    );
+    this.sharedLinkViewerToolbarActions = this.loader.getContentActions(
+      config,
+      'features.viewer.shared.toolbarActions'
     );
     this.createActions = this.loader.getElements<ContentActionRef>(config, 'features.create');
     this.contextMenuActions = this.loader.getContentActions(config, 'features.contextMenu');
@@ -115,6 +125,9 @@ export class AppExtensionService implements RuleContext {
       searchLibraries: this.getDocumentListPreset(config, 'search-libraries')
     };
 
+    if (config.features && config.features.viewer) {
+      this.viewerRules = <ViewerRules>(config.features.viewer['rules'] || {});
+    }
     this.registerIcons(config);
     const references = (config.$references || [])
       .filter(entry => typeof entry === 'object')
@@ -228,12 +241,14 @@ export class AppExtensionService implements RuleContext {
   runActionById(id: string) {
     console.log('TCL: AppExtensionService -> runActionById -> id', id);
     const action = this.extensions.getActionById(id);
+    console.log('TCL: AppExtensionService -> runActionById -> action', action);
     if (action) {
       const { type, payload } = action;
       const context = {
         selection: this.selection
       };
       const expression = this.extensions.runExpression(payload, context);
+      console.log('TCL: AppExtensionService -> runActionById -> expression', expression);
 
       this.store.dispatch({ type, payload: expression });
     } else {
@@ -330,5 +345,33 @@ export class AppExtensionService implements RuleContext {
           .reduce(reduceEmptyMenus, [])
       };
     });
+  }
+  canPreviewNode(node: NodeEntry) {
+    const rules = this.viewerRules;
+
+    if (this.isRuleDefined(rules.canPreview)) {
+      const canPreview = this.evaluateRule(rules.canPreview, node);
+
+      if (!canPreview) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+  isRuleDefined(ruleId: string): boolean {
+    return ruleId && this.getEvaluator(ruleId) ? true : false;
+  }
+  evaluateRule(ruleId: string, ...args: any[]): boolean {
+    const evaluator = this.getEvaluator(ruleId);
+
+    if (evaluator) {
+      return evaluator(this, ...args);
+    }
+
+    return false;
+  }
+  getSharedLinkViewerToolbarActions(): Array<ContentActionRef> {
+    return this.getAllowedActions(this.sharedLinkViewerToolbarActions);
   }
 }

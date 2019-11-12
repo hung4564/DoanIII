@@ -8,7 +8,6 @@ import { CurrentUserComponent } from './partials/current-user/current-user.compo
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout.component';
-import { LayoutRoutingModule } from './layout.routing';
 import { LayoutService } from './layout.service';
 import { CoreExtensionsModule } from 'app/extensions/core.extensions.module';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
@@ -21,7 +20,6 @@ import { ExtensionsModule } from '@alfresco/adf-extensions';
     CoreExtensionsModule.forChild(),
     CoreModule.forChild(),
     ContentModule.forChild(),
-    LayoutRoutingModule,
     ExtensionsModule
   ],
   declarations: [SidenavComponent, HeaderComponent, CurrentUserComponent, LayoutComponent],

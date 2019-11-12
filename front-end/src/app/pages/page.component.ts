@@ -1,6 +1,6 @@
 import { OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { DocumentListComponent } from '@alfresco/adf-content-services';
+import { DocumentListComponent, ShareDataRow } from '@alfresco/adf-content-services';
 import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
@@ -10,11 +10,13 @@ import {
   ViewNodeExtras,
   getAppSelection,
   ReloadDocumentListAction,
-  getCurrentFolder
+  getCurrentFolder,
+  ViewFileAction
 } from 'app/store';
 import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
 import { takeUntil } from 'rxjs/operators';
 import { ContentManagementService } from 'app/services/content-management.service';
+import { isLocked, isLibrary } from 'app/utils/node.utils';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -32,11 +34,10 @@ export class PageComponent implements OnInit, OnDestroy {
     protected extensions: AppExtensionService,
     protected content: ContentManagementService
   ) {}
-  showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
+  showPreview(node: MinimalNodeEntity) {
     if (node && node.entry) {
-      const id = (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
-
-      this.store.dispatch(new ViewNodeAction(id, extras));
+      const parentId = this.node ? this.node.id : null;
+      this.store.dispatch(new ViewFileAction(node, parentId));
     }
   }
   getParentNodeId(): string {
@@ -77,5 +78,16 @@ export class PageComponent implements OnInit, OnDestroy {
 
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
+  }
+  imageResolver(row: ShareDataRow): string | null {
+    if (isLocked(row.node)) {
+      return 'assets/images/baseline-lock-24px.svg';
+    }
+
+    if (isLibrary(row.node)) {
+      return 'assets/images/baseline-library_books-24px.svg';
+    }
+
+    return null;
   }
 }

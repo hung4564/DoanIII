@@ -15,7 +15,6 @@ export class ContextMenuItemComponent {
   constructor(private extensions: AppExtensionService) {}
 
   runAction() {
-    console.log('TCL: ContextMenuItemComponent -> runAction -> this.actionRef', this.actionRef);
     if (this.hasClickAction(this.actionRef)) {
       this.extensions.runActionById(this.actionRef.actions.click);
     }

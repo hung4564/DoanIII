@@ -45,26 +45,25 @@ export class ViewerEffects {
   viewNode$ = this.actions$.pipe(
     ofType<ViewNodeAction>(ViewerActionTypes.ViewNode),
     map(action => {
-      this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
-      // if (action.viewNodeExtras) {
-      //   const { location, path } = action.viewNodeExtras;
+      if (action.viewNodeExtras) {
+        const { location, path } = action.viewNodeExtras;
 
-      //   if (location) {
-      //     const navigation = this.getNavigationCommands(location);
+        if (location) {
+          this.router.navigate([location, { outlets: { overlay: ['view', action.nodeId] } }], {
+            queryParams: {
+              source: location
+            }
+          });
+        }
 
-      //     this.router.navigate([...navigation, { outlets: { overlay: ['view', action.nodeId] } }], {
-      //       queryParams: { location }
-      //     });
-      //   }
-
-      //   if (path) {
-      //     this.router.navigate(['view', { outlets: { overlay: [action.nodeId] } }], {
-      //       queryParams: { path }
-      //     });
-      //   }
-      // } else {
-      //   this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
-      // }
+        if (path) {
+          this.router.navigate(['view', { outlets: { overlay: [action.nodeId] } }], {
+            queryParams: { path }
+          });
+        }
+      } else {
+        this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
+      }
     })
   );
 
@@ -75,8 +74,7 @@ export class ViewerEffects {
       if (action.payload && action.payload.entry) {
         const { id, nodeId, isFile } = <any>action.payload.entry;
 
-        const isCanView = isFile || nodeId;
-        // && this.extensions.canPreviewNode(action.payload);
+        const isCanView = (isFile || nodeId) && this.extensions.canPreviewNode(action.payload);
         if (isCanView) {
           this.displayPreview(nodeId || id, action.parentId);
         }
@@ -88,8 +86,8 @@ export class ViewerEffects {
             if (result.selection && result.selection.file) {
               const { id, nodeId, isFile } = <any>result.selection.file.entry;
 
-              const isCanView = isFile || nodeId;
-              // && this.extensions.canPreviewNode(action.payload);
+              const isCanView =
+                (isFile || nodeId) && this.extensions.canPreviewNode(action.payload);
               if (isCanView) {
                 const parentId = result.folder ? result.folder.id : null;
                 this.displayPreview(nodeId || id, parentId);
@@ -115,9 +113,8 @@ export class ViewerEffects {
     if (parentId) {
       path.push(parentId);
     }
-    // path.push('preview', nodeId);
-    this.router.navigate([{ outlets: { overlay: ['files', nodeId, 'view'] } }]);
-    // this.router.navigateByUrl(path.join('/'));
+    path.push('preview', nodeId);
+    this.router.navigateByUrl(path.join('/'));
   }
 
   enterFullScreen() {
@@ -135,21 +132,5 @@ export class ViewerEffects {
         container.msRequestFullscreen();
       }
     }
-  }
-
-  private getNavigationCommands(url: string): any[] {
-    const urlTree: UrlTree = this.router.parseUrl(url);
-    const urlSegmentGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
-
-    if (!urlSegmentGroup) {
-      return [url];
-    }
-
-    const urlSegments: UrlSegment[] = urlSegmentGroup.segments;
-
-    return urlSegments.reduce(function(acc, item) {
-      acc.push(item.path, item.parameters);
-      return acc;
-    }, []);
   }
 }

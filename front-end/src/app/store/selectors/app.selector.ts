@@ -82,3 +82,7 @@ export const getRuleContext = createSelector(
     };
   }
 );
+export const isQuickShareEnabled = createSelector(
+  getRepositoryStatus,
+  info => info.status.isQuickShareEnabled
+);

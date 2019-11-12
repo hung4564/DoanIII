@@ -26,7 +26,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.groups = this.extensions.getApplicationNavigation(this.extensions.navbar);
-        console.log('TCL: SidenavComponent -> ngOnInit -> this.groups', this.groups);
       });
   }
 

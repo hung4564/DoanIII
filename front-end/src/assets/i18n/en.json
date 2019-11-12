@@ -506,8 +506,15 @@
     }
   },
   "ADF_VIEWER": {
+    "LOADING": "Loading...",
     "ACTIONS": {
-      "INFO": "View details"
+      "INFO": "View details",
+      "PREV_FILE": "Previous file",
+      "NEXT_FILE": "Next file"
+    },
+    "PAGE_LABEL": {
+      "SHOWING": "Showing",
+      "OF": "Of"
     }
   },
   "FILE_UPLOAD": {

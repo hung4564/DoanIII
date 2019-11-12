@@ -158,7 +158,7 @@ export class ContentManagementService {
   shareNode(node: any): void {
     if (node && node.entry) {
       // shared and favorite
-      const id = node.entry.nodeId || (<any>node).entry.guid;
+      const id = node.entry.id || (<any>node).entry.guid;
 
       if (id) {
         this.contentApi.getNodeInfo(id).subscribe(entry => {

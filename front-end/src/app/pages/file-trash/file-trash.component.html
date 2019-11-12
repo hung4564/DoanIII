@@ -1,10 +1,9 @@
 <adf-toolbar>
   <adf-toolbar-title>
-    <adf-breadcrumb class="files-breadcrumb" root="Personal Files"> </adf-breadcrumb>
+    <adf-breadcrumb root="APP.BROWSE.TRASHCAN.TITLE"> </adf-breadcrumb>
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
-  <app-create-menu [expanded]="false"></app-create-menu>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
     <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
   </ng-container>
@@ -14,14 +13,24 @@
   #documentList
   acaDocumentList
   acaContextActions
-  [allowDropFiles]="true"
-  [navigate]="false"
-  [currentFolderId]="node?.id"
+  currentFolderId="-trashcan-"
+  (preview)="showPreview($event)"
   [stickyHeader]="true"
   [imageResolver]="imageResolver"
-  (name-click)="goDetail($event.detail?.node)"
-  (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
+  selectionMode="multiple"
+  [navigate]="false"
 >
+  <adf-custom-empty-content-template>
+    <adf-empty-content icon="delete" [title]="'APP.BROWSE.TRASHCAN.EMPTY_STATE.TITLE'">
+      <p class="adf-empty-content__text">
+        {{ "APP.BROWSE.TRASHCAN.EMPTY_STATE.FIRST_TEXT" | translate }}
+      </p>
+      <p class="adf-empty-content__text">
+        {{ "APP.BROWSE.TRASHCAN.EMPTY_STATE.SECOND_TEXT" | translate }}
+      </p>
+    </adf-empty-content>
+  </adf-custom-empty-content-template>
+
   <data-columns>
     <ng-container *ngFor="let column of columns; trackBy: trackById">
       <ng-container *ngIf="column.template && !(column.desktopOnly && isSmallScreen)">
@@ -51,6 +60,15 @@
         </data-column>
       </ng-container>
     </ng-container>
+
+    <data-column
+      *ngIf="!isSmallScreen && (user$ | async)?.isAdmin"
+      class="adf-ellipsis-cell"
+      key="archivedByUser.displayName"
+      title="APP.DOCUMENT_LIST.COLUMNS.DELETED_BY"
+    >
+    </data-column>
   </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
+<adf-file-uploading-dialog></adf-file-uploading-dialog>

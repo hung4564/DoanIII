@@ -12,9 +12,11 @@ import { ToggleJoinLibraryMenuComponent } from './toggle-join-library/toggle-joi
 import { ToggleFavoriteLibraryComponent } from './toggle-favorite-library/toggle-favorite-library.component';
 import { ToggleEditOfflineComponent } from './toggle-edit-offline/toggle-edit-offline.component';
 import { DirectivesModule } from 'app/directives/directives.module';
+import { ToggleSharedComponent } from './toggle-shared/toggle-shared.component';
 
 export function components() {
   return [
+    ToggleSharedComponent,
     ToggleFavoriteComponent,
     ToolbarButtonComponent,
     ToolbarActionComponent,

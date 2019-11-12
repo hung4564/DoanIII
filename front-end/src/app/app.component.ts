@@ -20,7 +20,8 @@ import { AppStore, AppState } from './store/states/app.state';
 import {
   SetUserProfileAction,
   SetInitialStateAction,
-  SetRepositoryInfoAction
+  SetRepositoryInfoAction,
+  SetCurrentUrlAction
 } from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
 import { SnackbarErrorAction } from './store/actions/snackbar.actions';
@@ -87,7 +88,7 @@ export class AppComponent implements OnInit {
 
         this.pageHeading = data.title || '';
         pageTitle.setTitle(data.title || '');
-        // this.store.dispatch(new SetCurrentUrlAction(router.url));
+        this.store.dispatch(new SetCurrentUrlAction(router.url));
       });
 
     this.uploadService.fileUploadError.subscribe(error => this.onFileUploadedError(error));
@@ -123,8 +124,13 @@ export class AppComponent implements OnInit {
     });
   }
   loadAppSettings() {
+    let baseShareUrl = this.config.get<string>('baseShareUrl');
+    if (!baseShareUrl.endsWith('/')) {
+      baseShareUrl += '/';
+    }
     const state: AppState = {
       ...INITIAL_APP_STATE,
+      sharedUrl: baseShareUrl,
       languagePicker: this.config.get<boolean>('languagePicker'),
       appName: this.config.get<string>('application.name'),
       headerColor: this.config.get<string>('headerColor'),

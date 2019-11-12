@@ -1,10 +1,9 @@
 <adf-toolbar>
   <adf-toolbar-title>
-    <adf-breadcrumb class="files-breadcrumb" root="Personal Files"> </adf-breadcrumb>
+    <adf-breadcrumb root="APP.BROWSE.FAVORITES.TITLE"> </adf-breadcrumb>
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
-  <app-create-menu [expanded]="false"></app-create-menu>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
     <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
   </ng-container>
@@ -14,14 +13,23 @@
   #documentList
   acaDocumentList
   acaContextActions
-  [allowDropFiles]="true"
-  [navigate]="false"
-  [currentFolderId]="node?.id"
+  currentFolderId="-favorites-"
+  (preview)="showPreview($event)"
   [stickyHeader]="true"
-  [imageResolver]="imageResolver"
-  (name-click)="goDetail($event.detail?.node)"
+  selectionMode="multiple"
+  [navigate]="false"
   (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
+  (name-click)="onNodeDoubleClick($event.detail?.node)"
 >
+  <adf-custom-empty-content-template>
+    <adf-empty-content
+      icon="star_rate"
+      [title]="'APP.BROWSE.FAVORITES.EMPTY_STATE.TITLE'"
+      subtitle="APP.BROWSE.FAVORITES.EMPTY_STATE.TEXT"
+    >
+    </adf-empty-content>
+  </adf-custom-empty-content-template>
+
   <data-columns>
     <ng-container *ngFor="let column of columns; trackBy: trackById">
       <ng-container *ngIf="column.template && !(column.desktopOnly && isSmallScreen)">
@@ -54,3 +62,4 @@
   </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
+<adf-file-uploading-dialog></adf-file-uploading-dialog>
