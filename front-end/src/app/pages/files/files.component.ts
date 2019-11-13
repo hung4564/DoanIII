@@ -5,7 +5,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PageComponent } from '../page.component';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { Store } from '@ngrx/store';
-import { MinimalNodeEntity, PathElement, MinimalNodeEntryEntity } from '@alfresco/js-api';
+import {
+  MinimalNodeEntity,
+  PathElement,
+  MinimalNodeEntryEntity,
+  PathElementEntity
+} from '@alfresco/js-api';
 import { ContentApiService } from 'app/services/content-api.service';
 import { NodeActionsService } from 'app/services/node-actions.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -199,7 +204,7 @@ export class FilesComponent extends PageComponent implements OnInit {
 
       if (e.entry.isFile) {
         const node = e.entry;
-        this.router.navigate([`file/${node.id}`]);
+        this.router.navigate([`personal-files/file/${node.id}`]);
       }
     }
   }
@@ -213,6 +218,15 @@ export class FilesComponent extends PageComponent implements OnInit {
         this.showPreview(node);
       }
     }
+  }
+  onBreadcrumbNavigate(route: PathElementEntity) {
+    // todo: review this approach once 5.2.3 is out
+    if (this.nodePath && this.nodePath.length > 2) {
+      if (this.nodePath[1].name === 'Sites' && this.nodePath[2].id === route.id) {
+        return this.navigate(this.nodePath[3].id);
+      }
+    }
+    this.navigate(route.id);
   }
   navigate(nodeId: string = null) {
     const commands = ['./'];

@@ -62,4 +62,7 @@
   </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
-<adf-file-uploading-dialog></adf-file-uploading-dialog>
+
+<mat-sidenav *ngIf="infoDrawerOpened$ | async" [mode]="'over'" [opened]="infoDrawerOpened$ | async">
+  <aca-info-drawer [node]="selection.last"></aca-info-drawer>
+</mat-sidenav>

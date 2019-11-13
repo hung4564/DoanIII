@@ -7,7 +7,9 @@ import {
   SetInitialStateAction,
   SetCurrentUrlAction,
   SetRepositoryInfoAction,
-  SetCurrentFolderAction
+  SetCurrentFolderAction,
+  SetInfoDrawerStateAction,
+  SetInfoDrawerMetadataAspectAction
 } from '../actions/app.action';
 import { INITIAL_APP_STATE } from '../states/initial-state';
 import { NodeActionTypes, SetSelectedNodesAction } from '../actions/node.action';
@@ -39,6 +41,15 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
       break;
     case NodeActionTypes.SetSelection:
       newState = updateSelectedNodes(state, <SetSelectedNodesAction>action);
+      break;
+    case AppActionTypes.ToggleInfoDrawer:
+      newState = toggleInfoDrawer(state);
+      break;
+    case AppActionTypes.SetInfoDrawerState:
+      newState = setInfoDrawer(state, <SetInfoDrawerStateAction>action);
+      break;
+    case AppActionTypes.SetInfoDrawerMetadataAspect:
+      newState = setInfoDrawerAspect(state, <SetInfoDrawerMetadataAspectAction>action);
       break;
     default:
       newState = Object.assign({}, state);
@@ -143,5 +154,30 @@ function updateSelectedNodes(state: AppState, action: SetSelectedNodesAction): A
 function updateCurrentFolder(state: AppState, action: SetCurrentFolderAction) {
   const newState = Object.assign({}, state);
   newState.navigation.currentFolder = action.payload;
+  return newState;
+}
+function toggleInfoDrawer(state: AppState) {
+  const newState = Object.assign({}, state);
+
+  let value = state.infoDrawerOpened;
+  if (state.selection.isEmpty) {
+    value = false;
+  } else {
+    value = !value;
+  }
+
+  newState.infoDrawerOpened = value;
+
+  return newState;
+}
+function setInfoDrawer(state: AppState, action: SetInfoDrawerStateAction) {
+  const newState = Object.assign({}, state);
+  newState.infoDrawerOpened = action.payload;
+  return newState;
+}
+
+function setInfoDrawerAspect(state: AppState, action: SetInfoDrawerMetadataAspectAction) {
+  const newState = Object.assign({}, state);
+  newState.infoDrawerMetadataAspect = action.payload;
   return newState;
 }

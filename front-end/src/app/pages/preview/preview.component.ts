@@ -89,11 +89,11 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   ngOnInit() {
     super.ngOnInit();
 
-    // from(this.infoDrawerOpened$)
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(val => {
-    //     this.showRightSide = val;
-    //   });
+    from(this.infoDrawerOpened$)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(val => {
+        this.showRightSide = val;
+      });
 
     this.previewLocation = this.router.url
       .substr(0, this.router.url.indexOf('/', 1))

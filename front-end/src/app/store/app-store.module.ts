@@ -12,6 +12,8 @@ import { DownloadEffects } from './effects/download.effects';
 import { NodeEffects } from './effects/node.effects';
 import { RouterEffects } from './effects/router.effects';
 import { appReducer } from './reducers/app.reducer';
+import { LibraryEffects } from './effects/library.effects';
+import { FavoriteEffects } from './effects/favorite.effects';
 
 @NgModule({
   imports: [
@@ -22,7 +24,9 @@ import { appReducer } from './reducers/app.reducer';
       DownloadEffects,
       NodeEffects,
       RouterEffects,
-      UploadEffects
+      UploadEffects,
+      LibraryEffects,
+      FavoriteEffects
     ]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({

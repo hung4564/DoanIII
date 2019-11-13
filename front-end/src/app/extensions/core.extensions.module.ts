@@ -18,6 +18,11 @@ import { ToggleJoinLibraryMenuComponent } from 'app/layout/shares/toolbar/toggle
 import { ToggleSharedComponent } from 'app/layout/shares/toolbar/toggle-shared/toggle-shared.component';
 import { LocationLinkComponent } from 'app/layout/shares/location-link/location-link.component';
 import { ToggleEditOfflineComponent } from 'app/layout/shares/toolbar/toggle-edit-offline/toggle-edit-offline.component';
+import { ToggleInfoDrawerComponent } from 'app/layout/shares/toolbar/toggle-info-drawer/toggle-info-drawer.component';
+import { LibraryMetadataTabComponent } from 'app/layout/shares/info-drawer/library-metadata-tab/library-metadata-tab.component';
+import { CommentsTabComponent } from 'app/layout/shares/info-drawer/comments-tab/comments-tab.component';
+import { VersionsTabComponent } from 'app/layout/shares/info-drawer/versions-tab/versions-tab.component';
+import { MetadataTabComponent } from 'app/layout/shares/info-drawer/metadata-tab/metadata-tab.component';
 
 export function setupExtensions(service: AppExtensionService): Function {
   return () => service.load();
@@ -50,11 +55,11 @@ export class CoreExtensionsModule {
   constructor(extensions: ExtensionService) {
     extensions.setComponents({
       // 'app.layout.main': AppLayoutComponent,
-      // 'app.components.tabs.metadata': MetadataTabComponent,
-      // 'app.components.tabs.library.metadata': LibraryMetadataTabComponent,
-      // 'app.components.tabs.comments': CommentsTabComponent,
-      // 'app.components.tabs.versions': VersionsTabComponent,
-      // 'app.toolbar.toggleInfoDrawer': ToggleInfoDrawerComponent,
+      'app.components.tabs.metadata': MetadataTabComponent,
+      'app.components.tabs.library.metadata': LibraryMetadataTabComponent,
+      'app.components.tabs.comments': CommentsTabComponent,
+      'app.components.tabs.versions': VersionsTabComponent,
+      'app.toolbar.toggleInfoDrawer': ToggleInfoDrawerComponent,
       'app.toolbar.toggleFavorite': ToggleFavoriteComponent,
       'app.toolbar.toggleFavoriteLibrary': ToggleFavoriteLibraryComponent,
       'app.toolbar.toggleJoinLibrary': ToggleJoinLibraryButtonComponent,

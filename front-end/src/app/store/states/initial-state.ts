@@ -12,6 +12,8 @@ export const INITIAL_APP_STATE: AppState = {
     firstName: '',
     lastName: ''
   },
+  infoDrawerOpened: false,
+  infoDrawerMetadataAspect: '',
   selection: {
     nodes: [],
     libraries: [],

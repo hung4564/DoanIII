@@ -86,3 +86,13 @@ export const isQuickShareEnabled = createSelector(
   getRepositoryStatus,
   info => info.status.isQuickShareEnabled
 );
+
+export const isInfoDrawerOpened = createSelector(
+  selectApp,
+  state => state.infoDrawerOpened
+);
+
+export const infoDrawerMetadataAspect = createSelector(
+  selectApp,
+  state => state.infoDrawerMetadataAspect
+);

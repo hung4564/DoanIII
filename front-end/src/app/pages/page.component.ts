@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, Observable } from 'rxjs';
 import { DocumentListComponent, ShareDataRow } from '@alfresco/adf-content-services';
 import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
@@ -11,12 +11,17 @@ import { ContentManagementService } from 'app/services/content-management.servic
 import { isLocked, isLibrary } from 'app/utils/node.utils';
 import { ViewFileAction } from 'app/store/actions/viewer.actions';
 import { ReloadDocumentListAction } from 'app/store/actions/app.action';
-import { getAppSelection, getCurrentFolder } from 'app/store/selectors/app.selector';
+import {
+  getAppSelection,
+  getCurrentFolder,
+  isInfoDrawerOpened
+} from 'app/store/selectors/app.selector';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   canUpdateNode = false;
   canUpload = false;
+  infoDrawerOpened$: Observable<boolean>;
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
   node: MinimalNodeEntryEntity;
@@ -50,6 +55,7 @@ export class PageComponent implements OnInit, OnDestroy {
     return obj.id;
   }
   ngOnInit() {
+    this.infoDrawerOpened$ = this.store.select(isInfoDrawerOpened);
     this.store
       .select(getAppSelection)
       .pipe(takeUntil(this.onDestroy$))

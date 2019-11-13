@@ -11,6 +11,8 @@ export interface AppState {
   navigation: NavigationState;
   sharedUrl: string;
   repository: RepositoryInfo;
+  infoDrawerOpened: boolean;
+  infoDrawerMetadataAspect: string;
 }
 
 export interface AppStore {

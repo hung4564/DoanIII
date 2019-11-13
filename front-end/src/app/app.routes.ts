@@ -15,6 +15,7 @@ import { AppSharedRuleGuard } from './routing/shared.guard';
 import { FileShareComponent } from './pages/file-share/file-share.component';
 import { FileRecentComponent } from './pages/file-recent/file-recent.component';
 import { FileFavoriteComponent } from './pages/file-favorite/file-favorite.component';
+import { FileDetailComponent } from './pages/files/file-detail/file-detail.component';
 export const appRoutes: Routes = [
   {
     path: 'login',
@@ -60,6 +61,13 @@ export const appRoutes: Routes = [
             data: {
               title: 'APP.BROWSE.PERSONAL.TITLE',
               defaultNodeId: '-my-'
+            }
+          },
+          {
+            path: 'file/:nodeId',
+            component: FileDetailComponent,
+            data: {
+              title: 'APP.BROWSE.PERSONAL.TITLE'
             }
           },
           {

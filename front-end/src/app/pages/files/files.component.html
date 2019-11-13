@@ -1,6 +1,12 @@
 <adf-toolbar>
   <adf-toolbar-title>
-    <adf-breadcrumb class="files-breadcrumb" root="Personal Files"> </adf-breadcrumb>
+    <adf-breadcrumb
+      class="files-breadcrumb"
+      [root]="title"
+      [folderNode]="node"
+      (navigate)="onBreadcrumbNavigate($event)"
+    >
+    </adf-breadcrumb>
   </adf-toolbar-title>
 
   <div class="adf-toolbar--spacer"></div>
@@ -19,7 +25,7 @@
   [currentFolderId]="node?.id"
   [stickyHeader]="true"
   [imageResolver]="imageResolver"
-  (name-click)="goDetail($event.detail?.node)"
+  (name-click)="onNodeDoubleClick($event.detail?.node)"
   (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
 >
   <data-columns>
@@ -54,3 +60,7 @@
   </data-columns>
 </adf-document-list>
 <adf-pagination [target]="documentList"> </adf-pagination>
+
+<mat-sidenav *ngIf="infoDrawerOpened$ | async" [mode]="'over'" [opened]="infoDrawerOpened$ | async">
+  <aca-info-drawer [node]="selection.last"></aca-info-drawer>
+</mat-sidenav>

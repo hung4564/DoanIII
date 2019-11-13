@@ -10,7 +10,10 @@ export enum AppActionTypes {
   ReloadDocumentList = 'RELOAD_DOCUMENT_LIST',
   SetCurrentUrl = 'SET_CURRENT_URL',
   SetRepositoryInfo = 'SET_REPOSITORY_INFO',
-  SetCurrentFolder = 'SET_CURRENT_FOLDER'
+  SetCurrentFolder = 'SET_CURRENT_FOLDER',
+  ToggleInfoDrawer = 'TOGGLE_INFO_DRAWER',
+  SetInfoDrawerState = 'SET_INFO_DRAWER_STATE',
+  SetInfoDrawerMetadataAspect = 'SET_INFO_DRAWER_METADATA_ASPECT'
 }
 
 export class SetInitialStateAction implements Action {
@@ -55,4 +58,16 @@ export class SetCurrentFolderAction implements Action {
   readonly type = AppActionTypes.SetCurrentFolder;
 
   constructor(public payload: Node) {}
+}
+export class ToggleInfoDrawerAction implements Action {
+  readonly type = AppActionTypes.ToggleInfoDrawer;
+}
+export class SetInfoDrawerStateAction implements Action {
+  readonly type = AppActionTypes.SetInfoDrawerState;
+
+  constructor(public payload: boolean) {}
+}
+export class SetInfoDrawerMetadataAspectAction implements Action {
+  readonly type = AppActionTypes.SetInfoDrawerMetadataAspect;
+  constructor(public payload: string) {}
 }

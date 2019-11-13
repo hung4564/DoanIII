@@ -17,9 +17,9 @@
     (navigateBefore)="onNavigateBefore()"
     (navigateNext)="onNavigateNext()"
   >
-    <!-- <adf-viewer-sidebar *ngIf="infoDrawerOpened$ | async">
+    <adf-viewer-sidebar *ngIf="infoDrawerOpened$ | async">
       <aca-info-drawer [node]="selection.file"></aca-info-drawer>
-    </adf-viewer-sidebar> -->
+    </adf-viewer-sidebar>
 
     <adf-viewer-open-with *ngIf="openWith.length">
       <ng-container *ngFor="let action of openWith; trackBy: trackByActionId">
@@ -28,9 +28,7 @@
     </adf-viewer-open-with>
 
     <adf-viewer-toolbar-actions>
-      <ng-container
-        *ngFor="let action of viewerToolbarActions; trackBy: trackByActionId"
-      >
+      <ng-container *ngFor="let action of viewerToolbarActions; trackBy: trackByActionId">
         <aca-toolbar-action [actionRef]="action"></aca-toolbar-action>
       </ng-container>
     </adf-viewer-toolbar-actions>

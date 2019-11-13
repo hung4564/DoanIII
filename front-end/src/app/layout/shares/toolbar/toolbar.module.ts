@@ -13,9 +13,11 @@ import { ToggleFavoriteLibraryComponent } from './toggle-favorite-library/toggle
 import { ToggleEditOfflineComponent } from './toggle-edit-offline/toggle-edit-offline.component';
 import { DirectivesModule } from 'app/directives/directives.module';
 import { ToggleSharedComponent } from './toggle-shared/toggle-shared.component';
+import { ToggleInfoDrawerComponent } from './toggle-info-drawer/toggle-info-drawer.component';
 
 export function components() {
   return [
+    ToggleInfoDrawerComponent,
     ToggleSharedComponent,
     ToggleFavoriteComponent,
     ToolbarButtonComponent,

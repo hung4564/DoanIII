@@ -1,0 +1,15 @@
+<div *ngIf="isLoading" class="info_loading">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-container *ngIf="!isLoading && !!displayNode">
+  <adf-info-drawer [title]="'APP.INFO_DRAWER.TITLE'">
+    <adf-info-drawer-tab *ngFor="let tab of tabs" [icon]="tab.icon" [label]="tab.title">
+      <adf-dynamic-tab
+        [node]="displayNode"
+        [id]="tab.component"
+        [attr.data-automation-id]="tab.component"
+      >
+      </adf-dynamic-tab>
+    </adf-info-drawer-tab>
+  </adf-info-drawer>
+</ng-container>

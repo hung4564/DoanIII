@@ -17,7 +17,8 @@ import {
   RuleEvaluator,
   IconRef,
   NavBarGroupRef,
-  SidebarTabRef
+  SidebarTabRef,
+  mergeObjects
 } from '@alfresco/adf-extensions';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -55,6 +56,7 @@ export class AppExtensionService implements RuleContext {
     searchLibraries: []
   };
 
+  contentMetadata: any;
   openWithActions: Array<ContentActionRef> = [];
   toolbarActions: Array<ContentActionRef> = [];
   viewerToolbarActions: Array<ContentActionRef> = [];
@@ -110,6 +112,7 @@ export class AppExtensionService implements RuleContext {
       config,
       'features.viewer.shared.toolbarActions'
     );
+    this.contentMetadata = this.loadContentMetadata(config);
     this.createActions = this.loader.getElements<ContentActionRef>(config, 'features.create');
     this.contextMenuActions = this.loader.getContentActions(config, 'features.contextMenu');
     this.navbar = this.loadNavBar(config);
@@ -373,5 +376,36 @@ export class AppExtensionService implements RuleContext {
   }
   getSharedLinkViewerToolbarActions(): Array<ContentActionRef> {
     return this.getAllowedActions(this.sharedLinkViewerToolbarActions);
+  }
+  loadContentMetadata(config: ExtensionConfig): any {
+    const elements = this.loader.getElements<any>(config, 'features.content-metadata-presets');
+    if (!elements.length) {
+      return null;
+    }
+
+    let presets = {};
+    presets = this.filterDisabled(mergeObjects(presets, ...elements));
+
+    try {
+      this.appConfig.config['content-metadata'] = { presets };
+    } catch (error) {
+      console.error(error, '- could not change content-metadata from app.config -');
+    }
+
+    return { presets };
+  }
+  filterDisabled(object: Array<{ disabled: boolean }> | { disabled: boolean }) {
+    if (Array.isArray(object)) {
+      return object.filter(item => !item.disabled).map(item => this.filterDisabled(item));
+    } else if (typeof object === 'object') {
+      if (!object.disabled) {
+        Object.keys(object).forEach(prop => {
+          object[prop] = this.filterDisabled(object[prop]);
+        });
+        return object;
+      }
+    } else {
+      return object;
+    }
   }
 }

@@ -16,6 +16,7 @@ import { AppNodeVersionFormComponent } from './node-version-form/node-version-fo
 import { PermissionsManagerComponent } from './permission-manager/permission-manager.component';
 import { AppToolbarModule } from './toolbar/toolbar.module';
 import { CreateMenuComponent } from './create-menu/create-menu.component';
+import { AppInfoDrawerModule } from './info-drawer/info.drawer.module';
 export function components() {
   return [
     CreateMenuComponent,
@@ -37,6 +38,7 @@ export function dialogcomponents() {
 @NgModule({
   declarations: [...components(), ...dialogcomponents()],
   imports: [
+    AppInfoDrawerModule,
     AppToolbarModule,
     MaterialModule,
     FormsModule,
@@ -46,6 +48,7 @@ export function dialogcomponents() {
     ContentModule.forRoot()
   ],
   exports: [
+    AppInfoDrawerModule,
     AppToolbarModule,
     DirectivesModule,
     MaterialModule,
