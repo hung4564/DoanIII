@@ -61,7 +61,9 @@ export class PageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(selection => {
         this.selection = selection;
+        console.log('TCL: ngOnInit -> this.selection', this.selection);
         this.actions = this.extensions.getAllowedToolbarActions();
+        console.log('TCL: ngOnInit -> this.actions', this.actions);
         this.viewerToolbarActions = this.extensions.getViewerToolbarActions();
         this.canUpdateNode =
           this.selection.count === 1 && this.content.canUpdateNode(selection.first);

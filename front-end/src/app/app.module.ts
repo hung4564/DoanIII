@@ -21,7 +21,6 @@ import { SitesModule } from 'app/pages/sites/sites.module';
 import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from './pages/home/home.module';
 import { FilesModule } from './pages/files/files.module';
-import { MySitesModule } from './pages/my-sites/my-sites.module';
 import { ErrorModule } from './pages/error/error.module';
 import { AppExtensionService } from './extensions/app-extension.service';
 import { CoreExtensionsModule } from './extensions/core.extensions.module';
@@ -36,6 +35,7 @@ import { AppSharedLinkViewModule } from './pages/shared-link-view/shared-link-vi
 import { FileShareModule } from './pages/file-share/file-share.module';
 import { FileRecentModule } from './pages/file-recent/file-recent.module';
 import { FileFavoriteModule } from './pages/file-favorite/file-favorite.module';
+import { LibrariesModule } from './pages/libraries/libraries.module';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -54,16 +54,15 @@ import { FileFavoriteModule } from './pages/file-favorite/file-favorite.module';
     LayoutModule,
     UsersModule,
     GroupsModule,
-    SitesModule,
     HomeModule,
     FilesModule,
     ErrorModule,
-    MySitesModule,
     FileTrashModule,
     AppSharedLinkViewModule,
     FileShareModule,
     FileRecentModule,
-    FileFavoriteModule
+    FileFavoriteModule,
+    LibrariesModule
   ],
   providers: [
     AppService,

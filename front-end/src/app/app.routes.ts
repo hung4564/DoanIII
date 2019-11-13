@@ -16,6 +16,7 @@ import { FileShareComponent } from './pages/file-share/file-share.component';
 import { FileRecentComponent } from './pages/file-recent/file-recent.component';
 import { FileFavoriteComponent } from './pages/file-favorite/file-favorite.component';
 import { FileDetailComponent } from './pages/files/file-detail/file-detail.component';
+import { LibrariesComponent } from './pages/libraries/libraries.component';
 export const appRoutes: Routes = [
   {
     path: 'login',
@@ -91,6 +92,18 @@ export const appRoutes: Routes = [
             data: {
               title: 'APP.PREVIEW.TITLE',
               navigateSource: 'personal-files'
+            }
+          }
+        ]
+      },
+      {
+        path: 'libraries',
+        children: [
+          {
+            path: '',
+            component: LibrariesComponent,
+            data: {
+              title: 'APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.TITLE'
             }
           }
         ]
