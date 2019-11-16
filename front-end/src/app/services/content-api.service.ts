@@ -1,28 +1,3 @@
-/*!
- * @license
- * Alfresco Example Content Application
- *
- * Copyright (C) 2005 - 2019 Alfresco Software Limited
- *
- * This file is part of the Alfresco Example Content Application.
- * If the software was purchased under a paid Alfresco license, the terms of
- * the paid license agreement will prevail.  Otherwise, the software is
- * provided under the following open source license terms:
- *
- * The Alfresco Example Content Application is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The Alfresco Example Content Application is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import { Injectable } from '@angular/core';
 import { AlfrescoApiService, UserPreferencesService } from '@alfresco/adf-core';
 import { Observable, from } from 'rxjs';
@@ -41,7 +16,9 @@ import {
   SiteBody,
   SiteEntry,
   FavoriteBody,
-  FavoriteEntry
+  FavoriteEntry,
+  PersonBodyCreate,
+  PersonBodyUpdate
 } from '@alfresco/js-api';
 import { map } from 'rxjs/operators';
 
@@ -49,10 +26,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ContentApiService {
-  constructor(
-    private api: AlfrescoApiService,
-    private preferences: UserPreferencesService
-  ) {}
+  constructor(private api: AlfrescoApiService, private preferences: UserPreferencesService) {}
 
   /**
    * Moves a node to the trashcan.
@@ -60,10 +34,7 @@ export class ContentApiService {
    * @param options Optional parameters supported by JS-API
    * @returns Empty result that notifies when the deletion is complete
    */
-  deleteNode(
-    nodeId: string,
-    options: { permanent?: boolean } = {}
-  ): Observable<void> {
+  deleteNode(nodeId: string, options: { permanent?: boolean } = {}): Observable<void> {
     return from(this.api.nodesApi.deleteNode(nodeId, options));
   }
 
@@ -101,13 +72,7 @@ export class ContentApiService {
     const defaults = {
       maxItems: this.preferences.paginationSize,
       skipCount: 0,
-      include: [
-        'isLocked',
-        'path',
-        'properties',
-        'allowableOperations',
-        'permissions'
-      ]
+      include: ['isLocked', 'path', 'properties', 'allowableOperations', 'permissions']
     };
     const queryOptions = Object.assign(defaults, options);
 
@@ -140,10 +105,7 @@ export class ContentApiService {
    * @param personId ID of the target user
    * @returns User information
    */
-  getPerson(
-    personId: string,
-    options?: { fields?: Array<string> }
-  ): Observable<PersonEntry> {
+  getPerson(personId: string, options?: { fields?: Array<string> }): Observable<PersonEntry> {
     return from(this.api.peopleApi.getPerson(personId, options));
   }
 
@@ -160,9 +122,7 @@ export class ContentApiService {
     name?: string,
     opts?: { include?: Array<string>; fields?: Array<string> }
   ): Observable<NodeEntry> {
-    return from(
-      this.api.nodesApi.copyNode(nodeId, { targetParentId, name }, opts)
-    );
+    return from(this.api.nodesApi.copyNode(nodeId, { targetParentId, name }, opts));
   }
 
   /**
@@ -170,9 +130,7 @@ export class ContentApiService {
    * @returns ProductVersionModel containing product details
    */
   getRepositoryInformation(): Observable<DiscoveryEntry> {
-    return from(
-      this.api.getInstance().discovery.discoveryApi.getRepositoryInformation()
-    );
+    return from(this.api.getInstance().discovery.discoveryApi.getRepositoryInformation());
   }
 
   getFavorites(
@@ -187,10 +145,7 @@ export class ContentApiService {
     return from(this.api.favoritesApi.getFavorites(personId, opts));
   }
 
-  getFavoriteLibraries(
-    personId: string = '-me-',
-    opts?: any
-  ): Observable<FavoritePaging> {
+  getFavoriteLibraries(personId: string = '-me-', opts?: any): Observable<FavoritePaging> {
     return this.getFavorites(personId, {
       ...opts,
       where: '(EXISTS(target/site))'
@@ -289,5 +244,33 @@ export class ContentApiService {
 
   unlockNode(nodeId: string, opts?: any) {
     return this.api.nodesApi.unlockNode(nodeId, opts);
+  }
+
+  getPeople(opt) {
+    return from(this.api.peopleApi.getPersons(opt));
+  }
+  createPerson(person: PersonBodyCreate) {
+    if (!person.password) {
+      person.password = '12345678';
+    }
+    return from(this.api.peopleApi.addPerson(person));
+  }
+  editPerson(id: string, person: PersonBodyUpdate) {
+    delete person['id'];
+    return from(this.api.peopleApi.updatePerson(id, person));
+  }
+  deletePerson(id: string) {
+    return from(
+      this.api
+        .getInstance()
+        .webScript.executeWebScript(
+          'DELETE',
+          id,
+          { contentType: 'application/json' },
+          null,
+          'service/api/people',
+          null
+        )
+    );
   }
 }

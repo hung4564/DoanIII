@@ -13,6 +13,7 @@ import { SetSelectedNodesAction } from 'app/store/actions/node.action';
 })
 export class DocumentListDirective {
   private isLibrary = false;
+  private isPeople = false;
 
   onDestroy$ = new Subject<boolean>();
 
@@ -37,7 +38,7 @@ export class DocumentListDirective {
       // workaround for custom node list
       this.router.url.endsWith('/libraries') ||
       this.router.url.startsWith('/search-libraries');
-
+    this.isPeople = this.router.url.endsWith('/people');
     if (this.sortingPreferenceKey) {
       const current = this.documentList.sorting;
 
@@ -94,6 +95,7 @@ export class DocumentListDirective {
   private updateSelection() {
     const selection = this.documentList.selection.map(node => {
       node['isLibrary'] = this.isLibrary;
+      node['isPeople'] = this.isPeople;
       return node;
     });
 

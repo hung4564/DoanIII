@@ -65,8 +65,11 @@
     <mat-divider></mat-divider>
 
     <a
+      matTooltipPosition="after"
+      [matTooltip]="menu.description | translate"
       *ngFor="let menu of group.items"
       mat-list-item
+      [matTooltipDisabled]="mode != 'collapsed'"
       class="adf-sidenav-link"
       [routerLink]="menu.url"
     >

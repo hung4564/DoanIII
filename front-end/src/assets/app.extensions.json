@@ -17,7 +17,8 @@
         { "type": "rule", "value": "app.navigation.isNotRecentFiles" },
         { "type": "rule", "value": "app.navigation.isNotSharedFiles" },
         { "type": "rule", "value": "app.navigation.isNotSearchResults" },
-        { "type": "rule", "value": "app.navigation.isNotFavorites" }
+        { "type": "rule", "value": "app.navigation.isNotFavorites" },
+        { "type": "rule", "value": "app.navigation.isNotPeople" }
       ]
     },
     {
@@ -28,7 +29,16 @@
         { "type": "rule", "value": "app.navigation.isNotRecentFiles" },
         { "type": "rule", "value": "app.navigation.isNotSharedFiles" },
         { "type": "rule", "value": "app.navigation.isNotSearchResults" },
-        { "type": "rule", "value": "app.navigation.isNotFavorites" }
+        { "type": "rule", "value": "app.navigation.isNotFavorites" },
+        { "type": "rule", "value": "app.navigation.isNotPeople" }
+      ]
+    },
+    {
+      "id": "app.create.person.canCreate",
+      "type": "core.every",
+      "parameters": [
+        { "type": "rule", "value": "app.navigation.isPeople" },
+        { "type": "rule", "value": "user.isAdmin" }
       ]
     }
   ],
@@ -45,6 +55,21 @@
     ],
     "create": [
       {
+        "id": "app.create.createPerson",
+        "order": 100,
+        "icon": "person",
+        "title": "APP.NEW_MENU.MENU_ITEMS.CREATE_PERSON",
+        "description": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON",
+        "description-disabled": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON_NOT_ALLOWED",
+        "actions": {
+          "click": "CREATE_PERSON"
+        },
+        "rules": {
+          "visible": "app.create.person.canCreate",
+          "enabled": "app.create.person.canCreate"
+        }
+      },
+      {
         "id": "app.create.uploadFile",
         "order": 100,
         "icon": "file_upload",
@@ -55,7 +80,7 @@
           "click": "UPLOAD_FILES"
         },
         "rules": {
-          "visible": "app.navigation.isNotLibraries",
+          "visible": "app.navigation.folder.canUpload",
           "enabled": "app.navigation.folder.canUpload"
         }
       },
@@ -70,7 +95,7 @@
           "click": "UPLOAD_FOLDER"
         },
         "rules": {
-          "visible": "app.navigation.isNotLibraries",
+          "visible": "app.navigation.folder.canUpload",
           "enabled": "app.navigation.folder.canUpload"
         }
       },
@@ -90,7 +115,7 @@
           "click": "CREATE_FOLDER"
         },
         "rules": {
-          "visible": "app.navigation.isNotLibraries",
+          "visible": "app.navigation.folder.canCreate",
           "enabled": "app.navigation.folder.canCreate"
         }
       },
@@ -370,10 +395,10 @@
           {
             "id": "app.navbar.personalFiles",
             "order": 100,
-            "icon": "folder",
-            "title": "APP.BROWSE.PERSONAL.SIDENAV_LINK.LABEL",
-            "description": "APP.BROWSE.PERSONAL.SIDENAV_LINK.TOOLTIP",
-            "route": "personal-files"
+            "icon": "person",
+            "title": "APP.BROWSE.PEOPLE.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.PEOPLE.SIDENAV_LINK.TOOLTIP",
+            "route": "people"
           }
         ],
         "rules": {
@@ -507,6 +532,18 @@
         }
       },
       {
+        "id": "app.toolbar.share",
+        "order": 100,
+        "title": "APP.ACTIONS.SHARE",
+        "icon": "link",
+        "actions": {
+          "click": "SHARE_NODE"
+        },
+        "rules": {
+          "visible": "app.selection.file.canShare"
+        }
+      },
+      {
         "id": "app.toolbar.share.edit",
         "order": 101,
         "title": "APP.ACTIONS.SHARE_EDIT",
@@ -585,6 +622,30 @@
         },
         "rules": {
           "visible": "canLeaveLibrary"
+        }
+      },
+      {
+        "id": "app.people.edit",
+        "title": "APP.ACTIONS.EDIT",
+        "icon": "create",
+        "order": 201,
+        "actions": {
+          "click": "EDIT_PERSON"
+        },
+        "rules": {
+          "visible": "canShowPeople"
+        }
+      },
+      {
+        "id": "app.people.delete",
+        "title": "APP.ACTIONS.DELETE",
+        "icon": "delete",
+        "order": 202,
+        "actions": {
+          "click": "DELETE_PEOPLE"
+        },
+        "rules": {
+          "visible": "canShowPeople"
         }
       },
       {
@@ -1404,6 +1465,53 @@
           "class": "adf-no-grow-cell",
           "sortable": true,
           "template": "app.columns.libraryStatus",
+          "desktopOnly": true
+        }
+      ],
+      "people": [
+        {
+          "id": "app.people.email",
+          "key": "email",
+          "class": "adf-ellipsis-cell adf-expand-cell-2",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.EMAIL",
+          "type": "text",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.people.id",
+          "key": "id",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.USER_NAME",
+          "type": "text",
+          "class": "adf-expand-cell-2 adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.people.enabled",
+          "key": "enabled",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.ENABLED",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.people.firstName",
+          "key": "firstName",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.FIRST_NAME",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.people.lastName",
+          "key": "lastName",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.LAST_NAME",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": true,
           "desktopOnly": true
         }
       ]

@@ -13,9 +13,11 @@ import { DocumentListDirective } from './document-list.directive';
 import { LibraryMembershipDirective } from './library-membership.directive';
 import { LibraryFavoriteDirective } from './library-favorite.directive';
 import { LockNodeDirective } from './lock-node.directive';
+import { PaginationDirective } from './pagination.directive';
 
 export function directives() {
   return [
+    PaginationDirective,
     LockNodeDirective,
     LibraryFavoriteDirective,
     LibraryMembershipDirective,

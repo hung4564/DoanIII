@@ -1,31 +1,7 @@
-/*!
- * @license
- * Alfresco Example Content Application
- *
- * Copyright (C) 2005 - 2019 Alfresco Software Limited
- *
- * This file is part of the Alfresco Example Content Application.
- * If the software was purchased under a paid Alfresco license, the terms of
- * the paid license agreement will prevail.  Otherwise, the software is
- * provided under the following open source license terms:
- *
- * The Alfresco Example Content Application is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The Alfresco Example Content Application is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import { RuleContext } from '@alfresco/adf-extensions';
 import * as navigation from './navigation.rules';
 import * as repository from './repository.rules';
+import * as user from './user.rules';
 
 /**
  * Checks if user can copy selected node.
@@ -36,7 +12,8 @@ export function canCopyNode(context: RuleContext): boolean {
   return [
     hasSelection(context),
     navigation.isNotTrashcan(context),
-    navigation.isNotLibraries(context)
+    navigation.isNotLibraries(context),
+    navigation.isNotPeople(context)
   ].every(Boolean);
 }
 
@@ -90,11 +67,9 @@ export function canShareFile(context: RuleContext): boolean {
  * JSON ref: `canToggleJoinLibrary`
  */
 export function canToggleJoinLibrary(context: RuleContext): boolean {
-  return [
-    hasLibrarySelected(context),
-    !isPrivateLibrary(context),
-    hasNoLibraryRole(context)
-  ].every(Boolean);
+  return [hasLibrarySelected(context), !isPrivateLibrary(context), hasNoLibraryRole(context)].every(
+    Boolean
+  );
 }
 
 /**
@@ -103,10 +78,7 @@ export function canToggleJoinLibrary(context: RuleContext): boolean {
  * @param context Rule execution context
  */
 export function canEditFolder(context: RuleContext): boolean {
-  return [
-    canUpdateSelectedFolder(context),
-    navigation.isNotTrashcan(context)
-  ].every(Boolean);
+  return [canUpdateSelectedFolder(context), navigation.isNotTrashcan(context)].every(Boolean);
 }
 
 /**
@@ -118,10 +90,7 @@ export function isShared(context: RuleContext): boolean {
     return true;
   }
 
-  if (
-    (navigation.isNotTrashcan(context),
-    !context.selection.isEmpty && context.selection.file)
-  ) {
+  if ((navigation.isNotTrashcan(context), !context.selection.isEmpty && context.selection.file)) {
     return !!(
       context.selection.file.entry &&
       context.selection.file.entry.properties &&
@@ -220,10 +189,7 @@ export function canUpload(context: RuleContext): boolean {
 export function canDownloadSelection(context: RuleContext): boolean {
   if (!context.selection.isEmpty && navigation.isNotTrashcan(context)) {
     return context.selection.nodes.every((node: any) => {
-      return (
-        node.entry &&
-        (node.entry.isFile || node.entry.isFolder || !!node.entry.nodeId)
-      );
+      return node.entry && (node.entry.isFile || node.entry.isFolder || !!node.entry.nodeId);
     });
   }
   return false;
@@ -254,11 +220,7 @@ export function hasLibrarySelected(context: RuleContext): boolean {
 export function isPrivateLibrary(context: RuleContext): boolean {
   const library = context.selection.library;
   return library
-    ? !!(
-        library.entry &&
-        library.entry.visibility &&
-        library.entry.visibility === 'PRIVATE'
-      )
+    ? !!(library.entry && library.entry.visibility && library.entry.visibility === 'PRIVATE')
     : false;
 }
 
@@ -316,8 +278,7 @@ export function canUpdateSelectedFolder(context: RuleContext): boolean {
   if (folder) {
     return (
       // workaround for Favorites Api
-      navigation.isFavorites(context) ||
-      context.permissions.check(folder.entry, ['update'])
+      navigation.isFavorites(context) || context.permissions.check(folder.entry, ['update'])
     );
   }
   return false;
@@ -336,8 +297,7 @@ export function hasLockedFiles(context: RuleContext): boolean {
 
       return (
         node.entry.isLocked ||
-        (node.entry.properties &&
-          node.entry.properties['cm:lockType'] === 'READ_ONLY_LOCK')
+        (node.entry.properties && node.entry.properties['cm:lockType'] === 'READ_ONLY_LOCK')
       );
     });
   }
@@ -357,8 +317,7 @@ export function isWriteLocked(context: RuleContext): boolean {
     context.selection.file.entry &&
     context.selection.file.entry.properties &&
     (context.selection.file.entry.properties['cm:lockType'] === 'WRITE_LOCK' ||
-      context.selection.file.entry.properties['cm:lockType'] ===
-        'READ_ONLY_LOCK')
+      context.selection.file.entry.properties['cm:lockType'] === 'READ_ONLY_LOCK')
   );
 }
 
@@ -371,8 +330,7 @@ export function isUserWriteLockOwner(context: RuleContext): boolean {
   return (
     isWriteLocked(context) &&
     (context.selection.file.entry.properties['cm:lockOwner'] &&
-      context.selection.file.entry.properties['cm:lockOwner'].id ===
-        context.profile.id)
+      context.selection.file.entry.properties['cm:lockOwner'].id === context.profile.id)
   );
 }
 
@@ -392,8 +350,7 @@ export function canUnlockFile(context: RuleContext): boolean {
   const { file } = context.selection;
   return (
     isWriteLocked(context) &&
-    (context.permissions.check(file.entry, ['delete']) ||
-      isUserWriteLockOwner(context))
+    (context.permissions.check(file.entry, ['delete']) || isUserWriteLockOwner(context))
   );
 }
 
@@ -409,9 +366,7 @@ export function canUploadVersion(context: RuleContext): boolean {
   return [
     hasFileSelected(context),
     navigation.isNotTrashcan(context),
-    isWriteLocked(context)
-      ? isUserWriteLockOwner(context)
-      : canUpdateSelectedNode(context)
+    isWriteLocked(context) ? isUserWriteLockOwner(context) : canUpdateSelectedNode(context)
   ].every(Boolean);
 }
 
@@ -430,9 +385,7 @@ export function isTrashcanItemSelected(context: RuleContext): boolean {
  * @param context Rule execution context
  */
 export function canViewFile(context: RuleContext): boolean {
-  return [hasFileSelected(context), navigation.isNotTrashcan(context)].every(
-    Boolean
-  );
+  return [hasFileSelected(context), navigation.isNotTrashcan(context)].every(Boolean);
 }
 
 /**
@@ -450,10 +403,9 @@ export function canLeaveLibrary(context: RuleContext): boolean {
  * @param context Rule execution context
  */
 export function canToggleSharedLink(context: RuleContext): boolean {
-  return [
-    hasFileSelected(context),
-    [canShareFile(context), isShared(context)].some(Boolean)
-  ].every(Boolean);
+  return [hasFileSelected(context), [canShareFile(context), isShared(context)].some(Boolean)].every(
+    Boolean
+  );
 }
 
 /**
@@ -488,10 +440,7 @@ export function canManageFileVersions(context: RuleContext): boolean {
  * @param context Rule execution context
  */
 export function canManagePermissions(context: RuleContext): boolean {
-  return [
-    canUpdateSelectedNode(context),
-    navigation.isNotTrashcan(context)
-  ].every(Boolean);
+  return [canUpdateSelectedNode(context), navigation.isNotTrashcan(context)].every(Boolean);
 }
 
 /**
@@ -503,8 +452,7 @@ export function canToggleEditOffline(context: RuleContext): boolean {
   return [
     hasFileSelected(context),
     navigation.isNotTrashcan(context),
-    navigation.isNotFavorites(context) ||
-      navigation.isFavoritesPreview(context),
+    navigation.isNotFavorites(context) || navigation.isFavoritesPreview(context),
     navigation.isNotSharedFiles(context) || navigation.isSharedPreview(context),
     canLockFile(context) || canUnlockFile(context)
   ].every(Boolean);
@@ -525,4 +473,15 @@ export function canToggleFavorite(context: RuleContext): boolean {
       navigation.isFavorites(context)
     ].some(Boolean)
   ].every(Boolean);
+}
+
+/**
+ * Checks if user can show **Info Drawer** for the selected node.
+ * JSON ref: `canShowPeople`
+ * @param context Rule execution context
+ */
+export function canShowPeople(context: RuleContext): boolean {
+  return [hasSelection(context), navigation.isPeople(context), user.isAdmin(context)].every(
+    Boolean
+  );
 }

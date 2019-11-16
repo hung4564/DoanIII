@@ -13,6 +13,7 @@ import { Router, NavigationEnd, ActivationEnd } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { map, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
 import { LayoutService } from './layout.service';
+import { SetSmallScreenAction } from 'app/store/actions/app.action';
 
 @Component({
   selector: 'app-layout',
@@ -49,6 +50,7 @@ export class LayoutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userPreferenceService.paginationSize = this.appConfigService.get('pagination.size');
     this.isSmallScreen$ = this.breakpointObserver
       .observe(['(max-width: 600px)'])
       .pipe(map(result => result.matches));

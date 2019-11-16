@@ -13,11 +13,6 @@ import { AppStoreModule } from 'app/store/app-store.module';
 import { AppService } from './services/app.service';
 import { HandleService } from './services/api.service';
 import { AppRouteReuseStrategy } from './routing/app.routes.strategy';
-import { PreviewService } from './services/preview.service';
-
-import { UsersModule } from 'app/pages/users/users.module';
-import { GroupsModule } from 'app/pages/groups/groups.module';
-import { SitesModule } from 'app/pages/sites/sites.module';
 import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from './pages/home/home.module';
 import { FilesModule } from './pages/files/files.module';
@@ -36,6 +31,7 @@ import { FileShareModule } from './pages/file-share/file-share.module';
 import { FileRecentModule } from './pages/file-recent/file-recent.module';
 import { FileFavoriteModule } from './pages/file-favorite/file-favorite.module';
 import { LibrariesModule } from './pages/libraries/libraries.module';
+import { PeopleModule } from './pages/people/people.module';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -52,8 +48,6 @@ import { LibrariesModule } from './pages/libraries/libraries.module';
     ContentModule.forRoot(),
     CoreExtensionsModule.forRoot(),
     LayoutModule,
-    UsersModule,
-    GroupsModule,
     HomeModule,
     FilesModule,
     ErrorModule,
@@ -62,12 +56,12 @@ import { LibrariesModule } from './pages/libraries/libraries.module';
     FileShareModule,
     FileRecentModule,
     FileFavoriteModule,
-    LibrariesModule
+    LibrariesModule,
+    PeopleModule
   ],
   providers: [
     AppService,
     HandleService,
-    PreviewService,
     AppExtensionService,
     ContentApiService,
     NodePermissionService,

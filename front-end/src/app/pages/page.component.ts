@@ -14,8 +14,10 @@ import { ReloadDocumentListAction } from 'app/store/actions/app.action';
 import {
   getAppSelection,
   getCurrentFolder,
-  isInfoDrawerOpened
+  isInfoDrawerOpened,
+  isSmallScreenSelector
 } from 'app/store/selectors/app.selector';
+import { PaginationModel } from '@alfresco/adf-core';
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -29,6 +31,8 @@ export class PageComponent implements OnInit, OnDestroy {
   actions: Array<ContentActionRef> = [];
   viewerToolbarActions: Array<ContentActionRef> = [];
   selection: SelectionState;
+  pagination: PaginationModel = new PaginationModel();
+  isSmallScreen = false;
   constructor(
     protected store: Store<any>,
     protected extensions: AppExtensionService,
@@ -55,6 +59,9 @@ export class PageComponent implements OnInit, OnDestroy {
     return obj.id;
   }
   ngOnInit() {
+    this.store.select(isSmallScreenSelector).subscribe(result => {
+      this.isSmallScreen = result;
+    });
     this.infoDrawerOpened$ = this.store.select(isInfoDrawerOpened);
     this.store
       .select(getAppSelection)

@@ -92,6 +92,7 @@ export class CoreExtensionsModule {
       canManagePermissions: rules.canManagePermissions,
       canToggleEditOffline: rules.canToggleEditOffline,
       canToggleFavorite: rules.canToggleFavorite,
+      canShowPeople: rules.canShowPeople,
 
       'app.selection.canDelete': rules.canDeleteSelection,
       'app.selection.file.canUnlock': rules.canUnlockFile,
@@ -137,7 +138,9 @@ export class CoreExtensionsModule {
       'app.navigation.isSharedFileViewer': rules.isSharedFileViewer,
 
       'repository.isQuickShareEnabled': rules.hasQuickShareEnabled,
-      'user.isAdmin': rules.isAdmin
+      'user.isAdmin': rules.isAdmin,
+      'app.navigation.isNotPeople': rules.isNotPeople,
+      'app.navigation.isPeople': rules.isPeople
     });
   }
 }

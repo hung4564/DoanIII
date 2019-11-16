@@ -156,3 +156,20 @@ export function isSharedFileViewer(context: RuleContext): boolean {
   const { url } = context.navigation;
   return url && url.startsWith('/preview/s/');
 }
+
+/**
+ * Checks if a **People** route is activated.
+ * JSON ref: `app.navigation.isPeople`
+ */
+export function isPeople(context: RuleContext): boolean {
+  const { url } = context.navigation;
+  return url && url.startsWith('/people');
+}
+
+/**
+ * Checks if the activated route is not **People**.
+ * JSON ref: `app.navigation.isNotPeople`
+ */
+export function isNotPeople(context: RuleContext): boolean {
+  return !isPeople(context);
+}

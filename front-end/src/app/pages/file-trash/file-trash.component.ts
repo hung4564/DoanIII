@@ -1,10 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { PreviewService } from 'app/services/preview.service';
-import { NotificationService, RestoreMessageModel, NodeRestoreDirective } from '@alfresco/adf-core';
-import { Router } from '@angular/router';
-import { PathInfoEntity } from '@alfresco/js-api';
-import { DocumentListComponent } from '@alfresco/adf-content-services';
-import { MatButton } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page.component';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { AppExtensionService } from 'app/extensions/app-extension.service';

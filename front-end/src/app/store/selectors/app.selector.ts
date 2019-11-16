@@ -96,3 +96,8 @@ export const infoDrawerMetadataAspect = createSelector(
   selectApp,
   state => state.infoDrawerMetadataAspect
 );
+
+export const isSmallScreenSelector = createSelector(
+  selectApp,
+  state => state.isSmallScreen
+);

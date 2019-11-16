@@ -13,6 +13,7 @@ export interface AppState {
   repository: RepositoryInfo;
   infoDrawerOpened: boolean;
   infoDrawerMetadataAspect: string;
+  isSmallScreen: boolean;
 }
 
 export interface AppStore {

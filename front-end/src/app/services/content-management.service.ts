@@ -13,7 +13,8 @@ import {
   NodeEntry,
   PathInfoEntity,
   SiteBody,
-  SiteEntry
+  SiteEntry,
+  PersonEntry
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +43,7 @@ import {
 } from 'app/store/actions/snackbar.actions';
 import { getSharedUrl, getAppSelection } from 'app/store/selectors/app.selector';
 import { NavigateToParentFolder, NavigateRouteAction } from 'app/store/actions/router.actions';
+import { PersonDetailComponent } from 'app/pages/people/person-detail/person-detail.component';
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;
@@ -1058,5 +1060,80 @@ export class ContentManagementService {
         })
       );
     });
+  }
+  createPerson() {
+    const dialog = this.dialogRef.open(PersonDetailComponent, {
+      data: {
+        title: 'APP.ACTIONS.CREATE',
+        type: 'CREATE',
+        person: {}
+      },
+      width: '400px'
+    });
+    dialog.afterClosed().subscribe(person => {
+      if (person && person.id) {
+        this.contentApi.createPerson(person).subscribe(
+          result => {
+            this.store.dispatch(new SnackbarInfoAction('PERSON.SUCCESS.PERSON_CREATED'));
+            this.store.dispatch(new ReloadDocumentListAction());
+          },
+          error => {
+            const err = JSON.parse(
+              error
+                .toString()
+                .substring(7)
+                .trim()
+            );
+            this.store.dispatch(
+              new SnackbarErrorAction('APP.MESSAGES.ERRORS.CREATE_PERSON_FAILED')
+            );
+            this.store.dispatch(new SnackbarErrorAction(err.error.errorKey));
+          }
+        );
+      }
+    });
+  }
+  editPerson(person: PersonEntry) {
+    if (!person) {
+      return;
+    }
+    const dialog = this.dialogRef.open(PersonDetailComponent, {
+      data: {
+        title: 'APP.ACTIONS.EDIT',
+        type: 'EDIT',
+        person: person.entry
+      },
+      width: '400px'
+    });
+    // dialog.componentInstance.error.subscribe((message: string) => {
+    //   this.store.dispatch(new SnackbarErrorAction(message));
+    // });
+
+    dialog.afterClosed().subscribe(person => {
+      if (person && person.id) {
+        this.contentApi.editPerson(person.id, person).subscribe(
+          result => {
+            this.store.dispatch(new SnackbarInfoAction('PERSON.SUCCESS.PERSON_UPDATED'));
+            this.store.dispatch(new ReloadDocumentListAction());
+          },
+          err => {
+            this.store.dispatch(
+              new SnackbarErrorAction('APP.MESSAGES.ERRORS.UPDATE_PERSON_FAILED')
+            );
+          }
+        );
+      }
+    });
+  }
+  deletePerson(id: string) {
+    this.contentApi.deletePerson(id).subscribe(
+      result => {
+        this.store.dispatch(new SnackbarInfoAction('PERSON.SUCCESS.PERSON_DELETED'));
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.DELETE_PERSON_FAILED'));
+      }
+    );
   }
 }

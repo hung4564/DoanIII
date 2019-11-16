@@ -17,6 +17,7 @@ import { FileRecentComponent } from './pages/file-recent/file-recent.component';
 import { FileFavoriteComponent } from './pages/file-favorite/file-favorite.component';
 import { FileDetailComponent } from './pages/files/file-detail/file-detail.component';
 import { LibrariesComponent } from './pages/libraries/libraries.component';
+import { PeopleComponent } from './pages/people/people.component';
 export const appRoutes: Routes = [
   {
     path: 'login',
@@ -176,7 +177,8 @@ export const appRoutes: Routes = [
         data: {
           title: 'APP.BROWSE.TRASHCAN.TITLE'
         }
-      }
+      },
+      { path: 'people', component: PeopleComponent, data: { title: 'APP.BROWSE.PEOPLE.TITLE' } }
     ]
   }
   // ...LayoutRoutes

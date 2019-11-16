@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy, ViewEncapsulation } from '@angular
 import { ContentActionRef } from '@alfresco/adf-extensions';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import { Store } from '@ngrx/store';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AppStore } from 'app/store/states/app.state';
 import { getCurrentFolder } from 'app/store/selectors/app.selector';
@@ -29,7 +29,10 @@ export class CreateMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store
       .select(getCurrentFolder)
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        debounceTime(500),
+        takeUntil(this.onDestroy$)
+      )
       .subscribe(() => {
         this.createActions = this.extensions.getCreateActions();
       });

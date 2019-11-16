@@ -13,7 +13,8 @@ export enum AppActionTypes {
   SetCurrentFolder = 'SET_CURRENT_FOLDER',
   ToggleInfoDrawer = 'TOGGLE_INFO_DRAWER',
   SetInfoDrawerState = 'SET_INFO_DRAWER_STATE',
-  SetInfoDrawerMetadataAspect = 'SET_INFO_DRAWER_METADATA_ASPECT'
+  SetInfoDrawerMetadataAspect = 'SET_INFO_DRAWER_METADATA_ASPECT',
+  SetSmallScreen = 'SET_SMALL_SCREEN'
 }
 
 export class SetInitialStateAction implements Action {
@@ -70,4 +71,8 @@ export class SetInfoDrawerStateAction implements Action {
 export class SetInfoDrawerMetadataAspectAction implements Action {
   readonly type = AppActionTypes.SetInfoDrawerMetadataAspect;
   constructor(public payload: string) {}
+}
+export class SetSmallScreenAction implements Action {
+  readonly type = AppActionTypes.SetSmallScreen;
+  constructor(public payload: boolean) {}
 }

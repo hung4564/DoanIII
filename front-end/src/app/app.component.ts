@@ -12,20 +12,22 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, map } from 'rxjs/operators';
 import { AppService } from './services/app.service';
 import { GroupsApi, Group, DiscoveryEntry } from '@alfresco/js-api';
-import { Subject, from } from 'rxjs';
+import { Subject, from, Observable } from 'rxjs';
 import { AppStore, AppState } from './store/states/app.state';
 import {
   SetUserProfileAction,
   SetInitialStateAction,
   SetRepositoryInfoAction,
-  SetCurrentUrlAction
+  SetCurrentUrlAction,
+  SetSmallScreenAction
 } from './store/actions/app.action';
 import { INITIAL_APP_STATE } from './store/states/initial-state';
 import { SnackbarErrorAction } from './store/actions/snackbar.actions';
 import { ContentApiService } from './services/content-api.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -47,7 +49,8 @@ export class AppComponent implements OnInit {
     private appService: AppService,
     private sharedLinksApiService: SharedLinksApiService,
     private transSV: TranslationService,
-    private contentApi: ContentApiService
+    private contentApi: ContentApiService,
+    private breakpointObserver: BreakpointObserver
   ) {
     this.transSV.use('en');
   }
@@ -105,6 +108,11 @@ export class AppComponent implements OnInit {
         this.loadUserProfile();
       }
     });
+    this.breakpointObserver
+      .observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape])
+      .subscribe(result => {
+        this.store.dispatch(new SetSmallScreenAction(result.matches));
+      });
   }
 
   ngOnDestroy() {

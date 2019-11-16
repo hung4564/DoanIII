@@ -57,9 +57,12 @@
         "CREATE_FOLDER": "Create Folder",
         "UPLOAD_FILE": "Upload File",
         "UPLOAD_FOLDER": "Upload Folder",
-        "CREATE_LIBRARY": "Create Library"
+        "CREATE_LIBRARY": "Create Library",
+        "CREATE_PERSON": "Create Person"
       },
       "TOOLTIPS": {
+        "CREATE_PERSON": "Create new person",
+        "CREATE_PERSON_NOT_ALLOWED": "Person cannot be created whilst viewing the current items",
         "CREATE_FOLDER": "Create new folder",
         "CREATE_FOLDER_NOT_ALLOWED": "Folders cannot be created whilst viewing the current items",
         "UPLOAD_FILES": "Select files to upload",
@@ -70,6 +73,17 @@
       }
     },
     "BROWSE": {
+      "PEOPLE": {
+        "TITLE": "People",
+        "SIDENAV_LINK": {
+          "LABEL": "People",
+          "TOOLTIP": "View all people"
+        },
+        "EMPTY_STATE": {
+          "TITLE": "",
+          "TEXT": ""
+        }
+      },
       "PERSONAL": {
         "TITLE": "Personal Files",
         "SIDENAV_LINK": {
@@ -253,17 +267,6 @@
       }
     },
     "MESSAGES": {
-      "USERS": {
-        "CREATE_SUCCESS": "Create user success",
-        "CREATE_ERROR": "Create user error",
-        "EDIT_SUCCESS": "Edit user success",
-        "EDIT_ERROR": "Edit user error",
-        "DELETE_SUCCESS": "Delete user success",
-        "DELETE_ERROR": "Delete user error",
-        "409": "User already exists",
-        "403": "Current user does not have permission to update a person",
-        "404": "User does not exist"
-      },
       "ERRORS": {
         "CANNOT_NAVIGATE_LOCATION": "Cannot open this location",
         "MISSING_CONTENT": "This item no longer exists or you don't have permission to view it.",
@@ -295,7 +298,10 @@
         "JOIN_CANCEL_FAILED": "Cannot cancel your join request",
         "LEAVE_LIBRARY_FAILED": "Cannot leave this library",
         "INVALID_SENDER_EMAIL": "Your email address must be valid before requesting to join.",
-        "INVALID_RECEIVER_EMAIL": "Recipient(s) email address not valid, contact IT."
+        "INVALID_RECEIVER_EMAIL": "Recipient(s) email address not valid, contact IT.",
+        "CREATE_PERSON_FAILED": "Cannot create the person",
+        "UPDATE_PERSON_FAILED": "Cannot update the person",
+        "DELETE_PERSON_FAILED": "Cannot delete the person"
       },
       "UPLOAD": {
         "ERROR": {
@@ -447,6 +453,13 @@
     },
     "SUCCESS": {
       "LIBRARY_UPDATED": "Library properties updated"
+    }
+  },
+  "PERSON": {
+    "SUCCESS": {
+      "PERSON_CREATED": "Person created",
+      "PERSON_UPDATED": "Person properties updated",
+      "PERSON_DELETED": "Person deleted"
     }
   },
   "SEARCH": {

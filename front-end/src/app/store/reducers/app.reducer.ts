@@ -9,7 +9,8 @@ import {
   SetRepositoryInfoAction,
   SetCurrentFolderAction,
   SetInfoDrawerStateAction,
-  SetInfoDrawerMetadataAspectAction
+  SetInfoDrawerMetadataAspectAction,
+  SetSmallScreenAction
 } from '../actions/app.action';
 import { INITIAL_APP_STATE } from '../states/initial-state';
 import { NodeActionTypes, SetSelectedNodesAction } from '../actions/node.action';
@@ -50,6 +51,9 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
       break;
     case AppActionTypes.SetInfoDrawerMetadataAspect:
       newState = setInfoDrawerAspect(state, <SetInfoDrawerMetadataAspectAction>action);
+      break;
+    case AppActionTypes.SetSmallScreen:
+      newState = setSmallScreen(state, <SetSmallScreenAction>action);
       break;
     default:
       newState = Object.assign({}, state);
@@ -179,5 +183,10 @@ function setInfoDrawer(state: AppState, action: SetInfoDrawerStateAction) {
 function setInfoDrawerAspect(state: AppState, action: SetInfoDrawerMetadataAspectAction) {
   const newState = Object.assign({}, state);
   newState.infoDrawerMetadataAspect = action.payload;
+  return newState;
+}
+function setSmallScreen(state: AppState, action: SetSmallScreenAction) {
+  const newState = Object.assign({}, state);
+  newState.isSmallScreen = action.payload;
   return newState;
 }

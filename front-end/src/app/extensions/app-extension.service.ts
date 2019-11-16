@@ -22,10 +22,9 @@ import {
 } from '@alfresco/adf-extensions';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppConfigService, AuthenticationService } from '@alfresco/adf-core';
+import { AppConfigService, AuthenticationService, DataColumn } from '@alfresco/adf-core';
 import { RepositoryInfo, NodeEntry } from '@alfresco/js-api';
 import { NodePermissionService } from 'app/services/node-permission.service';
-import { AppStore } from 'app/store/states/app.state';
 import { getRuleContext } from 'app/store/selectors/app.selector';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -45,6 +44,7 @@ export class AppExtensionService implements RuleContext {
     favorites: Array<DocumentListPresetRef>;
     trashcan: Array<DocumentListPresetRef>;
     searchLibraries: Array<DocumentListPresetRef>;
+    people: Array<DocumentListPresetRef>;
   } = {
     files: [],
     libraries: [],
@@ -53,7 +53,8 @@ export class AppExtensionService implements RuleContext {
     recent: [],
     favorites: [],
     trashcan: [],
-    searchLibraries: []
+    searchLibraries: [],
+    people: []
   };
 
   contentMetadata: any;
@@ -125,7 +126,8 @@ export class AppExtensionService implements RuleContext {
       recent: this.getDocumentListPreset(config, 'recent'),
       favorites: this.getDocumentListPreset(config, 'favorites'),
       trashcan: this.getDocumentListPreset(config, 'trashcan'),
-      searchLibraries: this.getDocumentListPreset(config, 'search-libraries')
+      searchLibraries: this.getDocumentListPreset(config, 'search-libraries'),
+      people: this.getDocumentListPreset(config, 'people')
     };
 
     if (config.features && config.features.viewer) {
@@ -244,14 +246,12 @@ export class AppExtensionService implements RuleContext {
   runActionById(id: string) {
     console.log('TCL: AppExtensionService -> runActionById -> id', id);
     const action = this.extensions.getActionById(id);
-    console.log('TCL: AppExtensionService -> runActionById -> action', action);
     if (action) {
       const { type, payload } = action;
       const context = {
         selection: this.selection
       };
       const expression = this.extensions.runExpression(payload, context);
-      console.log('TCL: AppExtensionService -> runActionById -> expression', expression);
 
       this.store.dispatch({ type, payload: expression });
     } else {
