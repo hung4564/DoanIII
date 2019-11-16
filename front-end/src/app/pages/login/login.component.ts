@@ -18,13 +18,13 @@ export class LoginComponent implements OnInit {
   profile$: Observable<ProfileState>;
   constructor(private router: Router, private store: Store<any>) {}
   mySuccessMethod($event) {
-    this.store.select(getUserProfile).subscribe(result => {
-      if (result.isAdmin) {
-        this.router.navigate(['/admin']);
-      } else {
-        this.router.navigate(['/']);
-      }
-    });
+    this.router.navigate(['/']);
+    // this.store.select(getUserProfile).subscribe(result => {
+    //   if (result.isAdmin) {
+    //     this.router.navigate(['/admin']);
+    //   } else {
+    //   }
+    // });
   }
   ngOnInit() {}
 }
