@@ -32,6 +32,7 @@ import { FileRecentModule } from './pages/file-recent/file-recent.module';
 import { FileFavoriteModule } from './pages/file-favorite/file-favorite.module';
 import { LibrariesModule } from './pages/libraries/libraries.module';
 import { PeopleModule } from './pages/people/people.module';
+import { GroupsModule } from './pages/groups/groups.module';
 @NgModule({
   imports: [
     AppStoreModule,
@@ -57,7 +58,8 @@ import { PeopleModule } from './pages/people/people.module';
     FileRecentModule,
     FileFavoriteModule,
     LibrariesModule,
-    PeopleModule
+    PeopleModule,
+    GroupsModule
   ],
   providers: [
     AppService,

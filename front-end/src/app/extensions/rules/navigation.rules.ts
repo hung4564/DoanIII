@@ -173,3 +173,20 @@ export function isPeople(context: RuleContext): boolean {
 export function isNotPeople(context: RuleContext): boolean {
   return !isPeople(context);
 }
+
+/**
+ * Checks if a **Group** route is activated.
+ * JSON ref: `app.navigation.isGroup`
+ */
+export function isGroup(context: RuleContext): boolean {
+  const { url } = context.navigation;
+  return url && url.startsWith('/groups');
+}
+
+/**
+ * Checks if the activated route is not **Group**.
+ * JSON ref: `app.navigation.isNotGroup`
+ */
+export function isNotGroup(context: RuleContext): boolean {
+  return !isGroup(context);
+}

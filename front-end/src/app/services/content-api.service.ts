@@ -18,7 +18,9 @@ import {
   FavoriteBody,
   FavoriteEntry,
   PersonBodyCreate,
-  PersonBodyUpdate
+  PersonBodyUpdate,
+  GroupBodyCreate,
+  GroupBodyUpdate
 } from '@alfresco/js-api';
 import { map } from 'rxjs/operators';
 
@@ -272,5 +274,21 @@ export class ContentApiService {
           null
         )
     );
+  }
+  getGroups(opt) {
+    return from(this.api.groupsApi.getGroups(opt));
+  }
+  createGroup(group: GroupBodyCreate) {
+    if (!group.id) {
+      group.id = group.displayName;
+    }
+    return from(this.api.groupsApi.createGroup(group));
+  }
+  editGroup(id: string, group: GroupBodyUpdate) {
+    delete group['id'];
+    return from(this.api.groupsApi.updateGroup(id, group));
+  }
+  deleteGroup(id: string) {
+    return from(this.api.groupsApi.deleteGroup(id));
   }
 }

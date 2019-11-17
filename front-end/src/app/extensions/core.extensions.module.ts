@@ -140,7 +140,10 @@ export class CoreExtensionsModule {
       'repository.isQuickShareEnabled': rules.hasQuickShareEnabled,
       'user.isAdmin': rules.isAdmin,
       'app.navigation.isNotPeople': rules.isNotPeople,
-      'app.navigation.isPeople': rules.isPeople
+      'app.navigation.isPeople': rules.isPeople,
+      'app.navigation.isGroup': rules.isGroup,
+      'app.navigation.isNotGroup': rules.isNotGroup,
+      canShowGroup: rules.canShowGroup
     });
   }
 }

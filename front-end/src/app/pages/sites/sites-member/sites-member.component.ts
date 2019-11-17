@@ -6,9 +6,7 @@ import {
   PaginationModel,
   AppConfigService,
   TranslationService,
-  fakeSearch
 } from '@alfresco/adf-core';
-import { UsersService } from 'app/pages/users/users.service';
 import { MatDialog } from '@angular/material';
 import { SitesMemberRoleComponent } from '../sites-member-role/sites-member-role.component';
 
@@ -25,7 +23,6 @@ export class SitesMemberComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private siteSv: SitesService,
-    private userSv: UsersService,
     public dialog: MatDialog,
     private appConfigService: AppConfigService,
     private _transSV: TranslationService
@@ -47,9 +44,6 @@ export class SitesMemberComponent implements OnInit {
     this.siteSv.getSiteMembers(id, opt).subscribe(result => {
       this.members = result.list.entries.map(x => x.entry);
     });
-  }
-  getAvatarLink(avatarId: string) {
-    return this.userSv.getAvatar(avatarId);
   }
   deleteSiteMember(personId: string) {
     this.siteSv.deleteSiteMember(this.site.id, personId).subscribe(result => {

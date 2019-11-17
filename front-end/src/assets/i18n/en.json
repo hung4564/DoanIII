@@ -58,9 +58,12 @@
         "UPLOAD_FILE": "Upload File",
         "UPLOAD_FOLDER": "Upload Folder",
         "CREATE_LIBRARY": "Create Library",
-        "CREATE_PERSON": "Create Person"
+        "CREATE_PERSON": "Create Person",
+        "CREATE_GROUP": "Create Group"
       },
       "TOOLTIPS": {
+        "CREATE_GROUP": "Create Group",
+        "CREATE_GROUP_NOT_ALLOWED": "Group cannot be created whilst viewing the current items",
         "CREATE_PERSON": "Create new person",
         "CREATE_PERSON_NOT_ALLOWED": "Person cannot be created whilst viewing the current items",
         "CREATE_FOLDER": "Create new folder",
@@ -84,6 +87,18 @@
           "TEXT": ""
         }
       },
+      "GROUPS": {
+        "TITLE": "Groups",
+        "SIDENAV_LINK": {
+          "LABEL": "Groups",
+          "TOOLTIP": "View all groups"
+        },
+        "EMPTY_STATE": {
+          "TITLE": "",
+          "TEXT": ""
+        }
+      },
+
       "PERSONAL": {
         "TITLE": "Personal Files",
         "SIDENAV_LINK": {
@@ -248,6 +263,11 @@
     },
     "DOCUMENT_LIST": {
       "COLUMNS": {
+        "EMAIL": "Email",
+        "USER_NAME": "Username",
+        "ENABLED": "Enabled",
+        "FIRST_NAME": "First name",
+        "LAST_NAME": "Last name",
         "ID": "ID",
         "NAME": "Name",
         "SIZE": "Size",
@@ -259,7 +279,9 @@
         "SHARED_BY": "Shared by",
         "DELETED_ON": "Deleted",
         "DELETED_BY": "Deleted by",
-        "ROLE": "My Role"
+        "ROLE": "My Role",
+        "DISPLAYNAME": "Display name",
+        "ISROOT": "Is root"
       },
       "TOOLBAR": {
         "CARDVIEW": "Card view mode",
@@ -301,7 +323,10 @@
         "INVALID_RECEIVER_EMAIL": "Recipient(s) email address not valid, contact IT.",
         "CREATE_PERSON_FAILED": "Cannot create the person",
         "UPDATE_PERSON_FAILED": "Cannot update the person",
-        "DELETE_PERSON_FAILED": "Cannot delete the person"
+        "DELETE_PERSON_FAILED": "Cannot delete the person",
+        "CREATE_GROUP_FAILED": "Cannot create the group",
+        "UPDATE_GROUP_FAILED": "Cannot update the group",
+        "DELETE_GROUP_FAILED": "Cannot delete the group"
       },
       "UPLOAD": {
         "ERROR": {
@@ -460,6 +485,13 @@
       "PERSON_CREATED": "Person created",
       "PERSON_UPDATED": "Person properties updated",
       "PERSON_DELETED": "Person deleted"
+    }
+  },
+  "GROUP": {
+    "SUCCESS": {
+      "GROUP_CREATED": "Group created",
+      "GROUP_UPDATED": "Group properties updated",
+      "GROUP_DELETED": "Group deleted"
     }
   },
   "SEARCH": {

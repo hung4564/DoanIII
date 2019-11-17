@@ -14,7 +14,8 @@ import {
   PathInfoEntity,
   SiteBody,
   SiteEntry,
-  PersonEntry
+  PersonEntry,
+  GroupEntry
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,6 +45,7 @@ import {
 import { getSharedUrl, getAppSelection } from 'app/store/selectors/app.selector';
 import { NavigateToParentFolder, NavigateRouteAction } from 'app/store/actions/router.actions';
 import { PersonDetailComponent } from 'app/pages/people/person-detail/person-detail.component';
+import { GroupsDetailComponent } from 'app/pages/groups/groups-detail/groups-detail.component';
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;
@@ -1061,6 +1063,15 @@ export class ContentManagementService {
       );
     });
   }
+  handleError(error) {
+    const err = JSON.parse(
+      error
+        .toString()
+        .substring(7)
+        .trim()
+    );
+    this.store.dispatch(new SnackbarErrorAction(err.error.errorKey));
+  }
   createPerson() {
     const dialog = this.dialogRef.open(PersonDetailComponent, {
       data: {
@@ -1078,16 +1089,10 @@ export class ContentManagementService {
             this.store.dispatch(new ReloadDocumentListAction());
           },
           error => {
-            const err = JSON.parse(
-              error
-                .toString()
-                .substring(7)
-                .trim()
-            );
             this.store.dispatch(
               new SnackbarErrorAction('APP.MESSAGES.ERRORS.CREATE_PERSON_FAILED')
             );
-            this.store.dispatch(new SnackbarErrorAction(err.error.errorKey));
+            this.handleError(error);
           }
         );
       }
@@ -1120,6 +1125,7 @@ export class ContentManagementService {
             this.store.dispatch(
               new SnackbarErrorAction('APP.MESSAGES.ERRORS.UPDATE_PERSON_FAILED')
             );
+            this.handleError(err);
           }
         );
       }
@@ -1133,6 +1139,67 @@ export class ContentManagementService {
       },
       err => {
         this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.DELETE_PERSON_FAILED'));
+        this.handleError(err);
+      }
+    );
+  }
+  createGroup() {
+    const dialog = this.dialogRef.open(GroupsDetailComponent, {
+      data: {
+        title: 'APP.ACTIONS.CREATE',
+        type: 'CREATE',
+        group: {}
+      },
+      width: '400px'
+    });
+    dialog.afterClosed().subscribe(group => {
+      if (group) {
+        this.contentApi.createGroup(group).subscribe(
+          result => {
+            this.store.dispatch(new SnackbarInfoAction('GROUP.SUCCESS.GROUP_CREATED'));
+            this.store.dispatch(new ReloadDocumentListAction());
+          },
+          error => {
+            this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED'));
+            this.handleError(error);
+          }
+        );
+      }
+    });
+  }
+  editGroup(group: GroupEntry) {
+    const dialog = this.dialogRef.open(GroupsDetailComponent, {
+      data: {
+        title: 'APP.ACTIONS.UPDATE',
+        type: 'UPDATE',
+        group: group.entry
+      },
+      width: '400px'
+    });
+    dialog.afterClosed().subscribe(group => {
+      if (group) {
+        this.contentApi.editGroup(group.id, group).subscribe(
+          result => {
+            this.store.dispatch(new SnackbarInfoAction('GROUP.SUCCESS.GROUP_CREATED'));
+            this.store.dispatch(new ReloadDocumentListAction());
+          },
+          error => {
+            this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED'));
+            this.handleError(error);
+          }
+        );
+      }
+    });
+  }
+  deleteGroup(id: string) {
+    this.contentApi.deleteGroup(id).subscribe(
+      result => {
+        this.store.dispatch(new SnackbarInfoAction('GROUP.SUCCESS.GROUP_DELETED'));
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.DELETE_GROUP_FAILED'));
+        this.handleError(err);
       }
     );
   }

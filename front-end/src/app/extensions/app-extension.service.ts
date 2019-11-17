@@ -45,6 +45,7 @@ export class AppExtensionService implements RuleContext {
     trashcan: Array<DocumentListPresetRef>;
     searchLibraries: Array<DocumentListPresetRef>;
     people: Array<DocumentListPresetRef>;
+    groups: Array<DocumentListPresetRef>;
   } = {
     files: [],
     libraries: [],
@@ -54,7 +55,8 @@ export class AppExtensionService implements RuleContext {
     favorites: [],
     trashcan: [],
     searchLibraries: [],
-    people: []
+    people: [],
+    groups: []
   };
 
   contentMetadata: any;
@@ -127,7 +129,8 @@ export class AppExtensionService implements RuleContext {
       favorites: this.getDocumentListPreset(config, 'favorites'),
       trashcan: this.getDocumentListPreset(config, 'trashcan'),
       searchLibraries: this.getDocumentListPreset(config, 'search-libraries'),
-      people: this.getDocumentListPreset(config, 'people')
+      people: this.getDocumentListPreset(config, 'people'),
+      groups: this.getDocumentListPreset(config, 'groups')
     };
 
     if (config.features && config.features.viewer) {

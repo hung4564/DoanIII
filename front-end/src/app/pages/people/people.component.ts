@@ -61,8 +61,4 @@ export class PeopleComponent extends PageComponent implements OnInit {
       }
     );
   }
-  private reloadList() {
-    this.reload();
-    this.getList(this.pagination);
-  }
 }

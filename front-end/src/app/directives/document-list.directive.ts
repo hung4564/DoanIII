@@ -14,7 +14,7 @@ import { SetSelectedNodesAction } from 'app/store/actions/node.action';
 export class DocumentListDirective {
   private isLibrary = false;
   private isPeople = false;
-
+  private isGroup = false;
   onDestroy$ = new Subject<boolean>();
 
   get sortingPreferenceKey(): string {
@@ -38,7 +38,8 @@ export class DocumentListDirective {
       // workaround for custom node list
       this.router.url.endsWith('/libraries') ||
       this.router.url.startsWith('/search-libraries');
-    this.isPeople = this.router.url.endsWith('/people');
+    this.isPeople = this.router.url.startsWith('/people');
+    this.isGroup = this.router.url.startsWith('/groups');
     if (this.sortingPreferenceKey) {
       const current = this.documentList.sorting;
 
@@ -96,6 +97,7 @@ export class DocumentListDirective {
     const selection = this.documentList.selection.map(node => {
       node['isLibrary'] = this.isLibrary;
       node['isPeople'] = this.isPeople;
+      node['isGroup'] = this.isGroup;
       return node;
     });
 

@@ -485,3 +485,12 @@ export function canShowPeople(context: RuleContext): boolean {
     Boolean
   );
 }
+
+/**
+ * Checks if user can show **Info Drawer** for the selected node.
+ * JSON ref: `canShowGroup`
+ * @param context Rule execution context
+ */
+export function canShowGroup(context: RuleContext): boolean {
+  return [hasSelection(context), navigation.isGroup(context), user.isAdmin(context)].every(Boolean);
+}

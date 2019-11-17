@@ -40,6 +40,14 @@
         { "type": "rule", "value": "app.navigation.isPeople" },
         { "type": "rule", "value": "user.isAdmin" }
       ]
+    },
+    {
+      "id": "app.create.group.canCreate",
+      "type": "core.every",
+      "parameters": [
+        { "type": "rule", "value": "app.navigation.isGroup" },
+        { "type": "rule", "value": "user.isAdmin" }
+      ]
     }
   ],
   "features": {
@@ -67,6 +75,21 @@
         "rules": {
           "visible": "app.create.person.canCreate",
           "enabled": "app.create.person.canCreate"
+        }
+      },
+      {
+        "id": "app.create.createGroup",
+        "order": 100,
+        "icon": "group",
+        "title": "APP.NEW_MENU.MENU_ITEMS.CREATE_GROUP",
+        "description": "APP.NEW_MENU.TOOLTIPS.CREATE_GROUP",
+        "description-disabled": "APP.NEW_MENU.TOOLTIPS.CREATE_GROUP_NOT_ALLOWED",
+        "actions": {
+          "click": "CREATE_GROUP"
+        },
+        "rules": {
+          "visible": "app.create.group.canCreate",
+          "enabled": "app.create.group.canCreate"
         }
       },
       {
@@ -393,12 +416,20 @@
         "id": "app.navbar.admin",
         "items": [
           {
-            "id": "app.navbar.personalFiles",
+            "id": "app.navbar.person",
             "order": 100,
             "icon": "person",
             "title": "APP.BROWSE.PEOPLE.SIDENAV_LINK.LABEL",
             "description": "APP.BROWSE.PEOPLE.SIDENAV_LINK.TOOLTIP",
             "route": "people"
+          },
+          {
+            "id": "app.navbar.group",
+            "order": 200,
+            "icon": "group",
+            "title": "APP.BROWSE.GROUPS.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.GROUPS.SIDENAV_LINK.TOOLTIP",
+            "route": "groups"
           }
         ],
         "rules": {
@@ -646,6 +677,30 @@
         },
         "rules": {
           "visible": "canShowPeople"
+        }
+      },
+      {
+        "id": "app.group.edit",
+        "title": "APP.ACTIONS.EDIT",
+        "icon": "create",
+        "order": 201,
+        "actions": {
+          "click": "EDIT_GROUP"
+        },
+        "rules": {
+          "visible": "canShowGroup"
+        }
+      },
+      {
+        "id": "app.group.delete",
+        "title": "APP.ACTIONS.DELETE",
+        "icon": "delete",
+        "order": 202,
+        "actions": {
+          "click": "DELETE_GROUP"
+        },
+        "rules": {
+          "visible": "canShowGroup"
         }
       },
       {
@@ -1509,6 +1564,35 @@
           "id": "app.people.lastName",
           "key": "lastName",
           "title": "APP.DOCUMENT_LIST.COLUMNS.LAST_NAME",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        }
+      ],
+      "groups": [
+        {
+          "id": "app.people.displayName",
+          "key": "displayName",
+          "class": "adf-ellipsis-cell adf-expand-cell-2",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.DISPLAYNAME",
+          "type": "text",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.people.id",
+          "key": "id",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.ID",
+          "type": "text",
+          "class": "adf-expand-cell-2 adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.people.isRoot",
+          "key": "isRoot",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.ISROOT",
           "type": "text",
           "class": "adf-no-grow-cell adf-ellipsis-cell",
           "sortable": true,

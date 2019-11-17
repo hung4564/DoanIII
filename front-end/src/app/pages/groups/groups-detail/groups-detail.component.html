@@ -1,6 +1,10 @@
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit(groupForm.value)">
-  <h1 mat-dialog-title>{{ title }}</h1>
+  <h1 mat-dialog-title>{{ title | translate }}</h1>
   <mat-dialog-content class="example-container">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Id" formControlName="id" id="id" required />
+      <mat-error *ngIf="hasError('id', 'required')">Id is required</mat-error>
+    </mat-form-field>
     <mat-form-field>
       <input
         matInput

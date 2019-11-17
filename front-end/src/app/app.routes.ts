@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './pages/login/login.component';
-import { LayoutRoutes } from 'app/layout/layout.routing';
 import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuardEcm } from '@alfresco/adf-core';
 import { LayoutComponent } from './layout/layout.component';
-import { FileViewComponent } from './pages/files/file-view/file-view.component';
 import { FilesComponent } from './pages/files/files.component';
 import { PreviewComponent } from './pages/preview/preview.component';
 import { FileTrashComponent } from './pages/file-trash/file-trash.component';
@@ -18,6 +16,7 @@ import { FileFavoriteComponent } from './pages/file-favorite/file-favorite.compo
 import { FileDetailComponent } from './pages/files/file-detail/file-detail.component';
 import { LibrariesComponent } from './pages/libraries/libraries.component';
 import { PeopleComponent } from './pages/people/people.component';
+import { GroupsMainComponent } from './pages/groups/groups-main/groups-main.component';
 export const appRoutes: Routes = [
   {
     path: 'login',
@@ -178,7 +177,8 @@ export const appRoutes: Routes = [
           title: 'APP.BROWSE.TRASHCAN.TITLE'
         }
       },
-      { path: 'people', component: PeopleComponent, data: { title: 'APP.BROWSE.PEOPLE.TITLE' } }
+      { path: 'people', component: PeopleComponent, data: { title: 'APP.BROWSE.PEOPLE.TITLE' } },
+      { path: 'groups', component: GroupsMainComponent, data: { title: 'APP.BROWSE.GROUPS.TITLE' } }
     ]
   }
   // ...LayoutRoutes

@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GroupsService } from '../groups.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-groups-detail',
@@ -11,15 +10,23 @@ import { FormGroup } from '@angular/forms';
 export class GroupsDetailComponent implements OnInit {
   groupForm: FormGroup;
   title: string;
+  type: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _groupSv: GroupsService,
     public dialogRef: MatDialogRef<GroupsDetailComponent>
   ) {
     this.title = data.title;
-    this.groupForm = this._groupSv.createForm(data);
+    this.type = data.type;
+    this.groupForm = this.createForm(data.group);
   }
-
+  createForm(data) {
+    return new FormGroup({
+      id: new FormControl({ value: data.id, disabled: this.type != 'CREATE' }, [
+        Validators.required
+      ]),
+      displayName: new FormControl(data.displayName, [Validators.required])
+    });
+  }
   ngOnInit() {}
   revert() {
     this.groupForm.reset();
