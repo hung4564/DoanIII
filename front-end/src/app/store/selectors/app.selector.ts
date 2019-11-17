@@ -101,3 +101,7 @@ export const isSmallScreenSelector = createSelector(
   selectApp,
   state => state.isSmallScreen
 );
+export const showFacetFilter = createSelector(
+  selectApp,
+  state => state.showFacetFilter
+);

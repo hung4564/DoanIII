@@ -14,6 +14,7 @@ export interface AppState {
   infoDrawerOpened: boolean;
   infoDrawerMetadataAspect: string;
   isSmallScreen: boolean;
+  showFacetFilter: boolean;
 }
 
 export interface AppStore {

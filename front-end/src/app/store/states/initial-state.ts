@@ -26,7 +26,8 @@ export const INITIAL_APP_STATE: AppState = {
       isQuickShareEnabled: true
     }
   },
-  isSmallScreen: false
+  isSmallScreen: false,
+  showFacetFilter: true
 };
 
 export const INITIAL_STATE: AppStore = {

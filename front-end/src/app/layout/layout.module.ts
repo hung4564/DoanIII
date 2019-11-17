@@ -11,6 +11,9 @@ import { LayoutComponent } from './layout.component';
 import { LayoutService } from './layout.service';
 import { CoreExtensionsModule } from 'app/extensions/core.extensions.module';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
+import { SearchInputComponent } from './partials/search-input/search-input.component';
+import { SearchLibrariesQueryBuilderService } from './partials/search-input/search-libraries-query-builder.service';
+import { SearchInputControlComponent } from './partials/search-input/search-input-control/search-input-control.component';
 
 @NgModule({
   imports: [
@@ -22,8 +25,15 @@ import { ExtensionsModule } from '@alfresco/adf-extensions';
     ContentModule.forChild(),
     ExtensionsModule
   ],
-  declarations: [SidenavComponent, HeaderComponent, CurrentUserComponent, LayoutComponent],
+  declarations: [
+    SearchInputComponent,
+    SidenavComponent,
+    HeaderComponent,
+    CurrentUserComponent,
+    LayoutComponent,
+    SearchInputControlComponent
+  ],
   exports: [],
-  providers: [LayoutService]
+  providers: [LayoutService, SearchLibrariesQueryBuilderService]
 })
 export class LayoutModule {}

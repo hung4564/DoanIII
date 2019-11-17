@@ -17,6 +17,8 @@ import { FileDetailComponent } from './pages/files/file-detail/file-detail.compo
 import { LibrariesComponent } from './pages/libraries/libraries.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { GroupsMainComponent } from './pages/groups/groups-main/groups-main.component';
+import { SearchResultsComponent } from './pages/search-result/search-results/search-results.component';
+import { SearchLibrariesResultsComponent } from './pages/search-result/search-libraries-results/search-libraries-results.component';
 export const appRoutes: Routes = [
   {
     path: 'login',
@@ -178,7 +180,61 @@ export const appRoutes: Routes = [
         }
       },
       { path: 'people', component: PeopleComponent, data: { title: 'APP.BROWSE.PEOPLE.TITLE' } },
-      { path: 'groups', component: GroupsMainComponent, data: { title: 'APP.BROWSE.GROUPS.TITLE' } }
+      {
+        path: 'groups',
+        component: GroupsMainComponent,
+        data: { title: 'APP.BROWSE.GROUPS.TITLE' }
+      },
+      {
+        path: 'search',
+        children: [
+          {
+            path: '',
+            component: SearchResultsComponent,
+            data: {
+              title: 'APP.BROWSE.SEARCH.TITLE'
+            }
+          },
+          {
+            path: 'view/:nodeId',
+            outlet: 'viewer',
+            children: [
+              {
+                path: '',
+                data: {
+                  navigateSource: 'search'
+                },
+                component: PreviewComponent
+              }
+            ]
+          }
+        ]
+      },
+      {
+        path: 'search-libraries',
+        children: [
+          {
+            path: '',
+            component: SearchLibrariesResultsComponent,
+            data: {
+              title: 'APP.BROWSE.SEARCH.TITLE'
+            }
+          },
+          {
+            path: 'view/:nodeId',
+            outlet: 'viewer',
+            children: [
+              {
+                path: '',
+                data: {
+                  navigateSource: 'search-libraries'
+                },
+                component: PreviewComponent
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
   // ...LayoutRoutes

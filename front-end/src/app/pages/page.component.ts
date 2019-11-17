@@ -9,7 +9,7 @@ import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
 import { takeUntil } from 'rxjs/operators';
 import { ContentManagementService } from 'app/services/content-management.service';
 import { isLocked, isLibrary } from 'app/utils/node.utils';
-import { ViewFileAction } from 'app/store/actions/viewer.actions';
+import { ViewFileAction, ViewNodeAction, ViewNodeExtras } from 'app/store/actions/viewer.actions';
 import { ReloadDocumentListAction } from 'app/store/actions/app.action';
 import {
   getAppSelection,
@@ -38,10 +38,11 @@ export class PageComponent implements OnInit, OnDestroy {
     protected extensions: AppExtensionService,
     protected content: ContentManagementService
   ) {}
-  showPreview(node: MinimalNodeEntity) {
+  showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
     if (node && node.entry) {
-      const parentId = this.node ? this.node.id : null;
-      this.store.dispatch(new ViewFileAction(node, parentId));
+      const id = (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
+
+      this.store.dispatch(new ViewNodeAction(id, extras));
     }
   }
   getParentNodeId(): string {

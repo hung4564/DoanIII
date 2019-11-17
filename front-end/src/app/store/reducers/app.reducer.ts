@@ -14,6 +14,7 @@ import {
 } from '../actions/app.action';
 import { INITIAL_APP_STATE } from '../states/initial-state';
 import { NodeActionTypes, SetSelectedNodesAction } from '../actions/node.action';
+import { SearchActionTypes } from '../actions/search.actions';
 
 export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action): AppState {
   let newState: AppState;
@@ -54,6 +55,15 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
       break;
     case AppActionTypes.SetSmallScreen:
       newState = setSmallScreen(state, <SetSmallScreenAction>action);
+      break;
+    case SearchActionTypes.ToggleFilter:
+      newState = toggleSearchFilter(state);
+      break;
+    case SearchActionTypes.ShowFilter:
+      newState = showSearchFilter(state);
+      break;
+    case SearchActionTypes.HideFilter:
+      newState = hideSearchFilter(state);
       break;
     default:
       newState = Object.assign({}, state);
@@ -188,5 +198,22 @@ function setInfoDrawerAspect(state: AppState, action: SetInfoDrawerMetadataAspec
 function setSmallScreen(state: AppState, action: SetSmallScreenAction) {
   const newState = Object.assign({}, state);
   newState.isSmallScreen = action.payload;
+  return newState;
+}
+function toggleSearchFilter(state: AppState): AppState {
+  const newState = Object.assign({}, state);
+  newState.showFacetFilter = !newState.showFacetFilter;
+  return newState;
+}
+
+function hideSearchFilter(state: AppState): AppState {
+  const newState = Object.assign({}, state);
+  newState.showFacetFilter = false;
+  return newState;
+}
+
+function showSearchFilter(state: AppState): AppState {
+  const newState = Object.assign({}, state);
+  newState.showFacetFilter = true;
   return newState;
 }

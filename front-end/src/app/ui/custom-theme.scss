@@ -8,6 +8,7 @@
 @import "../layout/shares/create-menu/create-menu.component.scss";
 @import "../layout/layout.theme";
 @import "../layout/partials/sidenav/sidenav.component.theme";
+@import "../layout/partials/search-input/search-input.component.theme";
 @import "../directives/ContextActions/context-menu/context-menu.component.theme";
 @import "../layout/shares/node-versions/node-versions.dialog.theme";
 
@@ -63,6 +64,7 @@ $warn: map-get($custom-theme, warn);
   @include aca-context-menu-theme($theme);
   @include aca-node-versions-dialog-theme($theme);
   @include app-create-menu-theme($theme);
+  @include app-search-input-theme($theme);
 
   .mat-toolbar {
     color: var(--theme-text-color, rgba(0, 0, 0, 0.54));

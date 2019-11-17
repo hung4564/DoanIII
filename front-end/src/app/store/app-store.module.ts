@@ -16,6 +16,7 @@ import { LibraryEffects } from './effects/library.effects';
 import { FavoriteEffects } from './effects/favorite.effects';
 import { PersonEffects } from './effects/person.efects';
 import { GroupEffects } from './effects/group.effects';
+import { SearchEffects } from './effects/search.effects';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { GroupEffects } from './effects/group.effects';
       LibraryEffects,
       FavoriteEffects,
       PersonEffects,
-      GroupEffects
+      GroupEffects,
+      SearchEffects
     ]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({
