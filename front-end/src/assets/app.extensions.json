@@ -563,18 +563,6 @@
         }
       },
       {
-        "id": "app.toolbar.share",
-        "order": 100,
-        "title": "APP.ACTIONS.SHARE",
-        "icon": "link",
-        "actions": {
-          "click": "SHARE_NODE"
-        },
-        "rules": {
-          "visible": "app.selection.file.canShare"
-        }
-      },
-      {
         "id": "app.toolbar.share.edit",
         "order": 101,
         "title": "APP.ACTIONS.SHARE_EDIT",

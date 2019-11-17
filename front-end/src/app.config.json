@@ -185,19 +185,23 @@
       "fields": [
         {
           "field": "content.mimetype",
-          "label": "SEARCH.FACET_FIELDS.FILE_TYPE"
+          "label": "SEARCH.FACET_FIELDS.FILE_TYPE",
+          "mincount": 0
         },
         {
           "field": "creator",
-          "label": "SEARCH.FACET_FIELDS.CREATOR"
+          "label": "SEARCH.FACET_FIELDS.CREATOR",
+          "mincount": 0
         },
         {
           "field": "modifier",
-          "label": "SEARCH.FACET_FIELDS.MODIFIER"
+          "label": "SEARCH.FACET_FIELDS.MODIFIER",
+          "mincount": 0
         },
         {
           "field": "SITE",
-          "label": "SEARCH.FACET_FIELDS.LOCATION"
+          "label": "SEARCH.FACET_FIELDS.LOCATION",
+          "mincount": 0
         }
       ]
     },

@@ -196,8 +196,7 @@ export const appRoutes: Routes = [
             }
           },
           {
-            path: 'view/:nodeId',
-            outlet: 'viewer',
+            path: 'preview/:nodeId',
             children: [
               {
                 path: '',
@@ -221,8 +220,7 @@ export const appRoutes: Routes = [
             }
           },
           {
-            path: 'view/:nodeId',
-            outlet: 'viewer',
+            path: 'preview/:nodeId',
             children: [
               {
                 path: '',
