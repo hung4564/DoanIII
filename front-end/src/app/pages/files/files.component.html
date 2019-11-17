@@ -12,14 +12,14 @@
   <div class="adf-toolbar--spacer"></div>
   <app-create-menu [expanded]="false"></app-create-menu>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
-    <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
+    <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
   </ng-container>
 </adf-toolbar>
 
 <adf-document-list
   #documentList
-  acaDocumentList
-  acaContextActions
+  appDocumentList
+  appContextActions
   [allowDropFiles]="true"
   [navigate]="false"
   [currentFolderId]="node?.id"
@@ -59,8 +59,8 @@
     </ng-container>
   </data-columns>
 </adf-document-list>
-<adf-pagination acaPagination [target]="documentList"> </adf-pagination>
+<adf-pagination appPagination [target]="documentList"> </adf-pagination>
 
 <mat-sidenav *ngIf="infoDrawerOpened$ | async" [mode]="'over'" [opened]="infoDrawerOpened$ | async">
-  <aca-info-drawer [node]="selection.last"></aca-info-drawer>
+  <app-info-drawer [node]="selection.last"></app-info-drawer>
 </mat-sidenav>

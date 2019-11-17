@@ -2,7 +2,7 @@
   $foreground: map-get($theme, foreground);
   $accent: map-get($theme, accent);
 
-  aca-permissions-dialog-panel {
+  app-permissions-dialog-panel {
     height: 400px;
   }
 
@@ -19,7 +19,7 @@
     }
   }
 
-  .aca-node-permissions-dialog {
+  .app-node-permissions-dialog {
     .mat-dialog-title {
       font-size: 20px;
       font-weight: 600;

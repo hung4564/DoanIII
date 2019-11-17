@@ -14,7 +14,7 @@ import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
       (toggle)="onToggleEvent($event)"
       (lockError)="onLockError()"
       (unlockError)="onUnlockLockError()"
-      [acaLockNode]="selection"
+      [appLockNode]="selection"
       [attr.title]="
         lock.isNodeLocked()
           ? ('APP.ACTIONS.EDIT_OFFLINE_CANCEL' | translate)

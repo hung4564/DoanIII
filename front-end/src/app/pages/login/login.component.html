@@ -4,6 +4,7 @@
   logoImageUrl="./assets/images/alfresco-logo.svg"
   [showRememberMe]="false"
   [showLoginActions]="false"
+  (error)="errorHandle($event)"
   (success)="mySuccessMethod($event)"
 >
 </adf-login>

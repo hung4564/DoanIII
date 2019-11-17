@@ -9,11 +9,11 @@ import {
 import { ContentActionRef } from '@alfresco/adf-extensions';
 
 @Component({
-  selector: 'aca-toolbar-action',
+  selector: 'app-toolbar-action',
   templateUrl: './toolbar-action.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'aca-toolbar-action' }
+  host: { class: 'app-toolbar-action' }
 })
 export class ToolbarActionComponent implements DoCheck {
   @Input()

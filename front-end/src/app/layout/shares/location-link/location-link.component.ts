@@ -14,7 +14,7 @@ import { TranslationService } from '@alfresco/adf-core';
 import { ContentApiService } from 'app/services/content-api.service';
 
 @Component({
-  selector: 'aca-location-link',
+  selector: 'app-location-link',
   template: `
     <a
       href=""
@@ -28,7 +28,7 @@ import { ContentApiService } from 'app/services/content-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'aca-location-link adf-location-cell adf-datatable-content-cell'
+    class: 'app-location-link adf-location-cell adf-datatable-content-cell'
   }
 })
 export class LocationLinkComponent implements OnInit {

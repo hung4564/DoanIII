@@ -20,7 +20,7 @@ import { SetSelectedNodesAction } from 'app/store/actions/node.action';
       #membership="libraryMembership"
       (toggle)="onToggleEvent($event)"
       (error)="onErrorEvent($event)"
-      [acaLibraryMembership]="(selection$ | async).library"
+      [appLibraryMembership]="(selection$ | async).library"
       [attr.title]="
         (membership.isJoinRequested | async)
           ? ('APP.ACTIONS.CANCEL_JOIN' | translate)

@@ -5,13 +5,13 @@ import { ContextMenuService } from './context-menu.service';
 import { ContextMenuOverlayRef } from './context-menu-overlay';
 
 @Directive({
-  selector: '[acaContextActions]'
+  selector: '[appContextActions]'
 })
 export class ContextActionsDirective implements OnInit, OnDestroy {
   private execute$: Subject<any> = new Subject();
   private subscriptions: Subscription[] = [];
   private overlayRef: ContextMenuOverlayRef = null;
-  @Input('acaContextEnable') enabled = true;
+  @Input('appContextEnable') enabled = true;
   @HostListener('contextmenu', ['$event'])
   onContextMenuEvent(event: MouseEvent) {
     if (event) {

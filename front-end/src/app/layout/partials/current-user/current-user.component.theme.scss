@@ -1,8 +1,8 @@
-@mixin aca-current-user-theme($theme) {
+@mixin app-current-user-theme($theme) {
   $background: map-get($theme, background);
   $am-avatar-size: 35px;
 
-  .aca-current-user {
+  .app-current-user {
     position: relative;
     color: mat-color($background, card);
     line-height: 20px;

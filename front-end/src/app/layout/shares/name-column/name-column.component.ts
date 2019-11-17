@@ -15,7 +15,7 @@ import { isLocked } from 'app/utils/node.utils';
 import { NodeActionTypes } from 'app/store/actions/node.action';
 
 @Component({
-  selector: 'aca-custom-name-column',
+  selector: 'app-custom-name-column',
   templateUrl: './name-column.component.html',
   styleUrls: ['name-column.component.scss'],
   encapsulation: ViewEncapsulation.None,

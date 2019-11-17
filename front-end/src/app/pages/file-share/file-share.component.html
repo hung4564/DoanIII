@@ -6,15 +6,15 @@
   <div class="adf-toolbar--spacer"></div>
   <adf-toolbar class="adf-toolbar--inline">
     <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
-      <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
+      <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
     </ng-container>
   </adf-toolbar>
 </adf-toolbar>
 
 <adf-document-list
   #documentList
-  acaDocumentList
-  acaContextActions
+  appDocumentList
+  appContextActions
   [stickyHeader]="true"
   currentFolderId="-sharedlinks-"
   selectionMode="multiple"
@@ -62,4 +62,4 @@
     </ng-container>
   </data-columns>
 </adf-document-list>
-<adf-pagination acaPagination [target]="documentList"> </adf-pagination>
+<adf-pagination appPagination [target]="documentList"> </adf-pagination>

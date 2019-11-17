@@ -23,7 +23,7 @@ export interface LibraryMembershipErrorEvent {
 }
 
 @Directive({
-  selector: '[acaLibraryMembership]',
+  selector: '[appLibraryMembership]',
   exportAs: 'libraryMembership'
 })
 export class LibraryMembershipDirective implements OnChanges {
@@ -34,7 +34,7 @@ export class LibraryMembershipDirective implements OnChanges {
   );
 
   /** Site for which to toggle the membership request. */
-  @Input('acaLibraryMembership')
+  @Input('appLibraryMembership')
   selection: SiteEntry = null;
 
   @Output() toggle: EventEmitter<

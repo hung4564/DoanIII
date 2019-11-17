@@ -2,7 +2,7 @@
   <adf-breadcrumb root="APP.BROWSE.SEARCH_LIBRARIES.TITLE"> </adf-breadcrumb>
   <div class="adf-toolbar--spacer"></div>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
-    <aca-toolbar-action [actionRef]="entry"></aca-toolbar-action>
+    <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
   </ng-container>
 </adf-toolbar>
 <div class="adf-search-results">
@@ -21,8 +21,8 @@
 
     <adf-document-list
       #documentList
-      acaContextActions
-      acaDocumentList
+      appContextActions
+      appDocumentList
       [showHeader]="true"
       [selectionMode]="'single'"
       [sorting]="['name', 'asc']"
@@ -76,7 +76,7 @@
 
     <adf-pagination
       *ngIf="!documentList.isEmpty()"
-      acaPagination
+      appPagination
       [target]="documentList"
       (change)="onPaginationChanged($event)"
     >
@@ -85,5 +85,5 @@
 </div>
 
 <mat-sidenav *ngIf="infoDrawerOpened$ | async" [mode]="'over'" [opened]="infoDrawerOpened$ | async">
-  <aca-info-drawer [node]="selection.last"></aca-info-drawer>
+  <app-info-drawer [node]="selection.last"></app-info-drawer>
 </mat-sidenav>

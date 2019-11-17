@@ -18,7 +18,7 @@
     (navigateNext)="onNavigateNext()"
   >
     <adf-viewer-sidebar *ngIf="infoDrawerOpened$ | async">
-      <aca-info-drawer [node]="selection.file"></aca-info-drawer>
+      <app-info-drawer [node]="selection.file"></app-info-drawer>
     </adf-viewer-sidebar>
 
     <adf-viewer-open-with *ngIf="openWith.length">
@@ -29,7 +29,7 @@
 
     <adf-viewer-toolbar-actions>
       <ng-container *ngFor="let action of viewerToolbarActions; trackBy: trackByActionId">
-        <aca-toolbar-action [actionRef]="action"></aca-toolbar-action>
+        <app-toolbar-action [actionRef]="action"></app-toolbar-action>
       </ng-container>
     </adf-viewer-toolbar-actions>
   </adf-viewer>

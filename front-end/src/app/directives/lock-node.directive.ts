@@ -10,11 +10,11 @@ import { AlfrescoApiService } from '@alfresco/adf-core';
 import { isLocked } from '../utils/node.utils';
 
 @Directive({
-  selector: '[acaLockNode]',
+  selector: '[appLockNode]',
   exportAs: 'lockNode'
 })
 export class LockNodeDirective {
-  @Input('acaLockNode')
+  @Input('appLockNode')
   node: NodeEntry = null;
 
   @Output() toggle: EventEmitter<any> = new EventEmitter();

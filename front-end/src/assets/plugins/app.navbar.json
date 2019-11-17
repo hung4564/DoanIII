@@ -1,0 +1,105 @@
+{
+  "$schema": "../../../extension.schema.json",
+  "$id": "app.demo.navbar",
+  "$name": "app.demo.navbar",
+  "$version": "1.0.0",
+  "$vendor": "Alfresco Software, Ltd.",
+  "$license": "LGPL-3.0",
+  "$runtime": "1.5.0",
+  "$description": "Sample app navbar extension",
+  "features": {
+    "navbar": [
+      {
+        "id": "app.navbar.admin",
+        "items": [
+          {
+            "id": "app.navbar.person",
+            "order": 100,
+            "icon": "person",
+            "title": "APP.BROWSE.PEOPLE.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.PEOPLE.SIDENAV_LINK.TOOLTIP",
+            "route": "people",
+            "rules": {
+              "visible": "user.isAdmin"
+            }
+          },
+          {
+            "id": "app.navbar.group",
+            "order": 200,
+            "icon": "group",
+            "title": "APP.BROWSE.GROUPS.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.GROUPS.SIDENAV_LINK.TOOLTIP",
+            "route": "groups",
+            "rules": {
+              "visible": "user.isAdmin"
+            }
+          }
+        ],
+        "rules": {
+          "visible": "user.isAdmin"
+        }
+      },
+      {
+        "id": "app.navbar.primary",
+        "items": [
+          {
+            "id": "app.navbar.personalFiles",
+            "order": 100,
+            "icon": "folder",
+            "title": "APP.BROWSE.PERSONAL.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.PERSONAL.SIDENAV_LINK.TOOLTIP",
+            "route": "personal-files"
+          },
+          {
+            "id": "app.navbar.libraries.menu",
+            "order": 200,
+            "icon": "library_books",
+            "title": "APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.SIDENAV_LINK.TOOLTIP",
+            "route": "libraries"
+          }
+        ]
+      },
+      {
+        "id": "app.navbar.secondary",
+        "items": [
+          {
+            "id": "app.navbar.shared",
+            "order": 100,
+            "icon": "people",
+            "title": "APP.BROWSE.SHARED.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.SHARED.SIDENAV_LINK.TOOLTIP",
+            "route": "shared",
+            "rules": {
+              "visible": "repository.isQuickShareEnabled"
+            }
+          },
+          {
+            "id": "app.navbar.recentFiles",
+            "order": 200,
+            "icon": "schedule",
+            "title": "APP.BROWSE.RECENT.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.RECENT.SIDENAV_LINK.TOOLTIP",
+            "route": "recent-files"
+          },
+          {
+            "id": "app.navbar.favorites",
+            "order": 300,
+            "icon": "star",
+            "title": "APP.BROWSE.FAVORITES.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.FAVORITES.SIDENAV_LINK.TOOLTIP",
+            "route": "favorites"
+          },
+          {
+            "id": "app.navbar.trashcan",
+            "order": 400,
+            "icon": "delete",
+            "title": "APP.BROWSE.TRASHCAN.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.TRASHCAN.SIDENAV_LINK.TOOLTIP",
+            "route": "trashcan"
+          }
+        ]
+      }
+    ]
+  }
+}

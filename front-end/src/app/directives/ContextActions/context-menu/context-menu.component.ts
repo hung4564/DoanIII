@@ -21,11 +21,11 @@ import { AppStore } from 'app/store/states/app.state';
 import { getAppSelection } from 'app/store/selectors/app.selector';
 
 @Component({
-  selector: 'aca-context-menu',
+  selector: 'app-context-menu',
   templateUrl: './context-menu.component.html',
   styleUrls: ['./context-menu.component.theme.scss'],
   host: {
-    class: 'aca-context-menu-holder'
+    class: 'app-context-menu-holder'
   },
   encapsulation: ViewEncapsulation.None
 })

@@ -2,18 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   SidenavLayoutComponent,
   UserPreferencesService,
-  AppConfigService,
-  PageTitleService
+  AppConfigService
 } from '@alfresco/adf-core';
 import { Subject, Observable } from 'rxjs';
 import { Directionality } from '@angular/cdk/bidi';
 import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store/states/app.state';
-import { Router, NavigationEnd, ActivationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { map, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
-import { LayoutService } from './layout.service';
-import { SetSmallScreenAction } from 'app/store/actions/app.action';
+import { ResetSelectionAction } from 'app/store/actions/app.action';
 
 @Component({
   selector: 'app-layout',
@@ -42,11 +39,9 @@ export class LayoutComponent implements OnInit {
   constructor(
     protected store: Store<any>,
     private router: Router,
-    private pageTitle: PageTitleService,
     private userPreferenceService: UserPreferencesService,
     private appConfigService: AppConfigService,
-    private breakpointObserver: BreakpointObserver,
-    private layoutSV: LayoutService
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit() {
@@ -68,7 +63,7 @@ export class LayoutComponent implements OnInit {
     } else {
       this.expandedSidenav = false;
     }
-    this.layoutSV.toggleSide(this.expandedSidenav);
+
     this.router.events
       .pipe(
         withLatestFrom(this.isSmallScreen$),
@@ -91,6 +86,14 @@ export class LayoutComponent implements OnInit {
 
         this.updateState();
       });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationStart),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe(() => {
+        this.store.dispatch(new ResetSelectionAction());
+      });
   }
 
   ngOnDestroy() {
@@ -102,17 +105,14 @@ export class LayoutComponent implements OnInit {
     if (this.layout.container.isMobileScreenSize) {
       event.preventDefault();
       this.layout.container.toggleMenu();
-      this.layoutSV.toggleSide(!this.layout.isMenuMinimized);
     }
   }
 
   private updateState() {
     if (this.minimizeSidenav && !this.layout.isMenuMinimized) {
       this.layout.isMenuMinimized = true;
-      this.layoutSV.toggleSide(!true);
       if (!this.layout.container.isMobileScreenSize) {
         this.layout.container.toggleMenu();
-        this.layoutSV.toggleSide(!this.layout.isMenuMinimized);
       }
     }
 
@@ -120,13 +120,11 @@ export class LayoutComponent implements OnInit {
       if (this.getSidenavState() && this.layout.isMenuMinimized) {
         this.layout.isMenuMinimized = false;
         this.layout.container.toggleMenu();
-        this.layoutSV.toggleSide(!this.layout.isMenuMinimized);
       }
     }
   }
 
   onExpanded(state: boolean) {
-    this.layoutSV.toggleSide(state);
     if (!this.minimizeSidenav && this.appConfigService.get('sideNav.preserveState')) {
       this.userPreferenceService.set('expandedSidenav', state);
     }

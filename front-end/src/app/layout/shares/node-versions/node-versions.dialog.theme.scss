@@ -1,4 +1,4 @@
-@mixin aca-node-versions-dialog-theme($theme) {
+@mixin app-node-versions-dialog-theme($theme) {
   $foreground: map-get($theme, foreground);
   $accent: map-get($theme, accent);
 
@@ -6,7 +6,7 @@
     height: 400px;
   }
 
-  .aca-node-versions-dialog {
+  .app-node-versions-dialog {
     .mat-dialog-title {
       flex: 0 0 auto;
     }

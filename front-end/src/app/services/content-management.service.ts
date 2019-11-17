@@ -57,6 +57,7 @@ interface RestoredNode {
 })
 export class ContentManagementService {
   reload = new Subject<any>();
+  reset = new Subject<any>();
   nodesDeleted = new Subject<any>();
   libraryDeleted = new Subject<string>();
   libraryCreated = new Subject<SiteEntry>();
@@ -112,7 +113,7 @@ export class ContentManagementService {
       if (targetId) {
         this.dialogRef.open(NodePermissionsDialogComponent, {
           data: { nodeId: targetId },
-          panelClass: 'aca-permissions-dialog-panel',
+          panelClass: 'app-permissions-dialog-panel',
           width: '730px'
         });
       } else {
@@ -151,7 +152,7 @@ export class ContentManagementService {
 
   versionUploadDialog() {
     return this.dialogRef.open(NodeVersionUploadDialogComponent, {
-      panelClass: 'aca-node-version-dialog'
+      panelClass: 'app-node-version-dialog'
     });
   }
 

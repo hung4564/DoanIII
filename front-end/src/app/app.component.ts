@@ -120,16 +120,26 @@ export class AppComponent implements OnInit {
     this.onDestroy$.complete();
   }
   private async loadUserProfile() {
-    const groupsApi = new GroupsApi(this.alfrescoApiService.getInstance());
-    const paging = await groupsApi.listGroupMembershipsForPerson('-me-');
-    const groups: Group[] = [];
+    try {
+      const groupsApi = new GroupsApi(this.alfrescoApiService.getInstance());
+      const paging = await groupsApi.listGroupMembershipsForPerson('-me-');
+      const groups: Group[] = [];
 
-    if (paging && paging.list && paging.list.entries) {
-      groups.push(...paging.list.entries.map(obj => obj.entry));
+      if (paging && paging.list && paging.list.entries) {
+        groups.push(...paging.list.entries.map(obj => obj.entry));
+      }
+      from(this.alfrescoApiService.peopleApi.getPerson('-me-')).subscribe(person => {
+        this.store.dispatch(new SetUserProfileAction({ person: person.entry, groups }));
+      });
+    } catch (err) {
+      let redirectUrl = this.route.snapshot.queryParams['redirectUrl'];
+      if (!redirectUrl) {
+        redirectUrl = this.router.url;
+      }
+      this.router.navigate(['/login'], {
+        queryParams: { redirectUrl: redirectUrl }
+      });
     }
-    from(this.alfrescoApiService.peopleApi.getPerson('-me-')).subscribe(person => {
-      this.store.dispatch(new SetUserProfileAction({ person: person.entry, groups }));
-    });
   }
   loadAppSettings() {
     let baseShareUrl = this.config.get<string>('baseShareUrl');

@@ -16,11 +16,11 @@ interface LibraryEntity {
 }
 
 @Directive({
-  selector: '[acaFavoriteLibrary]',
+  selector: '[appFavoriteLibrary]',
   exportAs: 'favoriteLibrary'
 })
 export class LibraryFavoriteDirective implements OnChanges {
-  @Input('acaFavoriteLibrary')
+  @Input('appFavoriteLibrary')
   library: any = null;
 
   @Output() toggle: EventEmitter<any> = new EventEmitter();

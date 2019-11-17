@@ -7,7 +7,7 @@ import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
 @Component({
   templateUrl: './node-versions.dialog.html',
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'aca-node-versions-dialog' }
+  host: { class: 'app-node-versions-dialog' }
 })
 export class NodeVersionsDialogComponent {
   node: MinimalNodeEntryEntity;

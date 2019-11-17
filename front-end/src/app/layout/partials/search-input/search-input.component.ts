@@ -69,7 +69,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppStore>
   ) {
-    this.searchOnChange = this.config.get<boolean>('search.aca:triggeredOnChange', true);
+    this.searchOnChange = this.config.get<boolean>('search.app:triggeredOnChange', true);
   }
 
   ngOnInit() {

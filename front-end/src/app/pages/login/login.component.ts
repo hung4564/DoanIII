@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { AppStore } from 'app/store/states/app.state';
 import { getUserProfile } from 'app/store/selectors/app.selector';
 import { Router } from '@angular/router';
+import { LoginErrorEvent } from '@alfresco/adf-core';
+import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
 
 @Component({
   selector: 'app-login',
@@ -17,14 +19,29 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   profile$: Observable<ProfileState>;
   constructor(private router: Router, private store: Store<any>) {}
-  mySuccessMethod($event) {
+  mySuccessMethod() {
     this.router.navigate(['/']);
-    // this.store.select(getUserProfile).subscribe(result => {
-    //   if (result.isAdmin) {
-    //     this.router.navigate(['/admin']);
-    //   } else {
-    //   }
-    // });
+  }
+  errorHandle(error: LoginErrorEvent) {
+    let message = 'APP.MESSAGES.ERRORS.GENERIC';
+
+    if (error.err.status === 400) {
+      message = 'APP.MESSAGES.ERRORS.LOGIN.400';
+    }
+
+    if (error.err.status === 401) {
+      message = 'APP.MESSAGES.ERRORS.LOGIN.401';
+    }
+
+    if (error.err.status === 500) {
+      message = 'APP.MESSAGES.ERRORS.LOGIN.500';
+    }
+
+    if (error.err.status === 504) {
+      message = 'APP.MESSAGES.ERRORS.LOGIN.504';
+    }
+
+    this.store.dispatch(new SnackbarErrorAction(message));
   }
   ngOnInit() {}
 }

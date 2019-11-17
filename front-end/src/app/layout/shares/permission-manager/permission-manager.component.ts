@@ -56,7 +56,7 @@ export class PermissionsManagerComponent implements OnInit {
       () => {
         this.dialog.open(NodePermissionsDialogComponent, {
           data: { nodeId: this.nodeId },
-          panelClass: 'aca-permissions-dialog-panel',
+          panelClass: 'app-permissions-dialog-panel',
           width: '800px'
         });
       },

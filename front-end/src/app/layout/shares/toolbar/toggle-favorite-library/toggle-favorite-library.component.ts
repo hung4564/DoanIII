@@ -14,7 +14,7 @@ import { getAppSelection } from 'app/store/selectors/app.selector';
       mat-menu-item
       #favoriteLibrary="favoriteLibrary"
       (toggle)="onToggleEvent()"
-      [acaFavoriteLibrary]="(selection$ | async).library"
+      [appFavoriteLibrary]="(selection$ | async).library"
       [attr.title]="
         favoriteLibrary.isFavorite()
           ? ('APP.ACTIONS.REMOVE_FAVORITE' | translate)

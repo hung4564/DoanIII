@@ -7,7 +7,7 @@ export const INITIAL_APP_STATE: AppState = {
   languagePicker: false,
   sharedUrl: '',
   user: {
-    isAdmin: null,
+    isAdmin: false,
     id: null,
     firstName: '',
     lastName: ''

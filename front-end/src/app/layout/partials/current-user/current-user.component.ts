@@ -12,7 +12,7 @@ import { LogoutAction } from 'app/store/actions/app.action';
   templateUrl: './current-user.component.html',
   styleUrls: ['./current-user.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'aca-current-user' }
+  host: { class: 'app-current-user' }
 })
 export class CurrentUserComponent implements OnInit {
   profile$: Observable<ProfileState>;

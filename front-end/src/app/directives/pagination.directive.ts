@@ -8,7 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[acaPagination]'
+  selector: '[appPagination]'
 })
 export class PaginationDirective implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];

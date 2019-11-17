@@ -8,7 +8,6 @@ import { CurrentUserComponent } from './partials/current-user/current-user.compo
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout.component';
-import { LayoutService } from './layout.service';
 import { CoreExtensionsModule } from 'app/extensions/core.extensions.module';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { SearchInputComponent } from './partials/search-input/search-input.component';
@@ -34,6 +33,6 @@ import { SearchInputControlComponent } from './partials/search-input/search-inpu
     SearchInputControlComponent
   ],
   exports: [],
-  providers: [LayoutService, SearchLibrariesQueryBuilderService]
+  providers: [SearchLibrariesQueryBuilderService]
 })
 export class LayoutModule {}

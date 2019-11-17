@@ -145,7 +145,7 @@ export class SearchResultsComponent extends PageComponent implements OnInit {
       return userInput;
     }
 
-    const fields = this.config.get<string[]>('search.aca:fields', ['cm:name']);
+    const fields = this.config.get<string[]>('search.app:fields', ['cm:name']);
     const words = userInput.split(' ');
 
     if (words.length > 1) {

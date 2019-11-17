@@ -14,7 +14,13 @@ export enum AppActionTypes {
   ToggleInfoDrawer = 'TOGGLE_INFO_DRAWER',
   SetInfoDrawerState = 'SET_INFO_DRAWER_STATE',
   SetInfoDrawerMetadataAspect = 'SET_INFO_DRAWER_METADATA_ASPECT',
-  SetSmallScreen = 'SET_SMALL_SCREEN'
+  SetSmallScreen = 'SET_SMALL_SCREEN',
+  ResetSelection = 'RESET_SELECTION'
+}
+export class ResetSelectionAction implements Action {
+  readonly type = AppActionTypes.ResetSelection;
+
+  constructor(public payload?: any) {}
 }
 
 export class SetInitialStateAction implements Action {

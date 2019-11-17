@@ -9,7 +9,7 @@ import { ContentManagementService } from 'app/services/content-management.servic
 import { SetSelectedNodesAction } from 'app/store/actions/node.action';
 
 @Directive({
-  selector: '[acaDocumentList]'
+  selector: '[appDocumentList]'
 })
 export class DocumentListDirective {
   private isLibrary = false;
@@ -58,6 +58,9 @@ export class DocumentListDirective {
 
     this.content.reload.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
       this.reload();
+    });
+    this.content.reset.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.reset();
     });
   }
 
@@ -108,5 +111,8 @@ export class DocumentListDirective {
     this.documentList.resetSelection();
     this.store.dispatch(new SetSelectedNodesAction([]));
     this.documentList.reload();
+  }
+  private reset() {
+    this.documentList.resetSelection();
   }
 }

@@ -7,7 +7,7 @@ import { SetInfoDrawerStateAction } from 'app/store/actions/app.action';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 
 @Component({
-  selector: 'aca-info-drawer',
+  selector: 'app-info-drawer',
   styleUrls: ['./info-drawer.component.scss'],
   templateUrl: './info-drawer.component.html'
 })

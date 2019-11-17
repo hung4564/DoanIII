@@ -9,7 +9,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Directive({
-  selector: '[acaContextMenuOutsideEvent]'
+  selector: '[appContextMenuOutsideEvent]'
 })
 export class OutsideEventDirective implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -33,7 +33,7 @@ export class OutsideEventDirective implements OnInit, OnDestroy {
   }
 
   private findAncestor(el: Element): boolean {
-    const className = 'aca-context-menu';
+    const className = 'app-context-menu';
 
     if (el.classList.contains(className)) {
       return true;
