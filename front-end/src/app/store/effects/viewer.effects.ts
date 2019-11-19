@@ -1,17 +1,17 @@
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
-import { map, take } from 'rxjs/operators';
-import { Router, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
-import { Store, createSelector } from '@ngrx/store';
-import { getAppSelection, getCurrentFolder } from '../selectors/app.selector';
-import { AppStore } from '../states/app.state';
+import { Effect, Actions, ofType } from "@ngrx/effects";
+import { Injectable } from "@angular/core";
+import { map, take } from "rxjs/operators";
+import { Router, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment } from "@angular/router";
+import { Store, createSelector } from "@ngrx/store";
+import { getAppSelection, getCurrentFolder } from "../selectors/app.selector";
+import { AppStore } from "../states/app.state";
 import {
   FullscreenViewerAction,
   ViewerActionTypes,
   ViewNodeAction,
   ViewFileAction
-} from '../actions/viewer.actions';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
+} from "../actions/viewer.actions";
+import { AppExtensionService } from "app/extensions/app-extension.service";
 
 export const fileToPreview = createSelector(
   getAppSelection,
@@ -49,7 +49,7 @@ export class ViewerEffects {
         const { location, path } = action.viewNodeExtras;
 
         if (location) {
-          this.router.navigate([location, { outlets: { overlay: ['view', action.nodeId] } }], {
+          this.router.navigate([location, { outlets: { overlay: ["preview", action.nodeId] } }], {
             queryParams: {
               source: location
             }
@@ -57,12 +57,12 @@ export class ViewerEffects {
         }
 
         if (path) {
-          this.router.navigate(['view', { outlets: { overlay: [action.nodeId] } }], {
+          this.router.navigate(["preview", { outlets: { overlay: [action.nodeId] } }], {
             queryParams: { path }
           });
         }
       } else {
-        this.router.navigate([{ outlets: { overlay: ['files', action.nodeId, 'view'] } }]);
+        this.displayPreview(action.nodeId, null);
       }
     })
   );
@@ -104,22 +104,22 @@ export class ViewerEffects {
     }
 
     let previewLocation = this.router.url;
-    if (previewLocation.lastIndexOf('/') > 0) {
-      previewLocation = previewLocation.substr(0, this.router.url.indexOf('/', 1));
+    if (previewLocation.lastIndexOf("/") > 0) {
+      previewLocation = previewLocation.substr(0, this.router.url.indexOf("/", 1));
     }
-    previewLocation = previewLocation.replace(/\//g, '');
+    previewLocation = previewLocation.replace(/\//g, "");
 
     const path = [previewLocation];
     if (parentId) {
       path.push(parentId);
     }
-    path.push('preview', nodeId);
-    this.router.navigateByUrl(path.join('/'));
+    path.push("preview", nodeId);
+    this.router.navigateByUrl(path.join("/"));
   }
 
   enterFullScreen() {
     const container = <any>(
-      document.documentElement.querySelector('.adf-viewer__fullscreen-container')
+      document.documentElement.querySelector(".adf-viewer__fullscreen-container")
     );
     if (container) {
       if (container.requestFullscreen) {

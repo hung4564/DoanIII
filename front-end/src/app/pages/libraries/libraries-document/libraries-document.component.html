@@ -1,0 +1,13 @@
+<adf-document-list
+  #documentList
+  appDocumentList
+  appContextActions
+  [allowDropFiles]="true"
+  [navigate]="false"
+  [currentFolderId]="currentNodeId"
+  [stickyHeader]="true"
+  (name-click)="onNodeDoubleClick($event.detail?.node)"
+  (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
+>
+</adf-document-list>
+<adf-pagination appPagination [target]="documentList"> </adf-pagination>

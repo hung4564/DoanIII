@@ -1,4 +1,4 @@
-<ng-container *ngIf="expanded">
+<ng-container *ngIf="expanded && createActions.length > 0">
   <button
     data-automation-id="create-button"
     mat-raised-button
@@ -10,7 +10,7 @@
   </button>
 </ng-container>
 
-<ng-container *ngIf="!expanded">
+<ng-container *ngIf="!expanded && createActions.length > 0">
   <button
     mat-icon-button
     class="app-create-menu--collapsed"

@@ -1,0 +1,25 @@
+<adf-toolbar>
+  <adf-toolbar-title>
+    <adf-breadcrumb
+      class="files-breadcrumb"
+      [root]="title"
+      [folderNode]="node"
+      (navigate)="onBreadcrumbNavigate($event)"
+    >
+    </adf-breadcrumb>
+  </adf-toolbar-title>
+  <mat-toolbar-row>
+    <button mat-button (click)="navigate(link.link)" *ngFor="let link of links">
+      {{ link.title }}
+    </button>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row>
+    <span style="flex: 1 1 auto;"></span>
+    <app-create-menu [expanded]="false"></app-create-menu>
+    <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
+      <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
+    </ng-container>
+  </mat-toolbar-row>
+</adf-toolbar>
+<router-outlet></router-outlet>

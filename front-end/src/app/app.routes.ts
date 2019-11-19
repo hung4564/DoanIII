@@ -22,6 +22,9 @@ import { SearchLibrariesResultsComponent } from "./pages/search-result/search-li
 import { TaskComponent } from "./pages/task/task.component";
 import { TaskDetailComponent } from "./pages/task/task-detail/task-detail.component";
 import { TaskCreateComponent } from "./pages/task/task-create/task-create.component";
+import { LibrariesDetailComponent } from "./pages/libraries/libraries-detail/libraries-detail.component";
+import { LibrariesDocumentComponent } from "./pages/libraries/libraries-document/libraries-document.component";
+import { LibrariesMemberComponent } from "./pages/libraries/libraries-member/libraries-member.component";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -110,6 +113,28 @@ export const appRoutes: Routes = [
             data: {
               title: "APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.TITLE"
             }
+          },
+          {
+            path: ":id",
+            component: LibrariesDetailComponent,
+            children: [
+              { path: "", component: LibrariesDocumentComponent },
+              { path: "members", component: LibrariesMemberComponent },
+              {
+                path: "preview/:nodeId",
+                component: PreviewComponent,
+                data: {
+                  title: "APP.PREVIEW.TITLE"
+                }
+              }
+            ]
+          },
+          {
+            path: "preview/:nodeId",
+            component: PreviewComponent,
+            data: {
+              title: "APP.PREVIEW.TITLE"
+            }
           }
         ]
       },
@@ -125,9 +150,9 @@ export const appRoutes: Routes = [
           },
           {
             path: "preview/:nodeId",
-            component: FileFavoriteComponent,
+            component: PreviewComponent,
             data: {
-              title: "APP.BROWSE.FAVORITES.TITLE",
+              title: "APP.PREVIEW.TITLE",
               navigateSource: "favorites"
             }
           }

@@ -1,18 +1,18 @@
-import { Component, Input, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { ContentActionRef } from '@alfresco/adf-extensions';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { Store } from '@ngrx/store';
-import { takeUntil, debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { AppStore } from 'app/store/states/app.state';
-import { getCurrentFolder } from 'app/store/selectors/app.selector';
+import { Component, Input, OnInit, OnDestroy, ViewEncapsulation } from "@angular/core";
+import { ContentActionRef } from "@alfresco/adf-extensions";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { Store } from "@ngrx/store";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { AppStore } from "app/store/states/app.state";
+import { getCurrentFolder } from "app/store/selectors/app.selector";
 
 @Component({
-  selector: 'app-create-menu',
-  templateUrl: 'create-menu.component.html',
-  styleUrls: ['./create-menu.component.scss'],
+  selector: "app-create-menu",
+  templateUrl: "create-menu.component.html",
+  styleUrls: ["./create-menu.component.scss"],
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-create-menu' }
+  host: { class: "app-create-menu" }
 })
 export class CreateMenuComponent implements OnInit, OnDestroy {
   createActions: Array<ContentActionRef> = [];
@@ -29,10 +29,7 @@ export class CreateMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store
       .select(getCurrentFolder)
-      .pipe(
-        debounceTime(500),
-        takeUntil(this.onDestroy$)
-      )
+      .pipe(debounceTime(500), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.createActions = this.extensions.getCreateActions();
       });

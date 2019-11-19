@@ -66,7 +66,8 @@ export class ContentManagementService {
   joinLibraryToggle = new Subject<string>();
   linksUnshared = new Subject<any>();
   favoriteLibraryToggle = new Subject<any>();
-
+  changeFolderInSite = new Subject<MinimalNodeEntity>();
+  changeFolderInBreadcrumb = new Subject<string>();
   constructor(
     private alfrescoApiService: AlfrescoApiService,
     private store: Store<any>,

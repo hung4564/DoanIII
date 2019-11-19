@@ -147,11 +147,6 @@
         }
       },
       {
-        "id": "app.create.separator.1",
-        "type": "separator",
-        "order": 300
-      },
-      {
         "id": "app.create.folder",
         "order": 400,
         "icon": "create_new_folder",
