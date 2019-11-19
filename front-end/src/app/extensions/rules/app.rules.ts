@@ -1,7 +1,7 @@
-import { RuleContext } from '@alfresco/adf-extensions';
-import * as navigation from './navigation.rules';
-import * as repository from './repository.rules';
-import * as user from './user.rules';
+import { RuleContext } from "@alfresco/adf-extensions";
+import * as navigation from "./navigation.rules";
+import * as repository from "./repository.rules";
+import * as user from "./user.rules";
 
 /**
  * Checks if user can copy selected node.
@@ -13,7 +13,8 @@ export function canCopyNode(context: RuleContext): boolean {
     hasSelection(context),
     navigation.isNotTrashcan(context),
     navigation.isNotLibraries(context),
-    navigation.isNotPeople(context)
+    navigation.isNotPeople(context),
+    navigation.isNotGroup(context)
   ].every(Boolean);
 }
 
@@ -94,7 +95,7 @@ export function isShared(context: RuleContext): boolean {
     return !!(
       context.selection.file.entry &&
       context.selection.file.entry.properties &&
-      context.selection.file.entry.properties['qshare:sharedId']
+      context.selection.file.entry.properties["qshare:sharedId"]
     );
   }
 
@@ -122,17 +123,17 @@ export function canDeleteSelection(context: RuleContext): boolean {
     }
 
     if (navigation.isPreview(context)) {
-      return context.permissions.check(context.selection.nodes, ['delete']);
+      return context.permissions.check(context.selection.nodes, ["delete"]);
     }
 
     // workaround for Shared Files
     if (navigation.isSharedFiles(context)) {
-      return context.permissions.check(context.selection.nodes, ['delete'], {
-        target: 'allowableOperationsOnTarget'
+      return context.permissions.check(context.selection.nodes, ["delete"], {
+        target: "allowableOperationsOnTarget"
       });
     }
 
-    return context.permissions.check(context.selection.nodes, ['delete']);
+    return context.permissions.check(context.selection.nodes, ["delete"]);
   }
   return false;
 }
@@ -143,8 +144,8 @@ export function canDeleteSelection(context: RuleContext): boolean {
  */
 export function canUnshareNodes(context: RuleContext): boolean {
   if (!context.selection.isEmpty) {
-    return context.permissions.check(context.selection.nodes, ['delete'], {
-      target: 'allowableOperationsOnTarget'
+    return context.permissions.check(context.selection.nodes, ["delete"], {
+      target: "allowableOperationsOnTarget"
     });
   }
   return false;
@@ -165,7 +166,7 @@ export function hasSelection(context: RuleContext): boolean {
 export function canCreateFolder(context: RuleContext): boolean {
   const { currentFolder } = context.navigation;
   if (currentFolder) {
-    return context.permissions.check(currentFolder, ['create']);
+    return context.permissions.check(currentFolder, ["create"]);
   }
   return false;
 }
@@ -177,7 +178,7 @@ export function canCreateFolder(context: RuleContext): boolean {
 export function canUpload(context: RuleContext): boolean {
   const { currentFolder } = context.navigation;
   if (currentFolder) {
-    return context.permissions.check(currentFolder, ['create']);
+    return context.permissions.check(currentFolder, ["create"]);
   }
   return false;
 }
@@ -220,7 +221,7 @@ export function hasLibrarySelected(context: RuleContext): boolean {
 export function isPrivateLibrary(context: RuleContext): boolean {
   const library = context.selection.library;
   return library
-    ? !!(library.entry && library.entry.visibility && library.entry.visibility === 'PRIVATE')
+    ? !!(library.entry && library.entry.visibility && library.entry.visibility === "PRIVATE")
     : false;
 }
 
@@ -264,7 +265,7 @@ export function canUpdateSelectedNode(context: RuleContext): boolean {
       return false;
     }
 
-    return context.permissions.check(node, ['update']);
+    return context.permissions.check(node, ["update"]);
   }
   return false;
 }
@@ -278,7 +279,7 @@ export function canUpdateSelectedFolder(context: RuleContext): boolean {
   if (folder) {
     return (
       // workaround for Favorites Api
-      navigation.isFavorites(context) || context.permissions.check(folder.entry, ['update'])
+      navigation.isFavorites(context) || context.permissions.check(folder.entry, ["update"])
     );
   }
   return false;
@@ -297,7 +298,7 @@ export function hasLockedFiles(context: RuleContext): boolean {
 
       return (
         node.entry.isLocked ||
-        (node.entry.properties && node.entry.properties['cm:lockType'] === 'READ_ONLY_LOCK')
+        (node.entry.properties && node.entry.properties["cm:lockType"] === "READ_ONLY_LOCK")
       );
     });
   }
@@ -316,8 +317,8 @@ export function isWriteLocked(context: RuleContext): boolean {
     context.selection.file &&
     context.selection.file.entry &&
     context.selection.file.entry.properties &&
-    (context.selection.file.entry.properties['cm:lockType'] === 'WRITE_LOCK' ||
-      context.selection.file.entry.properties['cm:lockType'] === 'READ_ONLY_LOCK')
+    (context.selection.file.entry.properties["cm:lockType"] === "WRITE_LOCK" ||
+      context.selection.file.entry.properties["cm:lockType"] === "READ_ONLY_LOCK")
   );
 }
 
@@ -329,8 +330,8 @@ export function isWriteLocked(context: RuleContext): boolean {
 export function isUserWriteLockOwner(context: RuleContext): boolean {
   return (
     isWriteLocked(context) &&
-    (context.selection.file.entry.properties['cm:lockOwner'] &&
-      context.selection.file.entry.properties['cm:lockOwner'].id === context.profile.id)
+    context.selection.file.entry.properties["cm:lockOwner"] &&
+    context.selection.file.entry.properties["cm:lockOwner"].id === context.profile.id
   );
 }
 
@@ -350,7 +351,7 @@ export function canUnlockFile(context: RuleContext): boolean {
   const { file } = context.selection;
   return (
     isWriteLocked(context) &&
-    (context.permissions.check(file.entry, ['delete']) || isUserWriteLockOwner(context))
+    (context.permissions.check(file.entry, ["delete"]) || isUserWriteLockOwner(context))
   );
 }
 

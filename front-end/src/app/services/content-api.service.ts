@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { AlfrescoApiService, UserPreferencesService } from '@alfresco/adf-core';
-import { Observable, from } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { AlfrescoApiService, UserPreferencesService } from "@alfresco/adf-core";
+import { Observable, from } from "rxjs";
 import {
   MinimalNodeEntity,
   NodePaging,
@@ -21,11 +21,12 @@ import {
   PersonBodyUpdate,
   GroupBodyCreate,
   GroupBodyUpdate
-} from '@alfresco/js-api';
-import { map } from 'rxjs/operators';
+} from "@alfresco/js-api";
+import { map } from "rxjs/operators";
+import { TaskPaging, TaskEntry, ProcessDefinitionPaging } from "app/model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ContentApiService {
   constructor(private api: AlfrescoApiService, private preferences: UserPreferencesService) {}
@@ -48,7 +49,7 @@ export class ContentApiService {
    */
   getNode(nodeId: string, options: any = {}): Observable<MinimalNodeEntity> {
     const defaults = {
-      include: ['path', 'properties', 'allowableOperations', 'permissions']
+      include: ["path", "properties", "allowableOperations", "permissions"]
     };
     const queryOptions = Object.assign(defaults, options);
 
@@ -57,7 +58,7 @@ export class ContentApiService {
 
   getNodeInfo(nodeId: string, options?: any): Observable<Node> {
     const defaults = {
-      include: ['isFavorite', 'allowableOperations']
+      include: ["isFavorite", "allowableOperations"]
     };
     const queryOptions = Object.assign(defaults, options || {});
 
@@ -74,7 +75,7 @@ export class ContentApiService {
     const defaults = {
       maxItems: this.preferences.paginationSize,
       skipCount: 0,
-      include: ['isLocked', 'path', 'properties', 'allowableOperations', 'permissions']
+      include: ["isLocked", "path", "properties", "allowableOperations", "permissions"]
     };
     const queryOptions = Object.assign(defaults, options);
 
@@ -87,7 +88,7 @@ export class ContentApiService {
 
   getDeletedNodes(options: any = {}): Observable<DeletedNodesPaging> {
     const defaults = {
-      include: ['path']
+      include: ["path"]
     };
     const queryOptions = Object.assign(defaults, options);
 
@@ -147,10 +148,10 @@ export class ContentApiService {
     return from(this.api.favoritesApi.getFavorites(personId, opts));
   }
 
-  getFavoriteLibraries(personId: string = '-me-', opts?: any): Observable<FavoritePaging> {
+  getFavoriteLibraries(personId: string = "-me-", opts?: any): Observable<FavoritePaging> {
     return this.getFavorites(personId, {
       ...opts,
-      where: '(EXISTS(target/site))'
+      where: "(EXISTS(target/site))"
     }).pipe(
       map((response: FavoritePaging) => {
         return {
@@ -189,7 +190,7 @@ export class ContentApiService {
   }
 
   leaveSite(siteId?: string): Observable<any> {
-    return from(this.api.sitesApi.removeSiteMember(siteId, '-me-'));
+    return from(this.api.sitesApi.removeSiteMember(siteId, "-me-"));
   }
 
   createSite(
@@ -217,8 +218,8 @@ export class ContentApiService {
   addFavorite(nodes: Array<MinimalNodeEntity>): Observable<FavoriteEntry> {
     const payload: FavoriteBody[] = nodes.map(node => {
       const { isFolder, nodeId, id } = <any>node.entry;
-      const siteId = node.entry['guid'];
-      const type = siteId ? 'site' : isFolder ? 'folder' : 'file';
+      const siteId = node.entry["guid"];
+      const type = siteId ? "site" : isFolder ? "folder" : "file";
       const guid = siteId || nodeId || id;
 
       return {
@@ -230,7 +231,7 @@ export class ContentApiService {
       };
     });
 
-    return from(this.api.favoritesApi.addFavorite('-me-', <any>payload));
+    return from(this.api.favoritesApi.addFavorite("-me-", <any>payload));
   }
 
   removeFavorite(nodes: Array<MinimalNodeEntity>): Observable<any> {
@@ -238,7 +239,7 @@ export class ContentApiService {
       Promise.all(
         nodes.map((node: any) => {
           const id = node.entry.nodeId || node.entry.id;
-          return this.api.favoritesApi.removeFavoriteSite('-me-', id);
+          return this.api.favoritesApi.removeFavoriteSite("-me-", id);
         })
       )
     );
@@ -253,12 +254,12 @@ export class ContentApiService {
   }
   createPerson(person: PersonBodyCreate) {
     if (!person.password) {
-      person.password = '12345678';
+      person.password = "12345678";
     }
     return from(this.api.peopleApi.addPerson(person));
   }
   editPerson(id: string, person: PersonBodyUpdate) {
-    delete person['id'];
+    delete person["id"];
     return from(this.api.peopleApi.updatePerson(id, person));
   }
   deletePerson(id: string) {
@@ -266,11 +267,11 @@ export class ContentApiService {
       this.api
         .getInstance()
         .webScript.executeWebScript(
-          'DELETE',
+          "DELETE",
           id,
-          { contentType: 'application/json' },
+          { contentType: "application/json" },
           null,
-          'service/api/people',
+          "service/api/people",
           null
         )
     );
@@ -285,10 +286,82 @@ export class ContentApiService {
     return from(this.api.groupsApi.createGroup(group));
   }
   editGroup(id: string, group: GroupBodyUpdate) {
-    delete group['id'];
+    delete group["id"];
     return from(this.api.groupsApi.updateGroup(id, group));
   }
   deleteGroup(id: string) {
     return from(this.api.groupsApi.deleteGroup(id));
+  }
+  getProcessDefinitions(opts?): Observable<ProcessDefinitionPaging> {
+    return from(
+      this.api
+        .getInstance()
+        .webScript.executeWebScript(
+          "GET",
+          "process-definitions",
+          { contentType: "application/json", ...opts },
+          null,
+          "api/-default-/public/workflow/versions/1",
+          null
+        )
+    );
+  }
+  getProcessDefinitionForm(id: string) {
+    this.api
+      .getInstance()
+      .webScript.executeWebScript(
+        "GET",
+        id + "/image",
+        null,
+        null,
+        "api/-default-/public/workflow/versions/1/process-definitions",
+        null
+      );
+    return from(
+      this.api
+        .getInstance()
+        .webScript.executeWebScript(
+          "GET",
+          id + "/start-form-model",
+          { contentType: "application/json" },
+          null,
+          "api/-default-/public/workflow/versions/1/process-definitions",
+          null
+        )
+    ).pipe(map(this.toJson));
+  }
+  toJson(res: any) {
+    if (res) {
+      return res || {};
+    }
+    return {};
+  }
+  getTasks(opts): Observable<TaskPaging> {
+    return from(
+      this.api
+        .getInstance()
+        .webScript.executeWebScript(
+          "GET",
+          "tasks",
+          { contentType: "application/json", ...opts },
+          null,
+          "api/-default-/public/workflow/versions/1",
+          null
+        )
+    );
+  }
+  getTask(id: string): Observable<TaskEntry> {
+    return from(
+      this.api
+        .getInstance()
+        .webScript.executeWebScript(
+          "GET",
+          id,
+          { contentType: "application/json" },
+          null,
+          "api/-default-/public/workflow/versions/1/tasks",
+          null
+        )
+    );
   }
 }

@@ -1,0 +1,29 @@
+@import "../../ui/mixins";
+.task-content {
+  @include flex-row;
+  &__filter {
+    border-left: 1px solid #eee;
+  }
+  &__list {
+    @include flex-column;
+    border-left: 1px solid #eee;
+  }
+  .adf-datatable {
+    .adf-datatable-row {
+      padding: 0 15px;
+    }
+
+    .adf-datatable-cell {
+      margin: 0 5px;
+      padding-left: 5px;
+      padding-top: 9px;
+      padding-bottom: 9px;
+      min-height: auto;
+
+      .adf-datatable-cell-value {
+        display: inline-block;
+        padding: 0;
+      }
+    }
+  }
+}

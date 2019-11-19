@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   ExtensionService,
   ExtensionRef,
@@ -19,20 +19,20 @@ import {
   NavBarGroupRef,
   SidebarTabRef,
   mergeObjects
-} from '@alfresco/adf-extensions';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppConfigService, AuthenticationService, DataColumn } from '@alfresco/adf-core';
-import { RepositoryInfo, NodeEntry } from '@alfresco/js-api';
-import { NodePermissionService } from 'app/services/node-permission.service';
-import { getRuleContext } from 'app/store/selectors/app.selector';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+} from "@alfresco/adf-extensions";
+import { Observable, BehaviorSubject } from "rxjs";
+import { Store } from "@ngrx/store";
+import { AppConfigService, AuthenticationService, DataColumn } from "@alfresco/adf-core";
+import { RepositoryInfo, NodeEntry } from "@alfresco/js-api";
+import { NodePermissionService } from "app/services/node-permission.service";
+import { getRuleContext } from "app/store/selectors/app.selector";
+import { MatIconRegistry } from "@angular/material";
+import { DomSanitizer } from "@angular/platform-browser";
 export interface ViewerRules {
   canPreview?: string;
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AppExtensionService implements RuleContext {
   documentListPresets: {
@@ -46,6 +46,7 @@ export class AppExtensionService implements RuleContext {
     searchLibraries: Array<DocumentListPresetRef>;
     people: Array<DocumentListPresetRef>;
     groups: Array<DocumentListPresetRef>;
+    tasks: Array<DocumentListPresetRef>;
   } = {
     files: [],
     libraries: [],
@@ -56,7 +57,8 @@ export class AppExtensionService implements RuleContext {
     trashcan: [],
     searchLibraries: [],
     people: [],
-    groups: []
+    groups: [],
+    tasks: []
   };
 
   contentMetadata: any;
@@ -102,43 +104,44 @@ export class AppExtensionService implements RuleContext {
   }
   setup(config: ExtensionConfig) {
     if (!config) {
-      console.error('Extension configuration not found');
+      console.error("Extension configuration not found");
       return;
     }
-    this.openWithActions = this.loader.getContentActions(config, 'features.viewer.openWith');
-    this.toolbarActions = this.loader.getContentActions(config, 'features.toolbar');
+    this.openWithActions = this.loader.getContentActions(config, "features.viewer.openWith");
+    this.toolbarActions = this.loader.getContentActions(config, "features.toolbar");
     this.viewerToolbarActions = this.loader.getContentActions(
       config,
-      'features.viewer.toolbarActions'
+      "features.viewer.toolbarActions"
     );
     this.sharedLinkViewerToolbarActions = this.loader.getContentActions(
       config,
-      'features.viewer.shared.toolbarActions'
+      "features.viewer.shared.toolbarActions"
     );
     this.contentMetadata = this.loadContentMetadata(config);
-    this.createActions = this.loader.getElements<ContentActionRef>(config, 'features.create');
-    this.contextMenuActions = this.loader.getContentActions(config, 'features.contextMenu');
+    this.createActions = this.loader.getElements<ContentActionRef>(config, "features.create");
+    this.contextMenuActions = this.loader.getContentActions(config, "features.contextMenu");
     this.navbar = this.loadNavBar(config);
-    this.sidebar = this.loader.getElements<SidebarTabRef>(config, 'features.sidebar');
+    this.sidebar = this.loader.getElements<SidebarTabRef>(config, "features.sidebar");
     this.documentListPresets = {
-      files: this.getDocumentListPreset(config, 'files'),
-      libraries: this.getDocumentListPreset(config, 'libraries'),
-      favoriteLibraries: this.getDocumentListPreset(config, 'favoriteLibraries'),
-      shared: this.getDocumentListPreset(config, 'shared'),
-      recent: this.getDocumentListPreset(config, 'recent'),
-      favorites: this.getDocumentListPreset(config, 'favorites'),
-      trashcan: this.getDocumentListPreset(config, 'trashcan'),
-      searchLibraries: this.getDocumentListPreset(config, 'search-libraries'),
-      people: this.getDocumentListPreset(config, 'people'),
-      groups: this.getDocumentListPreset(config, 'groups')
+      files: this.getDocumentListPreset(config, "files"),
+      libraries: this.getDocumentListPreset(config, "libraries"),
+      favoriteLibraries: this.getDocumentListPreset(config, "favoriteLibraries"),
+      shared: this.getDocumentListPreset(config, "shared"),
+      recent: this.getDocumentListPreset(config, "recent"),
+      favorites: this.getDocumentListPreset(config, "favorites"),
+      trashcan: this.getDocumentListPreset(config, "trashcan"),
+      searchLibraries: this.getDocumentListPreset(config, "search-libraries"),
+      people: this.getDocumentListPreset(config, "people"),
+      groups: this.getDocumentListPreset(config, "groups"),
+      tasks: this.getDocumentListPreset(config, "tasks")
     };
 
     if (config.features && config.features.viewer) {
-      this.viewerRules = <ViewerRules>(config.features.viewer['rules'] || {});
+      this.viewerRules = <ViewerRules>(config.features.viewer["rules"] || {});
     }
     this.registerIcons(config);
     const references = (config.$references || [])
-      .filter(entry => typeof entry === 'object')
+      .filter(entry => typeof entry === "object")
       .map(entry => <ExtensionRef>entry);
     this._references.next(references);
   }
@@ -246,8 +249,9 @@ export class AppExtensionService implements RuleContext {
   getEvaluator(key: string): RuleEvaluator {
     return this.extensions.getEvaluator(key);
   }
-  runActionById(id: string) {
-    console.log('TCL: AppExtensionService -> runActionById -> id', id);
+  runActionById(id: string, data?) {
+    console.log("TCL: AppExtensionService -> runActionById -> data", data)
+    console.log("TCL: AppExtensionService -> runActionById -> id", id);
     const action = this.extensions.getActionById(id);
     if (action) {
       const { type, payload } = action;
@@ -258,16 +262,17 @@ export class AppExtensionService implements RuleContext {
 
       this.store.dispatch({ type, payload: expression });
     } else {
-      this.store.dispatch({ type: id });
+      if (data) this.store.dispatch({ type: id, payload: data });
+      else this.store.dispatch({ type: id });
     }
   }
   protected registerIcons(config: ExtensionConfig) {
     const icons: Array<IconRef> = this.loader
-      .getElements<IconRef>(config, 'features.icons')
+      .getElements<IconRef>(config, "features.icons")
       .filter(entry => !entry.disabled);
 
     for (const icon of icons) {
-      const [ns, id] = icon.id.split(':');
+      const [ns, id] = icon.id.split(":");
       const value = icon.value;
 
       if (!value) {
@@ -284,7 +289,7 @@ export class AppExtensionService implements RuleContext {
     }
   }
   protected loadNavBar(config: ExtensionConfig): Array<NavBarGroupRef> {
-    return this.loader.getElements<NavBarGroupRef>(config, 'features.navbar');
+    return this.loader.getElements<NavBarGroupRef>(config, "features.navbar");
   }
   getSidebarTabs(): Array<SidebarTabRef> {
     return this.sidebar.filter(action => this.filterVisible(<any>action));
@@ -381,7 +386,7 @@ export class AppExtensionService implements RuleContext {
     return this.getAllowedActions(this.sharedLinkViewerToolbarActions);
   }
   loadContentMetadata(config: ExtensionConfig): any {
-    const elements = this.loader.getElements<any>(config, 'features.content-metadata-presets');
+    const elements = this.loader.getElements<any>(config, "features.content-metadata-presets");
     if (!elements.length) {
       return null;
     }
@@ -390,9 +395,9 @@ export class AppExtensionService implements RuleContext {
     presets = this.filterDisabled(mergeObjects(presets, ...elements));
 
     try {
-      this.appConfig.config['content-metadata'] = { presets };
+      this.appConfig.config["content-metadata"] = { presets };
     } catch (error) {
-      console.error(error, '- could not change content-metadata from app.config -');
+      console.error(error, "- could not change content-metadata from app.config -");
     }
 
     return { presets };
@@ -400,7 +405,7 @@ export class AppExtensionService implements RuleContext {
   filterDisabled(object: Array<{ disabled: boolean }> | { disabled: boolean }) {
     if (Array.isArray(object)) {
       return object.filter(item => !item.disabled).map(item => this.filterDisabled(item));
-    } else if (typeof object === 'object') {
+    } else if (typeof object === "object") {
       if (!object.disabled) {
         Object.keys(object).forEach(prop => {
           object[prop] = this.filterDisabled(object[prop]);

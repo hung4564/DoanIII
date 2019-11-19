@@ -1,0 +1,9 @@
+<div class="overlay" *ngIf="isLoading; else main">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #main>
+  <adf-toolbar title="Sites">
+    <div class="adf-toolbar--spacer"></div>
+  </adf-toolbar>
+</ng-template>

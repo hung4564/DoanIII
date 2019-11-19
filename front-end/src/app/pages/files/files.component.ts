@@ -1,36 +1,37 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DocumentListComponent, ShareDataRow } from '@alfresco/adf-content-services';
-import { UploadService, FileUploadEvent } from '@alfresco/adf-core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { PageComponent } from '../page.component';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { DocumentListComponent, ShareDataRow } from "@alfresco/adf-content-services";
+import { UploadService, FileUploadEvent } from "@alfresco/adf-core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { PageComponent } from "../page.component";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { Store } from "@ngrx/store";
 import {
   MinimalNodeEntity,
   PathElement,
   MinimalNodeEntryEntity,
   PathElementEntity
-} from '@alfresco/js-api';
-import { ContentApiService } from 'app/services/content-api.service';
-import { NodeActionsService } from 'app/services/node-actions.service';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { isAdmin } from 'app/store/selectors/app.selector';
-import { SetCurrentFolderAction } from 'app/store/actions/app.action';
+} from "@alfresco/js-api";
+import { ContentApiService } from "app/services/content-api.service";
+import { NodeActionsService } from "app/services/node-actions.service";
+import { debounceTime, takeUntil } from "rxjs/operators";
+import { ContentManagementService } from "app/services/content-management.service";
+import { isAdmin } from "app/store/selectors/app.selector";
+import { SetCurrentFolderAction } from "app/store/actions/app.action";
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.component.html',
-  styleUrls: ['./files.component.scss'],
-  host: { class: 'app-layout' }
+  selector: "app-files",
+  templateUrl: "./files.component.html",
+  styleUrls: ["./files.component.scss"],
+  host: { class: "app-layout" }
 })
 export class FilesComponent extends PageComponent implements OnInit {
   private nodePath: PathElement[];
   isValidPath = true;
   isAdmin = false;
   columns: any[] = [];
-  nodeId = '-my-';
-  @ViewChild('documentList') documentList: DocumentListComponent;
+  nodeId = "-my-";
+  title: string;
+  @ViewChild("documentList") documentList: DocumentListComponent;
   constructor(
     protected store: Store<any>,
     protected extensions: AppExtensionService,
@@ -49,6 +50,7 @@ export class FilesComponent extends PageComponent implements OnInit {
     this.columns = this.extensions.documentListPresets.files;
     const { route, nodeActionsService, uploadService } = this;
     const { data } = route.snapshot;
+    this.title = data.title;
     route.params.subscribe(({ folderId }: Params) => {
       const nodeId = folderId || data.defaultNodeId;
       this.nodeId = nodeId;
@@ -59,7 +61,7 @@ export class FilesComponent extends PageComponent implements OnInit {
           if (node.entry && node.entry.isFolder) {
             this.updateCurrentNode(node.entry);
           } else {
-            this.router.navigate(['/personal-files', node.entry.parentId], {
+            this.router.navigate(["/personal-files", node.entry.parentId], {
               replaceUrl: true
             });
           }
@@ -115,8 +117,8 @@ export class FilesComponent extends PageComponent implements OnInit {
     }
   }
 
-  displayFolderParent(filePath = '', index: number) {
-    const parentName = filePath.split('/')[index];
+  displayFolderParent(filePath = "", index: number) {
+    const parentName = filePath.split("/")[index];
     const currentFoldersDisplayed = <ShareDataRow[]>this.documentList.data.getRows() || [];
 
     const alreadyDisplayedParentFolder = currentFoldersDisplayed.find(
@@ -150,11 +152,11 @@ export class FilesComponent extends PageComponent implements OnInit {
       });
 
       if (elements.length > 1) {
-        if (elements[1].name === 'User Homes') {
+        if (elements[1].name === "User Homes") {
           if (!this.isAdmin) {
             elements.splice(0, 2);
           }
-        } else if (elements[1].name === 'Sites') {
+        } else if (elements[1].name === "Sites") {
           await this.normalizeSitePath(node);
         }
       }
@@ -173,26 +175,26 @@ export class FilesComponent extends PageComponent implements OnInit {
       // rename 'documentLibrary' entry to the target site display name
       // clicking on the breadcrumb entry loads the site content
       const parentNode = await this.contentApi.getNodeInfo(node.parentId).toPromise();
-      node.name = parentNode.properties['cm:title'] || parentNode.name;
+      node.name = parentNode.properties["cm:title"] || parentNode.name;
 
       // remove the site entry
       elements.splice(1, 1);
     } else {
       // remove 'documentLibrary' in the middle of the path
-      const docLib = elements.findIndex(el => el.name === 'documentLibrary');
+      const docLib = elements.findIndex(el => el.name === "documentLibrary");
       if (docLib > -1) {
         const siteFragment = elements[docLib - 1];
         const siteNode = await this.contentApi.getNodeInfo(siteFragment.id).toPromise();
 
         // apply Site Name to the parent fragment
-        siteFragment.name = siteNode.properties['cm:title'] || siteNode.name;
+        siteFragment.name = siteNode.properties["cm:title"] || siteNode.name;
         elements.splice(docLib, 1);
       }
     }
   }
   isSiteContainer(node: MinimalNodeEntryEntity): boolean {
     if (node && node.aspectNames && node.aspectNames.length > 0) {
-      return node.aspectNames.indexOf('st:siteContainer') >= 0;
+      return node.aspectNames.indexOf("st:siteContainer") >= 0;
     }
     return false;
   }
@@ -222,14 +224,14 @@ export class FilesComponent extends PageComponent implements OnInit {
   onBreadcrumbNavigate(route: PathElementEntity) {
     // todo: review this approach once 5.2.3 is out
     if (this.nodePath && this.nodePath.length > 2) {
-      if (this.nodePath[1].name === 'Sites' && this.nodePath[2].id === route.id) {
+      if (this.nodePath[1].name === "Sites" && this.nodePath[2].id === route.id) {
         return this.navigate(this.nodePath[3].id);
       }
     }
     this.navigate(route.id);
   }
   navigate(nodeId: string = null) {
-    const commands = ['./'];
+    const commands = ["./"];
 
     if (nodeId && !this.isRootNode(nodeId)) {
       commands.push(nodeId);

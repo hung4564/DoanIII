@@ -1,0 +1,73 @@
+<adf-toolbar>
+  <adf-toolbar-title>
+    <adf-breadcrumb root="APP.BROWSE.TASKS.TITLE"> </adf-breadcrumb>
+  </adf-toolbar-title>
+
+  <div class="adf-toolbar--spacer"></div>
+  <app-create-menu [expanded]="false"></app-create-menu>
+  <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
+    <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
+  </ng-container>
+</adf-toolbar>
+<div class="task-content">
+  <div class="task-content__filter">
+    <app-task-filter (filterChange)="filterChange($event)"></app-task-filter>
+  </div>
+  <div class="task-content__list">
+    <adf-document-list
+      #documentList
+      appDocumentList
+      appContextActions
+      [loading]="isLoading"
+      [node]="list"
+      selectionMode="single"
+      [navigate]="false"
+      (name-click)="onNodeDoubleClick($event.detail?.node)"
+      (node-dblclick)="onNodeDoubleClick($event.detail?.node)"
+      [imageResolver]="imageResolver"
+    >
+      <adf-custom-empty-content-template>
+        <adf-empty-content
+          icon="assignment"
+          [title]="'APP.BROWSE.TASKS.EMPTY_STATE.TITLE'"
+          subtitle="APP.BROWSE.TASKS.EMPTY_STATE.TEXT"
+        >
+        </adf-empty-content>
+      </adf-custom-empty-content-template>
+
+      <data-columns>
+        <ng-container *ngFor="let column of columns; trackBy: trackById">
+          <ng-container *ngIf="column.template && !(column.desktopOnly && isSmallScreen)">
+            <data-column
+              [key]="column.key"
+              [title]="column.title"
+              [type]="column.type"
+              [format]="column.format"
+              [class]="column.class"
+              [sortable]="column.sortable"
+            >
+              <ng-template let-context>
+                <adf-dynamic-column [id]="column.template" [context]="context">
+                </adf-dynamic-column>
+              </ng-template>
+            </data-column>
+          </ng-container>
+
+          <ng-container *ngIf="!column.template && !(column.desktopOnly && isSmallScreen)">
+            <data-column
+              [key]="column.key"
+              [title]="column.title"
+              [type]="column.type"
+              [format]="column.format"
+              [class]="column.class"
+              [sortable]="column.sortable"
+            >
+            </data-column>
+          </ng-container>
+        </ng-container>
+      </data-columns>
+    </adf-document-list>
+    <adf-pagination appPagination [pagination]="pagination" (change)="onChangePagination($event)">
+    </adf-pagination>
+  </div>
+</div>

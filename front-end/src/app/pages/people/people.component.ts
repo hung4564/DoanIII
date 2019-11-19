@@ -5,8 +5,6 @@ import { AppStore } from 'app/store/states/app.state';
 import { Store } from '@ngrx/store';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
 import {
-  ObjectDataTableAdapter,
-  ObjectDataRow,
   PaginationModel,
   UserPreferencesService
 } from '@alfresco/adf-core';
@@ -41,7 +39,7 @@ export class PeopleComponent extends PageComponent implements OnInit {
     this.content.reload.subscribe(() => {
       this.getList(this.pagination);
     });
-    this.columns = this.extensions.documentListPresets.people || [];
+    this.columns = this.extensions.documentListPresets.tasks || [];
   }
   onChangePagination(e: PaginationModel) {
     this.getList(e);

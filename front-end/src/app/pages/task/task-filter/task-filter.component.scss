@@ -1,0 +1,11 @@
+.app-task-filter {
+  min-width: 260px;
+  max-width: 320px;
+  padding: 5px;
+  height: 100%;
+  overflow: scroll;
+
+  &--hidden {
+    display: none;
+  }
+}

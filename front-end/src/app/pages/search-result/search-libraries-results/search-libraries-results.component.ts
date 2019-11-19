@@ -48,7 +48,6 @@ export class SearchLibrariesResultsComponent extends PageComponent implements On
 
     this.subscriptions.push(
       this.content.libraryJoined.subscribe(() => this.librariesQueryBuilder.update()),
-      this.content.libraryDeleted.subscribe(() => this.librariesQueryBuilder.update()),
       this.content.libraryLeft.subscribe(() => this.librariesQueryBuilder.update()),
 
       this.librariesQueryBuilder.updated.subscribe(() => {

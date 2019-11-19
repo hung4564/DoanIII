@@ -1,0 +1,41 @@
+<div class="app-task-filter">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Status
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-radio-group
+        [(ngModel)]="statusSelect"
+        (change)="filterChange()"
+        fxLayout="column"
+        fxLayoutAlign="space-between"
+        fxLayoutGap="10px"
+      >
+        <mat-radio-button value="">Acive</mat-radio-button>
+        <mat-radio-button value="completed">Completed</mat-radio-button>
+      </mat-radio-group>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Priority
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-radio-group
+        [(ngModel)]="prioritySelect"
+        (change)="filterChange()"
+        fxLayout="column"
+        fxLayoutAlign="space-between"
+        fxLayoutGap="10px"
+      >
+        <mat-radio-button value="3">High</mat-radio-button>
+        <mat-radio-button value="2">Medium</mat-radio-button>
+        <mat-radio-button value="1">Low</mat-radio-button>
+      </mat-radio-group>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

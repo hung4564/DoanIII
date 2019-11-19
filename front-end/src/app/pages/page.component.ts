@@ -1,23 +1,23 @@
-import { OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subject, Subscription, Observable } from 'rxjs';
-import { DocumentListComponent, ShareDataRow } from '@alfresco/adf-content-services';
-import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store/states/app.state';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { MinimalNodeEntity, MinimalNodeEntryEntity } from '@alfresco/js-api';
-import { ContentActionRef, SelectionState } from '@alfresco/adf-extensions';
-import { takeUntil } from 'rxjs/operators';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { isLocked, isLibrary } from 'app/utils/node.utils';
-import { ViewFileAction, ViewNodeAction, ViewNodeExtras } from 'app/store/actions/viewer.actions';
-import { ReloadDocumentListAction } from 'app/store/actions/app.action';
+import { OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { Subject, Subscription, Observable } from "rxjs";
+import { DocumentListComponent, ShareDataRow } from "@alfresco/adf-content-services";
+import { Store } from "@ngrx/store";
+import { AppStore } from "app/store/states/app.state";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { MinimalNodeEntity, MinimalNodeEntryEntity } from "@alfresco/js-api";
+import { ContentActionRef, SelectionState } from "@alfresco/adf-extensions";
+import { takeUntil } from "rxjs/operators";
+import { ContentManagementService } from "app/services/content-management.service";
+import { isLocked, isLibrary } from "app/utils/node.utils";
+import { ViewFileAction, ViewNodeAction, ViewNodeExtras } from "app/store/actions/viewer.actions";
+import { ReloadDocumentListAction } from "app/store/actions/app.action";
 import {
   getAppSelection,
   getCurrentFolder,
   isInfoDrawerOpened,
   isSmallScreenSelector
-} from 'app/store/selectors/app.selector';
-import { PaginationModel } from '@alfresco/adf-core';
+} from "app/store/selectors/app.selector";
+import { PaginationModel } from "@alfresco/adf-core";
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -37,7 +37,9 @@ export class PageComponent implements OnInit, OnDestroy {
     protected store: Store<any>,
     protected extensions: AppExtensionService,
     protected content: ContentManagementService
-  ) {}
+  ) {
+    this.pagination = new PaginationModel();
+  }
   showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
     if (node && node.entry) {
       const id = (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
@@ -90,11 +92,11 @@ export class PageComponent implements OnInit, OnDestroy {
   }
   imageResolver(row: ShareDataRow): string | null {
     if (isLocked(row.node)) {
-      return 'assets/images/baseline-lock-24px.svg';
+      return "assets/images/baseline-lock-24px.svg";
     }
 
     if (isLibrary(row.node)) {
-      return 'assets/images/baseline-library_books-24px.svg';
+      return "assets/images/baseline-library_books-24px.svg";
     }
 
     return null;

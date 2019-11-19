@@ -1,0 +1,29 @@
+<button
+  mat-icon-button
+  class="app-create-menu--collapsed"
+  data-automation-id="create-button"
+  [matMenuTriggerFor]="rootMenu"
+  #createMenu="matMenuTrigger"
+  title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}"
+>
+  <mat-icon class="app-create-menu--icon" title="{{ 'APP.NEW_MENU.TOOLTIP' | translate }}">
+    queue</mat-icon
+  >
+</button>
+
+<mat-menu
+  #rootMenu="matMenu"
+  class="app-create-menu__root-menu app-create-menu__sub-menu"
+  [overlapTrigger]="false"
+  yPosition="below"
+>
+  <div class="overlay" *ngIf="isLoading; else main">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <ng-template #main>
+    <ng-container *ngFor="let action of createActions; trackBy: trackById">
+      <app-toolbar-menu-item [actionRef]="action"></app-toolbar-menu-item>
+    </ng-container>
+  </ng-template>
+</mat-menu>

@@ -18,7 +18,8 @@
         { "type": "rule", "value": "app.navigation.isNotSharedFiles" },
         { "type": "rule", "value": "app.navigation.isNotSearchResults" },
         { "type": "rule", "value": "app.navigation.isNotFavorites" },
-        { "type": "rule", "value": "app.navigation.isNotPeople" }
+        { "type": "rule", "value": "app.navigation.isNotPeople" },
+        { "type": "rule", "value": "app.navigation.isNotGroup" }
       ]
     },
     {
@@ -30,7 +31,8 @@
         { "type": "rule", "value": "app.navigation.isNotSharedFiles" },
         { "type": "rule", "value": "app.navigation.isNotSearchResults" },
         { "type": "rule", "value": "app.navigation.isNotFavorites" },
-        { "type": "rule", "value": "app.navigation.isNotPeople" }
+        { "type": "rule", "value": "app.navigation.isNotPeople" },
+        { "type": "rule", "value": "app.navigation.isNotGroup" }
       ]
     },
     {
@@ -47,6 +49,13 @@
       "parameters": [
         { "type": "rule", "value": "app.navigation.isGroup" },
         { "type": "rule", "value": "user.isAdmin" }
+      ]
+    },
+    {
+      "id": "app.create.task.canCreate",
+      "type": "core.every",
+      "parameters": [
+        { "type": "rule", "value": "app.navigation.isTask" }
       ]
     }
   ],
@@ -90,6 +99,21 @@
         "rules": {
           "visible": "app.create.group.canCreate",
           "enabled": "app.create.group.canCreate"
+        }
+      },
+      {
+        "id": "app.create.createTask",
+        "order": 100,
+        "icon": "assignment",
+        "title": "APP.NEW_MENU.MENU_ITEMS.CREATE_TASK",
+        "description": "APP.NEW_MENU.TOOLTIPS.CREATE_TASK",
+        "description-disabled": "APP.NEW_MENU.TOOLTIPS.CREATE_TASK_NOT_ALLOWED",
+        "actions": {
+          "click": "CREATE_TASK"
+        },
+        "rules": {
+          "visible": "app.create.task.canCreate",
+          "enabled": "app.create.task.canCreate"
         }
       },
       {

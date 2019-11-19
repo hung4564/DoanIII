@@ -143,7 +143,9 @@ export class CoreExtensionsModule {
       'app.navigation.isPeople': rules.isPeople,
       'app.navigation.isGroup': rules.isGroup,
       'app.navigation.isNotGroup': rules.isNotGroup,
-      canShowGroup: rules.canShowGroup
+      canShowGroup: rules.canShowGroup,
+      'app.navigation.isTask':rules.isTask,
+      'app.navigation.isNotTask':rules.isNotTask
     });
   }
 }

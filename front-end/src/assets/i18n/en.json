@@ -59,9 +59,12 @@
         "UPLOAD_FOLDER": "Upload Folder",
         "CREATE_LIBRARY": "Create Library",
         "CREATE_PERSON": "Create Person",
-        "CREATE_GROUP": "Create Group"
+        "CREATE_GROUP": "Create Group",
+        "CREATE_TASK": "Create Task"
       },
       "TOOLTIPS": {
+        "CREATE_TASK": "Create Task",
+        "CREATE_TASK_NOT_ALLOWED": "Task cannot be created whilst viewing the current items",
         "CREATE_GROUP": "Create Group",
         "CREATE_GROUP_NOT_ALLOWED": "Group cannot be created whilst viewing the current items",
         "CREATE_PERSON": "Create new person",
@@ -98,7 +101,17 @@
           "TEXT": ""
         }
       },
-
+      "TASKS": {
+        "TITLE": "Tasks",
+        "SIDENAV_LINK": {
+          "LABEL": "Tasks",
+          "TOOLTIP": "View all Tasks"
+        },
+        "EMPTY_STATE": {
+          "TITLE": "Tasks",
+          "TEXT": ""
+        }
+      },
       "PERSONAL": {
         "TITLE": "Personal Files",
         "SIDENAV_LINK": {
@@ -281,7 +294,10 @@
         "DELETED_BY": "Deleted by",
         "ROLE": "My Role",
         "DISPLAYNAME": "Display name",
-        "ISROOT": "Is root"
+        "ISROOT": "Is root",
+        "STATUS": "Status",
+        "ASSIGNEE": "Assignee",
+        "PRIORITY": "Priority"
       },
       "TOOLBAR": {
         "CARDVIEW": "Card view mode",

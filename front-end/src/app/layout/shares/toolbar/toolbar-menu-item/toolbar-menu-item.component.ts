@@ -1,10 +1,10 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { ContentActionRef } from '@alfresco/adf-extensions';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
+import { Component, Input, ViewEncapsulation } from "@angular/core";
+import { ContentActionRef } from "@alfresco/adf-extensions";
+import { AppExtensionService } from "app/extensions/app-extension.service";
 
 @Component({
-  selector: 'app-toolbar-menu-item',
-  templateUrl: 'toolbar-menu-item.component.html',
+  selector: "app-toolbar-menu-item",
+  templateUrl: "toolbar-menu-item.component.html",
   styles: [
     `
       .app-toolbar-menu-item:last-child > .mat-divider-horizontal {
@@ -13,7 +13,7 @@ import { AppExtensionService } from 'app/extensions/app-extension.service';
     `
   ],
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-toolbar-menu-item' }
+  host: { class: "app-toolbar-menu-item" }
 })
 export class ToolbarMenuItemComponent {
   @Input()
@@ -23,7 +23,7 @@ export class ToolbarMenuItemComponent {
 
   runAction() {
     if (this.hasClickAction(this.actionRef)) {
-      this.extensions.runActionById(this.actionRef.actions.click);
+      this.extensions.runActionById(this.actionRef.actions.click, this.actionRef.actions.data);
     }
   }
 

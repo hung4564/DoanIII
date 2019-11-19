@@ -1,4 +1,4 @@
-import { RuleContext } from '@alfresco/adf-extensions';
+import { RuleContext } from "@alfresco/adf-extensions";
 
 /**
  * Checks if a Preview route is activated.
@@ -6,7 +6,7 @@ import { RuleContext } from '@alfresco/adf-extensions';
  */
 export function isPreview(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && (url.includes('viewer:view') || url.includes('/view/'));
+  return url && (url.includes("viewer:view") || url.includes("/view/"));
 }
 
 /**
@@ -15,7 +15,7 @@ export function isPreview(context: RuleContext): boolean {
  */
 export function isFavorites(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/favorites') && !isPreview(context);
+  return url && url.startsWith("/favorites") && !isPreview(context);
 }
 
 /**
@@ -32,7 +32,7 @@ export function isNotFavorites(context: RuleContext): boolean {
  */
 export function isSharedFiles(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/shared') && !isPreview(context);
+  return url && url.startsWith("/shared") && !isPreview(context);
 }
 
 /**
@@ -49,7 +49,7 @@ export function isNotSharedFiles(context: RuleContext): boolean {
  */
 export function isTrashcan(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/trashcan');
+  return url && url.startsWith("/trashcan");
 }
 
 /**
@@ -66,7 +66,7 @@ export function isNotTrashcan(context: RuleContext): boolean {
  */
 export function isPersonalFiles(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/personal-files');
+  return url && url.startsWith("/personal-files");
 }
 
 /**
@@ -75,7 +75,7 @@ export function isPersonalFiles(context: RuleContext): boolean {
  */
 export function isLibraryFiles(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/libraries');
+  return url && url.startsWith("/libraries");
 }
 
 /**
@@ -84,7 +84,7 @@ export function isLibraryFiles(context: RuleContext): boolean {
  */
 export function isLibraries(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && (url.endsWith('/libraries') || url.startsWith('/search-libraries'));
+  return url && (url.endsWith("/libraries") || url.startsWith("/search-libraries"));
 }
 
 /**
@@ -101,7 +101,7 @@ export function isNotLibraries(context: RuleContext): boolean {
  */
 export function isRecentFiles(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/recent-files');
+  return url && url.startsWith("/recent-files");
 }
 
 /**
@@ -119,7 +119,7 @@ export function isNotRecentFiles(context: RuleContext): boolean {
 export function isSearchResults(context: RuleContext /*,
   ...args: RuleParameter[]*/): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/search');
+  return url && url.startsWith("/search");
 }
 
 /**
@@ -136,7 +136,7 @@ export function isNotSearchResults(context: RuleContext): boolean {
  */
 export function isSharedPreview(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/shared') && url.includes('viewer:view');
+  return url && url.startsWith("/shared") && url.includes("viewer:view");
 }
 
 /**
@@ -145,7 +145,7 @@ export function isSharedPreview(context: RuleContext): boolean {
  */
 export function isFavoritesPreview(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/favorites') && url.includes('viewer:view');
+  return url && url.startsWith("/favorites") && url.includes("viewer:view");
 }
 
 /**
@@ -154,7 +154,7 @@ export function isFavoritesPreview(context: RuleContext): boolean {
  */
 export function isSharedFileViewer(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/preview/s/');
+  return url && url.startsWith("/preview/s/");
 }
 
 /**
@@ -163,7 +163,7 @@ export function isSharedFileViewer(context: RuleContext): boolean {
  */
 export function isPeople(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/people');
+  return url && url.startsWith("/people");
 }
 
 /**
@@ -180,7 +180,7 @@ export function isNotPeople(context: RuleContext): boolean {
  */
 export function isGroup(context: RuleContext): boolean {
   const { url } = context.navigation;
-  return url && url.startsWith('/groups');
+  return url && url.startsWith("/groups");
 }
 
 /**
@@ -189,4 +189,21 @@ export function isGroup(context: RuleContext): boolean {
  */
 export function isNotGroup(context: RuleContext): boolean {
   return !isGroup(context);
+}
+
+/**
+ * Checks if a **Task** route is activated.
+ * JSON ref: `app.navigation.isTask`
+ */
+export function isTask(context: RuleContext): boolean {
+  const { url } = context.navigation;
+  return url && url.startsWith("/tasks");
+}
+
+/**
+ * Checks if the activated route is not **Task**.
+ * JSON ref: `app.navigation.isNotTask`
+ */
+export function isNotTask(context: RuleContext): boolean {
+  return !isTask(context);
 }

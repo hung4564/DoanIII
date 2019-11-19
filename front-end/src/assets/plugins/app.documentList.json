@@ -467,6 +467,45 @@
           "sortable": true,
           "desktopOnly": true
         }
+      ],
+      "tasks": [
+        {
+          "id": "app.tasks.name",
+          "key": "name",
+          "class": "adf-ellipsis-cell adf-expand-cell-1",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.NAME",
+          "type": "text",
+          "template": "app.columns.name",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.tasks.status",
+          "key": "state",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.STATUS",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": false,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.tasks.assignee",
+          "key": "assignee",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.ASSIGNEE",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": false,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.tasks.priority",
+          "key": "priority",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.PRIORITY",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": false,
+          "desktopOnly": true
+        }
       ]
     }
   }

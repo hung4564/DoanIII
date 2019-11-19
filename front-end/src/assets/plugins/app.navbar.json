@@ -99,6 +99,19 @@
             "route": "trashcan"
           }
         ]
+      },
+      {
+        "id": "app.navbar.thirdary",
+        "items": [
+          {
+            "id": "app.navbar.task",
+            "order": 100,
+            "icon": "assignment",
+            "title": "APP.BROWSE.TASKS.SIDENAV_LINK.LABEL",
+            "description": "APP.BROWSE.TASKS.SIDENAV_LINK.TOOLTIP",
+            "route": "tasks"
+          }
+        ]
       }
     ]
   }
