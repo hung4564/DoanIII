@@ -1,21 +1,22 @@
-import { Action } from '@ngrx/store';
-import { Node, Person, Group, RepositoryInfo } from '@alfresco/js-api';
-import { AppState } from '../states/app.state';
+import { Action } from "@ngrx/store";
+import { Node, Person, Group, RepositoryInfo, Site } from "@alfresco/js-api";
+import { AppState } from "../states/app.state";
 
 export enum AppActionTypes {
-  SetInitialState = 'SET_INITIAL_STATE',
-  SetLanguagePicker = 'SET_LANGUAGE_PICKER',
-  SetUserProfile = 'SET_USER_PROFILE',
-  Logout = 'LOGOUT',
-  ReloadDocumentList = 'RELOAD_DOCUMENT_LIST',
-  SetCurrentUrl = 'SET_CURRENT_URL',
-  SetRepositoryInfo = 'SET_REPOSITORY_INFO',
-  SetCurrentFolder = 'SET_CURRENT_FOLDER',
-  ToggleInfoDrawer = 'TOGGLE_INFO_DRAWER',
-  SetInfoDrawerState = 'SET_INFO_DRAWER_STATE',
-  SetInfoDrawerMetadataAspect = 'SET_INFO_DRAWER_METADATA_ASPECT',
-  SetSmallScreen = 'SET_SMALL_SCREEN',
-  ResetSelection = 'RESET_SELECTION'
+  SetInitialState = "SET_INITIAL_STATE",
+  SetLanguagePicker = "SET_LANGUAGE_PICKER",
+  SetUserProfile = "SET_USER_PROFILE",
+  Logout = "LOGOUT",
+  ReloadDocumentList = "RELOAD_DOCUMENT_LIST",
+  SetCurrentUrl = "SET_CURRENT_URL",
+  SetRepositoryInfo = "SET_REPOSITORY_INFO",
+  SetCurrentFolder = "SET_CURRENT_FOLDER",
+  ToggleInfoDrawer = "TOGGLE_INFO_DRAWER",
+  SetInfoDrawerState = "SET_INFO_DRAWER_STATE",
+  SetInfoDrawerMetadataAspect = "SET_INFO_DRAWER_METADATA_ASPECT",
+  SetSmallScreen = "SET_SMALL_SCREEN",
+  ResetSelection = "RESET_SELECTION",
+  SetCurrentLibrary = "SET_CURRENT_LIBRARY"
 }
 export class ResetSelectionAction implements Action {
   readonly type = AppActionTypes.ResetSelection;
@@ -81,4 +82,9 @@ export class SetInfoDrawerMetadataAspectAction implements Action {
 export class SetSmallScreenAction implements Action {
   readonly type = AppActionTypes.SetSmallScreen;
   constructor(public payload: boolean) {}
+}
+export class SetCurrentLibraryAction implements Action {
+  readonly type = AppActionTypes.SetCurrentLibrary;
+
+  constructor(public payload: Site) {}
 }

@@ -118,8 +118,20 @@ export const appRoutes: Routes = [
             path: ":id",
             component: LibrariesDetailComponent,
             children: [
-              { path: "", component: LibrariesDocumentComponent },
-              { path: "members", component: LibrariesMemberComponent },
+              {
+                path: "",
+                component: LibrariesDocumentComponent,
+                data: {
+                  useParent: true
+                }
+              },
+              {
+                path: "members",
+                component: LibrariesMemberComponent,
+                data: {
+                  useParent: true
+                }
+              },
               {
                 path: "preview/:nodeId",
                 component: PreviewComponent,

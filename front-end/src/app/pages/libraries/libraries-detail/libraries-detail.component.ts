@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, OnChanges } from "@angular/core";
 import { AppExtensionService } from "app/extensions/app-extension.service";
 import { Store } from "@ngrx/store";
 import { AppStore } from "app/store/states/app.state";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ContentApiService } from "app/services/content-api.service";
-import { SetCurrentFolderAction, ReloadDocumentListAction } from "app/store/actions/app.action";
+import {
+  SetCurrentFolderAction,
+  ReloadDocumentListAction,
+  SetCurrentLibraryAction
+} from "app/store/actions/app.action";
 import { ContentActionRef } from "@alfresco/adf-extensions";
 import { getAppSelection, isAdmin } from "app/store/selectors/app.selector";
 import { takeUntil, debounceTime } from "rxjs/operators";
@@ -15,9 +19,9 @@ import {
   MinimalNodeEntryEntity,
   PathElement
 } from "@alfresco/js-api";
-import { ContentManagementService } from "app/services/content-management.service";
 import { NodeActionsService } from "app/services/node-actions.service";
-import { UploadService, FileUploadEvent } from "@alfresco/adf-core";
+import { UploadService, FileUploadEvent, PageTitleService } from "@alfresco/adf-core";
+import { LibraryService } from "../library.service";
 
 @Component({
   selector: "app-libraries-detail",
@@ -40,7 +44,6 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
   isAdmin = false;
   actions: Array<ContentActionRef> = [];
   librariesId: string;
-  librariesGuid: string;
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   node: MinimalNodeEntryEntity;
   protected subscriptions: Subscription[] = [];
@@ -53,7 +56,8 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     private contentApi: ContentApiService,
     private nodeActionsService: NodeActionsService,
     private uploadService: UploadService,
-    private content: ContentManagementService
+    private libraySv: LibraryService,
+    private pageTitle: PageTitleService
   ) {}
   trackByActionId(_: number, action: ContentActionRef) {
     return action.id;
@@ -76,16 +80,24 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     const { route, nodeActionsService, uploadService } = this;
 
     route.params.subscribe(params => {
-      const nodeId = params.id;
-      this.librariesGuid = nodeId;
-      this.contentApi.getNode(nodeId).subscribe(node => {
-        if (node.entry && node.entry.isFolder) {
-          this.updateCurrentNode(node.entry);
+      this.librariesId = params.id;
+      this.libraySv.setSiteId(this.librariesId);
+      this.libraySv.getSite(this.librariesId).subscribe(site => {
+        this.pageTitle.setTitle(site.entry.title || "");
+        this.store.dispatch(new SetCurrentLibraryAction(site.entry));
+        const found = this.libraySv.getNodeOfDocumentLibrary(site);
+        if (found) {
+          const nodeId = found.entry.id;
+          this.contentApi.getNode(nodeId).subscribe(node => {
+            if (node.entry && node.entry.isFolder) {
+              this.updateCurrentNode(node.entry);
+            }
+          });
         }
       });
     });
     this.subscriptions = this.subscriptions.concat([
-      this.content.changeFolderInSite.subscribe(node => {
+      this.libraySv.changeFolderInSite.subscribe(node => {
         if (node.entry && node.entry.isFolder) {
           this.updateCurrentNode(node.entry);
         }
@@ -131,6 +143,8 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     this.node = node.entry;
   }
   ngOnDestroy() {
+    this.libraySv.setSiteId(null);
+    this.store.dispatch(new SetCurrentLibraryAction(null));
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.subscriptions = [];
 
@@ -173,7 +187,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
   navigate(link: string = null) {
     const commands = ["./"];
 
-    commands.push(this.librariesGuid);
+    commands.push(this.librariesId);
     if (link) {
       commands.push(link);
     }
@@ -195,7 +209,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     this.contentApi.getNode(navigateId).subscribe(node => {
       if (node.entry && node.entry.isFolder) {
         this.updateCurrentNode(node.entry);
-        this.content.changeFolderInBreadcrumb.next(node.entry.id);
+        this.libraySv.changeFolderInBreadcrumb.next(node.entry.id);
       }
     });
   }

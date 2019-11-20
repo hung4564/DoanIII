@@ -66,8 +66,6 @@ export class ContentManagementService {
   joinLibraryToggle = new Subject<string>();
   linksUnshared = new Subject<any>();
   favoriteLibraryToggle = new Subject<any>();
-  changeFolderInSite = new Subject<MinimalNodeEntity>();
-  changeFolderInBreadcrumb = new Subject<string>();
   constructor(
     private alfrescoApiService: AlfrescoApiService,
     private store: Store<any>,
@@ -238,7 +236,7 @@ export class ContentManagementService {
     });
   }
 
-  createLibrary(): Observable<string> {
+  createLibrary(): Observable<SiteEntry> {
     const dialogInstance = this.dialogRef.open(LibraryDialogComponent, {
       width: "400px"
     });
@@ -250,7 +248,7 @@ export class ContentManagementService {
     return dialogInstance.afterClosed().pipe(
       map((node: SiteEntry) => {
         if (node && node.entry && node.entry.guid) {
-          return node.entry.guid;
+          return node;
         }
         return null;
       })

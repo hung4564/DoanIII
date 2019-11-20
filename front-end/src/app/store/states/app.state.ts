@@ -1,5 +1,5 @@
-import { SelectionState, ProfileState, NavigationState } from '@alfresco/adf-extensions';
-import { RepositoryInfo } from '@alfresco/js-api';
+import { SelectionState, ProfileState, NavigationState } from "@alfresco/adf-extensions";
+import { RepositoryInfo, Site } from "@alfresco/js-api";
 
 export interface AppState {
   appName: string;
@@ -8,7 +8,7 @@ export interface AppState {
   languagePicker: boolean;
   selection: SelectionState;
   user: ProfileState;
-  navigation: NavigationState;
+  navigation: CustomNavigationState;
   sharedUrl: string;
   repository: RepositoryInfo;
   infoDrawerOpened: boolean;
@@ -19,4 +19,8 @@ export interface AppState {
 
 export interface AppStore {
   app: AppState;
+}
+
+export interface CustomNavigationState extends NavigationState {
+  currentSite?: Site;
 }

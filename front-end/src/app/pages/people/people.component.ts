@@ -1,22 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { PageComponent } from '../page.component';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { AppStore } from 'app/store/states/app.state';
-import { Store } from '@ngrx/store';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import {
-  PaginationModel,
-  UserPreferencesService
-} from '@alfresco/adf-core';
-import { ContentApiService } from 'app/services/content-api.service';
-import { PersonPaging } from '@alfresco/js-api';
+import { Component, OnInit } from "@angular/core";
+import { PageComponent } from "../page.component";
+import { ContentManagementService } from "app/services/content-management.service";
+import { AppStore } from "app/store/states/app.state";
+import { Store } from "@ngrx/store";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { PaginationModel, UserPreferencesService } from "@alfresco/adf-core";
+import { ContentApiService } from "app/services/content-api.service";
+import { PersonPaging } from "@alfresco/js-api";
 
 @Component({
-  selector: 'app-people',
-  templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss'],
+  selector: "app-people",
+  templateUrl: "./people.component.html",
+  styleUrls: ["./people.component.scss"],
   host: {
-    class: 'app-layout'
+    class: "app-layout"
   }
 })
 export class PeopleComponent extends PageComponent implements OnInit {
@@ -39,7 +36,7 @@ export class PeopleComponent extends PageComponent implements OnInit {
     this.content.reload.subscribe(() => {
       this.getList(this.pagination);
     });
-    this.columns = this.extensions.documentListPresets.tasks || [];
+    this.columns = this.extensions.documentListPresets.people || [];
   }
   onChangePagination(e: PaginationModel) {
     this.getList(e);

@@ -47,6 +47,7 @@ export class AppExtensionService implements RuleContext {
     people: Array<DocumentListPresetRef>;
     groups: Array<DocumentListPresetRef>;
     tasks: Array<DocumentListPresetRef>;
+    siteMembers: DocumentListPresetRef[];
   } = {
     files: [],
     libraries: [],
@@ -58,7 +59,8 @@ export class AppExtensionService implements RuleContext {
     searchLibraries: [],
     people: [],
     groups: [],
-    tasks: []
+    tasks: [],
+    siteMembers: []
   };
 
   contentMetadata: any;
@@ -133,7 +135,8 @@ export class AppExtensionService implements RuleContext {
       searchLibraries: this.getDocumentListPreset(config, "search-libraries"),
       people: this.getDocumentListPreset(config, "people"),
       groups: this.getDocumentListPreset(config, "groups"),
-      tasks: this.getDocumentListPreset(config, "tasks")
+      tasks: this.getDocumentListPreset(config, "tasks"),
+      siteMembers: this.getDocumentListPreset(config, "siteMembers")
     };
 
     if (config.features && config.features.viewer) {
@@ -250,7 +253,7 @@ export class AppExtensionService implements RuleContext {
     return this.extensions.getEvaluator(key);
   }
   runActionById(id: string, data?) {
-    console.log("TCL: AppExtensionService -> runActionById -> data", data)
+    console.log("TCL: AppExtensionService -> runActionById -> data", data);
     console.log("TCL: AppExtensionService -> runActionById -> id", id);
     const action = this.extensions.getActionById(id);
     if (action) {
@@ -415,5 +418,9 @@ export class AppExtensionService implements RuleContext {
     } else {
       return object;
     }
+  }
+  checkRule(ruleId: string): boolean {
+  console.log("TCL: ruleId", ruleId)
+    return this.extensions.evaluateRule(ruleId, this);
   }
 }

@@ -1,0 +1,11 @@
+<button
+  mat-icon-button
+  color="primary"
+  (click)="runAction()"
+  [disabled]="disabled"
+  [attr.title]="
+    (disabled ? action['description-disabled'] : action['description'] || action.title) | translate
+  "
+>
+  {{ action.title | translate }}
+</button>

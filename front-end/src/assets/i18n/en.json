@@ -257,7 +257,8 @@
       "EDIT_OFFLINE": "Edit Offline",
       "EDIT_OFFLINE_CANCEL": "Cancel Editing",
       "LIST_MODE": "View list",
-      "GALLERY_MODE": "View gallery"
+      "GALLERY_MODE": "View gallery",
+      "REMOVE": "Remove"
     },
     "DIALOGS": {
       "CONFIRM_PURGE": {

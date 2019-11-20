@@ -210,6 +210,9 @@ export class ContentApiService {
   ): Observable<SiteEntry> {
     return from(this.api.sitesApi.getSite(siteId, opts));
   }
+  getSiteMember(siteId: string, opts?: any) {
+    return from(this.api.sitesApi.getSiteMembers(siteId, opts));
+  }
 
   updateLibrary(siteId: string, siteBody: SiteBody): Observable<SiteEntry> {
     return from(this.api.sitesApi.updateSite(siteId, siteBody));

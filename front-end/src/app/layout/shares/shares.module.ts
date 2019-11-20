@@ -18,6 +18,7 @@ import { AppToolbarModule } from "./toolbar/toolbar.module";
 import { CreateMenuComponent } from "./create-menu/create-menu.component";
 import { AppInfoDrawerModule } from "./info-drawer/info.drawer.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { CustomBtnComponent } from "./custom-btn/custom-btn.component";
 export function components() {
   return [
     CreateMenuComponent,
@@ -28,6 +29,7 @@ export function components() {
 }
 export function dialogcomponents() {
   return [
+    CustomBtnComponent,
     NodeVersionsDialogComponent,
     NodeVersionUploadDialogComponent,
     NodePermissionsDialogComponent,

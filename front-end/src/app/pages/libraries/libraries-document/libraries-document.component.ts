@@ -5,8 +5,8 @@ import { Store } from "@ngrx/store";
 import { AppStore } from "app/store/states/app.state";
 import { PageComponent } from "app/pages/page.component";
 import { AppExtensionService } from "app/extensions/app-extension.service";
-import { MinimalNodeEntity, PathElement } from "@alfresco/js-api";
-import { ShareDataRow } from "@alfresco/adf-content-services";
+import { MinimalNodeEntity } from "@alfresco/js-api";
+import { LibraryService } from "../library.service";
 
 @Component({
   selector: "app-libraries-document",
@@ -21,7 +21,8 @@ export class LibrariesDocumentComponent extends PageComponent implements OnInit 
     private route: ActivatedRoute,
     content: ContentManagementService,
     store: Store<AppStore>,
-    extensions: AppExtensionService
+    extensions: AppExtensionService,
+    private libraySv: LibraryService
   ) {
     super(store, extensions, content);
   }
@@ -31,10 +32,16 @@ export class LibrariesDocumentComponent extends PageComponent implements OnInit 
     const { route } = this;
     route.params.subscribe(params => {
       this.librariesId = params.id;
-      this.currentNodeId = params.id;
+      this.libraySv.getSite(this.librariesId).subscribe(site => {
+        const found = this.libraySv.getNodeOfDocumentLibrary(site);
+        if (found) {
+          const nodeId = found.entry.id;
+          this.currentNodeId = nodeId;
+        }
+      });
     });
     this.subscriptions = [
-      this.content.changeFolderInBreadcrumb.subscribe(id => {
+      this.libraySv.changeFolderInBreadcrumb.subscribe(id => {
         this.currentNodeId = id;
       })
     ];
@@ -52,7 +59,7 @@ export class LibrariesDocumentComponent extends PageComponent implements OnInit 
     if (node && node.entry) {
       if (node.entry.isFolder) {
         this.currentNodeId = node.entry.id;
-        this.content.changeFolderInSite.next(node);
+        this.libraySv.changeFolderInSite.next(node);
       }
 
       if (node.entry.isFile) {

@@ -506,6 +506,47 @@
           "sortable": false,
           "desktopOnly": true
         }
+      ],
+      "siteMembers": [
+        {
+          "id": "app.siteMembers.person",
+          "key": "id",
+          "class": "adf-ellipsis-cell",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.USER_NAME",
+          "type": "text",
+          "format": "fullName",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteMembers.role",
+          "key": "role",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.ROLE",
+          "type": "text",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.libraryRole",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteMembers.btnRemove",
+          "key": "role",
+          "title": "",
+          "type": "",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.button",
+          "actions": {
+            "title": "APP.ACTIONS.REMOVE",
+            "description": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON_NOT_ALLOWED",
+            "click": "REMOVE_LIBRARY_MEMBER",
+            "rules": {
+              "enabled": "repository.canRemoveLibraryMember"
+            }
+          },
+          "sortable": false,
+          "desktopOnly": false
+        }
       ]
     }
   }

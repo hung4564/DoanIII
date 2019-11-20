@@ -8,6 +8,7 @@ import { LibrariesDetailComponent } from "./libraries-detail/libraries-detail.co
 import { RouterModule } from "@angular/router";
 import { LibrariesDocumentComponent } from "./libraries-document/libraries-document.component";
 import { LibrariesMemberComponent } from "./libraries-member/libraries-member.component";
+import { LibraryService } from "./library.service";
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { LibrariesMemberComponent } from "./libraries-member/libraries-member.co
     LibrariesDetailComponent,
     LibrariesDocumentComponent,
     LibrariesMemberComponent
-  ]
+  ],
+  providers: [LibraryService]
 })
 export class LibrariesModule {}

@@ -1,12 +1,12 @@
-import { Action } from '@ngrx/store';
-import { SiteBody } from '@alfresco/js-api';
+import { Action } from "@ngrx/store";
+import { SiteBody, SiteEntry } from "@alfresco/js-api";
 
 export enum LibraryActionTypes {
-  Delete = 'DELETE_LIBRARY',
-  Create = 'CREATE_LIBRARY',
-  Navigate = 'NAVIGATE_LIBRARY',
-  Update = 'UPDATE_LIBRARY',
-  Leave = 'LEAVE_LIBRARY'
+  Delete = "DELETE_LIBRARY",
+  Create = "CREATE_LIBRARY",
+  Navigate = "NAVIGATE_LIBRARY",
+  Update = "UPDATE_LIBRARY",
+  Leave = "LEAVE_LIBRARY"
 }
 
 export class DeleteLibraryAction implements Action {
@@ -22,7 +22,7 @@ export class CreateLibraryAction implements Action {
 export class NavigateLibraryAction implements Action {
   readonly type = LibraryActionTypes.Navigate;
 
-  constructor(public payload?: string) {}
+  constructor(public payload?: SiteEntry) {}
 }
 
 export class UpdateLibraryAction implements Action {

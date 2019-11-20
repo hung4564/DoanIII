@@ -1,14 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { map, mergeMap, take } from 'rxjs/operators';
-import { ContentManagementService } from '../../services/content-management.service';
-import { AppStore } from '../states/app.state';
-import { DeleteLibraryAction, LibraryActionTypes, LeaveLibraryAction, CreateLibraryAction, NavigateLibraryAction, UpdateLibraryAction } from '../actions/library.actions';
-import { getAppSelection } from '../selectors/app.selector';
-import { NavigateRouteAction } from '../actions/router.actions';
-import { SnackbarErrorAction } from '../actions/snackbar.actions';
-import { ContentApiService } from 'app/services/content-api.service';
+import { Injectable } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { map, mergeMap, take } from "rxjs/operators";
+import { ContentManagementService } from "../../services/content-management.service";
+import { AppStore } from "../states/app.state";
+import {
+  DeleteLibraryAction,
+  LibraryActionTypes,
+  LeaveLibraryAction,
+  CreateLibraryAction,
+  NavigateLibraryAction,
+  UpdateLibraryAction
+} from "../actions/library.actions";
+import { getAppSelection } from "../selectors/app.selector";
+import { NavigateRouteAction } from "../actions/router.actions";
+import { SnackbarErrorAction } from "../actions/snackbar.actions";
+import { ContentApiService } from "app/services/content-api.service";
 
 @Injectable()
 export class LibraryEffects {
@@ -61,28 +68,23 @@ export class LibraryEffects {
   createLibrary$ = this.actions$.pipe(
     ofType<CreateLibraryAction>(LibraryActionTypes.Create),
     mergeMap(() => this.content.createLibrary()),
-    map(libraryId => new NavigateLibraryAction(libraryId))
+    map(library => new NavigateLibraryAction(library))
   );
 
   @Effect({ dispatch: false })
   navigateLibrary$ = this.actions$.pipe(
     ofType<NavigateLibraryAction>(LibraryActionTypes.Navigate),
     map(action => {
-      const libraryId = action.payload;
-      if (libraryId) {
-        this.contentApi
-          .getNode(libraryId, { relativePath: '/documentLibrary' })
-          .pipe(map(node => node.entry.id))
-          .subscribe(
-            id => {
-              this.store.dispatch(new NavigateRouteAction(['libraries', id]));
-            },
-            () => {
-              this.store.dispatch(
-                new SnackbarErrorAction('APP.MESSAGES.ERRORS.MISSING_CONTENT')
-              );
-            }
-          );
+      const library = action.payload.entry;
+      if (library) {
+        this.contentApi.getNode(library.guid, { relativePath: "/documentLibrary" }).subscribe(
+          () => {
+            this.store.dispatch(new NavigateRouteAction(["libraries", library.id]));
+          },
+          () => {
+            this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.MISSING_CONTENT"));
+          }
+        );
       }
     })
   );

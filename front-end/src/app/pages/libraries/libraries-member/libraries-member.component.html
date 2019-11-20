@@ -1,3 +1,53 @@
-<p>
-  libraries-member works!
-</p>
+<adf-document-list
+  #documentList
+  appDocumentList
+  appContextActions
+  [loading]="isLoading"
+  [node]="list"
+  selectionMode="single"
+  [navigate]="false"
+  [imageResolver]="imageResolver"
+>
+  <adf-custom-empty-content-template>
+    <adf-empty-content
+      icon="person"
+      [title]="'APP.BROWSE.PEOPLE.EMPTY_STATE.TITLE'"
+      subtitle="APP.BROWSE.PEOPLE.EMPTY_STATE.TEXT"
+    >
+    </adf-empty-content>
+  </adf-custom-empty-content-template>
+
+  <data-columns>
+    <ng-container *ngFor="let column of columns; trackBy: trackById">
+      <ng-container *ngIf="column.template && !(column.desktopOnly && isSmallScreen)">
+        <data-column
+          [key]="column.key"
+          [title]="column.title"
+          [type]="column.type"
+          [format]="column.format"
+          [class]="column.class"
+          [sortable]="column.sortable"
+        >
+          <ng-template let-context>
+            <adf-dynamic-column [id]="column.template" [context]="getDataForColumn(context, column)">
+            </adf-dynamic-column>
+          </ng-template>
+        </data-column>
+      </ng-container>
+
+      <ng-container *ngIf="!column.template && !(column.desktopOnly && isSmallScreen)">
+        <data-column
+          [key]="column.key"
+          [title]="column.title"
+          [type]="column.type"
+          [format]="column.format"
+          [class]="column.class"
+          [sortable]="column.sortable"
+        >
+        </data-column>
+      </ng-container>
+    </ng-container>
+  </data-columns>
+</adf-document-list>
+<adf-infinite-pagination [target]="documentList" [loading]="documentList.infiniteLoading">
+</adf-infinite-pagination>

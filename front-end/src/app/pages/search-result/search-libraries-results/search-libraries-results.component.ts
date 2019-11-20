@@ -129,7 +129,7 @@ export class SearchLibrariesResultsComponent extends PageComponent implements On
 
   navigateTo(node: SiteEntry) {
     if (node && node.entry && node.entry.guid) {
-      this.store.dispatch(new NavigateLibraryAction(node.entry.guid));
+      this.store.dispatch(new NavigateLibraryAction(node));
     }
   }
 }

@@ -1,5 +1,5 @@
-import { Action } from '@ngrx/store';
-import { AppState } from '../states/app.state';
+import { Action } from "@ngrx/store";
+import { AppState } from "../states/app.state";
 import {
   AppActionTypes,
   SetUserProfileAction,
@@ -10,11 +10,12 @@ import {
   SetCurrentFolderAction,
   SetInfoDrawerStateAction,
   SetInfoDrawerMetadataAspectAction,
-  SetSmallScreenAction
-} from '../actions/app.action';
-import { INITIAL_APP_STATE } from '../states/initial-state';
-import { NodeActionTypes, SetSelectedNodesAction } from '../actions/node.action';
-import { SearchActionTypes } from '../actions/search.actions';
+  SetSmallScreenAction,
+  SetCurrentLibraryAction
+} from "../actions/app.action";
+import { INITIAL_APP_STATE } from "../states/initial-state";
+import { NodeActionTypes, SetSelectedNodesAction } from "../actions/node.action";
+import { SearchActionTypes } from "../actions/search.actions";
 
 export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action): AppState {
   let newState: AppState;
@@ -31,6 +32,9 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
         payload: { person: undefined, groups: [] }
       };
       newState = updateUser(state, <SetUserProfileAction>temp);
+      break;
+    case AppActionTypes.SetCurrentLibrary:
+      newState = updateCurrentLibrary(state, <SetCurrentLibraryAction>action);
       break;
     case AppActionTypes.SetCurrentFolder:
       newState = updateCurrentFolder(state, <SetCurrentFolderAction>action);
@@ -79,10 +83,10 @@ function updateUser(state: AppState, action: SetUserProfileAction): AppState {
     const groups = [...(action.payload.groups || [])];
 
     const id = user.id;
-    const firstName = user.firstName || '';
-    const lastName = user.lastName || '';
+    const firstName = user.firstName || "";
+    const lastName = user.lastName || "";
     const userName = `${firstName} ${lastName}`;
-    const initials = [firstName[0], lastName[0]].join('');
+    const initials = [firstName[0], lastName[0]].join("");
 
     const capabilities = (<any>user).capabilities;
     const isAdmin = capabilities ? capabilities.isAdmin : true;
@@ -215,5 +219,10 @@ function hideSearchFilter(state: AppState): AppState {
 function showSearchFilter(state: AppState): AppState {
   const newState = Object.assign({}, state);
   newState.showFacetFilter = true;
+  return newState;
+}
+function updateCurrentLibrary(state: AppState, action: SetCurrentLibraryAction): AppState {
+  const newState = Object.assign({}, state);
+  newState.navigation.currentSite = action.payload;
   return newState;
 }
