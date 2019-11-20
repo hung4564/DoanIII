@@ -20,7 +20,8 @@ import {
   PersonBodyCreate,
   PersonBodyUpdate,
   GroupBodyCreate,
-  GroupBodyUpdate
+  GroupBodyUpdate,
+  SiteMembershipBodyUpdate
 } from "@alfresco/js-api";
 import { map } from "rxjs/operators";
 import { TaskPaging, TaskEntry, ProcessDefinitionPaging } from "app/model";
@@ -216,6 +217,12 @@ export class ContentApiService {
 
   updateLibrary(siteId: string, siteBody: SiteBody): Observable<SiteEntry> {
     return from(this.api.sitesApi.updateSite(siteId, siteBody));
+  }
+  updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
+    return from(this.api.sitesApi.updateSiteMember(siteId, personId, body));
+  }
+  deleteMemberLibrary(siteId: string, personId: string) {
+    return from(this.api.sitesApi.removeSiteMember(siteId, personId));
   }
 
   addFavorite(nodes: Array<MinimalNodeEntity>): Observable<FavoriteEntry> {

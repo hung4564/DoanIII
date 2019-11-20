@@ -524,7 +524,15 @@
           "title": "APP.DOCUMENT_LIST.COLUMNS.ROLE",
           "type": "text",
           "class": "adf-no-grow-cell adf-ellipsis-cell",
-          "template": "app.columns.libraryRole",
+          "template": "app.columns.changeLibraryRole",
+          "actions": {
+            "title": "APP.ACTIONS.REMOVE",
+            "description": "APP.NEW_MENU.TOOLTIPS.UPDATE_SITE_MEMBER",
+            "click": "UPDATE_LIBRARY_MEMBER",
+            "rules": {
+              "enabled": "repository.canUpdateLibraryMember"
+            }
+          },
           "sortable": false,
           "desktopOnly": false
         },
@@ -537,8 +545,8 @@
           "template": "app.columns.button",
           "actions": {
             "title": "APP.ACTIONS.REMOVE",
-            "description": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON",
-            "description-disabled": "APP.NEW_MENU.TOOLTIPS.CREATE_PERSON_NOT_ALLOWED",
+            "description": "APP.NEW_MENU.TOOLTIPS.REMOVE_SITE_MEMBER",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.REMOVE_SITE_MEMBER_NOT_ALLOWED",
             "click": "REMOVE_LIBRARY_MEMBER",
             "rules": {
               "enabled": "repository.canRemoveLibraryMember"

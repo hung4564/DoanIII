@@ -26,7 +26,6 @@ export class TaskEffects {
   changeFormTask = this.actions$.pipe(
     ofType<ChangeFormTaskAction>(TaskActionTypes.ChangeFormTask),
     map((action: ChangeFormTaskAction) => {
-      console.log("TCL: TaskEffects -> action", action);
       this.content.changeTaskForm.next(action.payload);
     })
   );

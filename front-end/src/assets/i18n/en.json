@@ -63,6 +63,9 @@
         "CREATE_TASK": "Create Task"
       },
       "TOOLTIPS": {
+        "REMOVE_SITE_MEMBER": "Remove library member",
+        "REMOVE_SITE_MEMBER_NOT_ALLOWED": "No permission to remove peson",
+        "UPDATE_SITE_MEMBER": "Update library member",
         "CREATE_TASK": "Create Task",
         "CREATE_TASK_NOT_ALLOWED": "Task cannot be created whilst viewing the current items",
         "CREATE_GROUP": "Create Group",
@@ -293,7 +296,7 @@
         "SHARED_BY": "Shared by",
         "DELETED_ON": "Deleted",
         "DELETED_BY": "Deleted by",
-        "ROLE": "My Role",
+        "ROLE": "Role",
         "DISPLAYNAME": "Display name",
         "ISROOT": "Is root",
         "STATUS": "Status",
@@ -501,7 +504,9 @@
       "LIBRARY_UPDATE_ERROR": "There was an error updating library properties"
     },
     "SUCCESS": {
-      "LIBRARY_UPDATED": "Library properties updated"
+      "LIBRARY_UPDATED": "Library properties updated",
+      "LIBRARY_MEMBER_UPDATE": "Library member properties updated",
+      "LIBRARY_MEMBER_REMOVE": "Library member removed"
     }
   },
   "PERSON": {

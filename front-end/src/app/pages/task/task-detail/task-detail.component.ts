@@ -39,7 +39,6 @@ export class TaskDetailComponent extends PageComponent implements OnInit {
     this.isLoading = true;
     this.contentApi.getTask(taskId).subscribe(
       result => {
-        console.log("TCL: TaskDetailComponent -> getTask -> result", result);
         this.task = result.entry;
         this.isLoading = false;
       },

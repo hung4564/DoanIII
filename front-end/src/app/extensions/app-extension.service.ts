@@ -420,7 +420,6 @@ export class AppExtensionService implements RuleContext {
     }
   }
   checkRule(ruleId: string): boolean {
-  console.log("TCL: ruleId", ruleId)
     return this.extensions.evaluateRule(ruleId, this);
   }
 }

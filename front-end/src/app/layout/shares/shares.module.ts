@@ -19,6 +19,7 @@ import { CreateMenuComponent } from "./create-menu/create-menu.component";
 import { AppInfoDrawerModule } from "./info-drawer/info.drawer.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CustomBtnComponent } from "./custom-btn/custom-btn.component";
+import { ChangeLibraryRoleComponent } from "./changeLibraryRole/changeLibraryRole.component";
 export function components() {
   return [
     CreateMenuComponent,
@@ -29,6 +30,7 @@ export function components() {
 }
 export function dialogcomponents() {
   return [
+    ChangeLibraryRoleComponent,
     CustomBtnComponent,
     NodeVersionsDialogComponent,
     NodeVersionUploadDialogComponent,

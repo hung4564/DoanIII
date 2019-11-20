@@ -10,9 +10,15 @@ import {
   LeaveLibraryAction,
   CreateLibraryAction,
   NavigateLibraryAction,
-  UpdateLibraryAction
+  UpdateLibraryAction,
+  UpdateMemberLibraryAction,
+  DeleteMemberLibraryAction
 } from "../actions/library.actions";
-import { getAppSelection } from "../selectors/app.selector";
+import {
+  getAppSelection,
+  getRepositoryStatus,
+  getNavigationState
+} from "../selectors/app.selector";
 import { NavigateRouteAction } from "../actions/router.actions";
 import { SnackbarErrorAction } from "../actions/snackbar.actions";
 import { ContentApiService } from "app/services/content-api.service";
@@ -110,6 +116,32 @@ export class LibraryEffects {
             this.content.updateLibrary(id, siteBody);
           }
         });
+    })
+  );
+  @Effect({ dispatch: false })
+  updateMemberLibrary$ = this.actions$.pipe(
+    ofType<UpdateMemberLibraryAction>(LibraryActionTypes.UpdateMember),
+    map(action => {
+      this.store.select(getNavigationState).subscribe(navigation => {
+        if (navigation.currentSite) {
+          const data = action.payload;
+          this.content.updateMemberLibrary(navigation.currentSite.id, data.personId, {
+            role: data.role
+          });
+        }
+      });
+    })
+  );
+  @Effect({ dispatch: false })
+  deleteMemberLibrary$ = this.actions$.pipe(
+    ofType<DeleteMemberLibraryAction>(LibraryActionTypes.DeleteMember),
+    map(action => {
+      this.store.select(getNavigationState).subscribe(navigation => {
+        if (navigation.currentSite) {
+          const data = action.payload;
+          this.content.deleteMemberLibrary(navigation.currentSite.id, data.entry.person.id);
+        }
+      });
     })
   );
 }

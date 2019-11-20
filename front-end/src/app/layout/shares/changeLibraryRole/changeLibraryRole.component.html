@@ -1,0 +1,18 @@
+<ng-container *ngIf="disabled; else main">
+  <span class="adf-datatable-cell-value" [attr.title]="roleSelected | libraryRole">
+    {{ roleSelected | libraryRole }}
+  </span>
+</ng-container>
+<ng-template #main>
+  <mat-form-field>
+    <mat-select
+      (selectionChange)="roleChange($event)"
+      [(value)]="roleSelected"
+      [matTooltip]="action['description'] | translate"
+    >
+      <mat-option *ngFor="let item of roles | keyvalue" [value]="item.value">
+        {{ item.value | libraryRole }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>

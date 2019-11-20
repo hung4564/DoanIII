@@ -15,7 +15,18 @@ export function hasQuickShareEnabled(context: RuleContext): boolean {
  */
 export function canRemoveLibraryMember(context: RuleContext): boolean {
   const site: Site = context.navigation["currentSite"];
-  console.log("TCL: site", site)
+  if (site.role == Site.RoleEnum.SiteManager) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks if can update member of library repository option is enabled or not.
+ * JSON ref: `repository.canUpadteLibraryMember`
+ */
+export function canUpadteLibraryMember(context: RuleContext): boolean {
+  const site: Site = context.navigation["currentSite"];
   if (site.role == Site.RoleEnum.SiteManager) {
     return true;
   }

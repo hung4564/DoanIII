@@ -47,7 +47,6 @@ export class TaskComponent extends PageComponent implements OnInit {
     const opt = { ...pagination, ...filter };
     this.contentApi.getTasks(opt).subscribe(
       result => {
-        console.log("TCL: TaskComponent -> getList -> result", result.list.entries);
         this.list = result;
         this.pagination = result.list.pagination;
         this.isLoading = false;

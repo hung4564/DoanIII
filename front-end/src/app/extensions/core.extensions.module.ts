@@ -24,6 +24,7 @@ import { CommentsTabComponent } from "app/layout/shares/info-drawer/comments-tab
 import { VersionsTabComponent } from "app/layout/shares/info-drawer/versions-tab/versions-tab.component";
 import { MetadataTabComponent } from "app/layout/shares/info-drawer/metadata-tab/metadata-tab.component";
 import { CustomBtnComponent } from "app/layout/shares/custom-btn/custom-btn.component";
+import { ChangeLibraryRoleComponent } from "app/layout/shares/changeLibraryRole/changeLibraryRole.component";
 
 export function setupExtensions(service: AppExtensionService): Function {
   return () => service.load();
@@ -74,6 +75,7 @@ export class CoreExtensionsModule {
       "app.columns.libraryStatus": LibraryStatusColumnComponent,
       "app.columns.trashcanName": TrashcanNameColumnComponent,
       "app.columns.location": LocationLinkComponent,
+      "app.columns.changeLibraryRole": ChangeLibraryRoleComponent,
       "app.toolbar.toggleEditOffline": ToggleEditOfflineComponent
     });
 
@@ -148,7 +150,8 @@ export class CoreExtensionsModule {
       canShowGroup: rules.canShowGroup,
       "app.navigation.isTask": rules.isTask,
       "app.navigation.isNotTask": rules.isNotTask,
-      "repository.canRemoveLibraryMember": rules.canRemoveLibraryMember
+      "repository.canRemoveLibraryMember": rules.canRemoveLibraryMember,
+      "repository.canUpdateLibraryMember": rules.canUpadteLibraryMember
     });
   }
 }

@@ -33,6 +33,7 @@ export class LibrariesMemberComponent extends PageComponent implements OnInit {
     return test.firstName;
   }
   ngOnInit() {
+    this.content.reload.subscribe(() => this.getList(this.pagination));
     this.libraryId = this.librarySv.siteId;
     this.pagination.maxItems = this.userPreferenceService.paginationSize;
     this.columns = this.extensions.documentListPresets.siteMembers || [];
@@ -45,7 +46,6 @@ export class LibrariesMemberComponent extends PageComponent implements OnInit {
     this.isLoading = true;
     this.librarySv.getSiteMember(opt).subscribe(
       result => {
-        console.log("TCL: LibrariesMemberComponent -> getList -> result", result);
         this.list = result;
         this.pagination = result.list.pagination;
         this.isLoading = false;

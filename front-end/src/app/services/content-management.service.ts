@@ -15,7 +15,8 @@ import {
   SiteBody,
   SiteEntry,
   PersonEntry,
-  GroupEntry
+  GroupEntry,
+  SiteMembershipBodyUpdate
 } from "@alfresco/js-api";
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -1190,6 +1191,35 @@ export class ContentManagementService {
       },
       err => {
         this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_GROUP_FAILED"));
+        this.handleError(err);
+      }
+    );
+  }
+
+  updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
+    this.contentApi.updateMemberLibrary(siteId, personId, body).subscribe(
+      result => {
+        this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_UPDATE"));
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.UPDATE_LIBRARY_MEMBER_FAILED")
+        );
+        this.handleError(err);
+      }
+    );
+  }
+  deleteMemberLibrary(siteId: string, personId: string) {
+    this.contentApi.deleteMemberLibrary(siteId, personId).subscribe(
+      result => {
+        this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_REMOVE"));
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.REMOVE_LIBRARY_MEMBER_FAILED")
+        );
         this.handleError(err);
       }
     );

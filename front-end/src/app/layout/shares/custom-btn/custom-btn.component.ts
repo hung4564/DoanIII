@@ -23,17 +23,12 @@ export class CustomBtnComponent implements OnInit {
     const { action } = this.context;
     this.action = action;
     if (this.action.rules && this.action.rules.enabled) {
-      console.log(
-        "TCL: CustomBtnComponent -> ngOnInit -> this.action.rules.enabled",
-        this.action.rules.enabled
-      );
       this.disabled = !this.extensions.checkRule(this.action.rules.enabled);
-      console.log("TCL: CustomBtnComponent -> ngOnInit -> this.disabled", this.disabled);
     }
   }
   runAction() {
     if (this.action && this.action.click) {
-      this.extensions.runActionById(this.action.click);
+      this.extensions.runActionById(this.action.click, this.context.row.node);
     }
   }
 }

@@ -1,12 +1,15 @@
 import { Action } from "@ngrx/store";
-import { SiteBody, SiteEntry } from "@alfresco/js-api";
+import { SiteBody, SiteEntry, Site, SiteMemberEntry } from "@alfresco/js-api";
 
 export enum LibraryActionTypes {
   Delete = "DELETE_LIBRARY",
   Create = "CREATE_LIBRARY",
   Navigate = "NAVIGATE_LIBRARY",
   Update = "UPDATE_LIBRARY",
-  Leave = "LEAVE_LIBRARY"
+  Leave = "LEAVE_LIBRARY",
+  AddMember = "",
+  UpdateMember = "UPDATE_LIBRARY_MEMBER",
+  DeleteMember = "REMOVE_LIBRARY_MEMBER"
 }
 
 export class DeleteLibraryAction implements Action {
@@ -35,4 +38,14 @@ export class LeaveLibraryAction implements Action {
   readonly type = LibraryActionTypes.Leave;
 
   constructor(public payload?: string) {}
+}
+export class UpdateMemberLibraryAction implements Action {
+  readonly type = LibraryActionTypes.UpdateMember;
+
+  constructor(public payload?: { personId: string; role: Site.RoleEnum }) {}
+}
+export class DeleteMemberLibraryAction implements Action {
+  readonly type = LibraryActionTypes.DeleteMember;
+
+  constructor(public payload?: SiteMemberEntry) {}
 }
