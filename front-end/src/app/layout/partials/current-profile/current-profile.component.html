@@ -1,5 +1,5 @@
 <div mat-dialog-content class="example-container">
-  <mat-tab-group [dynamicHeight]="false" [(selectedIndex)]="selectedIndex">
+  <mat-tab-group mat-align-tabs="center" [(selectedIndex)]="selectedIndex">
     <mat-tab [label]="'APP.PROFILE' | translate">
       <div class="overlay" *ngIf="isLoading; else main"><mat-spinner></mat-spinner></div>
       <ng-template #main>

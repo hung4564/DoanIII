@@ -2,7 +2,7 @@
   [logo]="logo$ | async"
   [redirectUrl]="'/'"
   [tooltip]="appName$ | async"
-  [color]="headerColor$ | async"
+  [color]="(headerColor$ | async) || 'primary'"
   [title]="appName$ | async"
   (clicked)="toggleMenu($event)"
 >

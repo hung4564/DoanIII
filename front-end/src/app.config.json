@@ -7,10 +7,10 @@
   "application": {
     "name": "Application",
     "version": "1.9.0",
-    "logo": "assets/images/alfresco-logo-flower.svg",
+    "logo": "assets/images/favicon.ico",
     "copyright": "APP.COPYRIGHT"
   },
-  "headerColor": "#2196F3",
+  "headerColor": "",
   "languagePicker": false,
   "pagination": {
     "size": 25,
