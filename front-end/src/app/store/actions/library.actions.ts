@@ -7,7 +7,7 @@ export enum LibraryActionTypes {
   Navigate = "NAVIGATE_LIBRARY",
   Update = "UPDATE_LIBRARY",
   Leave = "LEAVE_LIBRARY",
-  AddMember = "",
+  AddMember = "ADD_LIBRARY_MEMBER",
   UpdateMember = "UPDATE_LIBRARY_MEMBER",
   DeleteMember = "REMOVE_LIBRARY_MEMBER"
 }
@@ -36,6 +36,11 @@ export class UpdateLibraryAction implements Action {
 
 export class LeaveLibraryAction implements Action {
   readonly type = LibraryActionTypes.Leave;
+
+  constructor(public payload?: string) {}
+}
+export class AddMemberLibraryAction implements Action {
+  readonly type = LibraryActionTypes.AddMember;
 
   constructor(public payload?: string) {}
 }

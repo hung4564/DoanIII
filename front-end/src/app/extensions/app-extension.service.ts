@@ -10,7 +10,6 @@ import {
   reduceSeparators,
   sortByOrder,
   ContentActionType,
-  RuleContext,
   SelectionState,
   NavigationState,
   ProfileState,
@@ -22,19 +21,21 @@ import {
 } from "@alfresco/adf-extensions";
 import { Observable, BehaviorSubject } from "rxjs";
 import { Store } from "@ngrx/store";
-import { AppConfigService, AuthenticationService, DataColumn } from "@alfresco/adf-core";
+import { AppConfigService, AuthenticationService } from "@alfresco/adf-core";
 import { RepositoryInfo, NodeEntry } from "@alfresco/js-api";
 import { NodePermissionService } from "app/services/node-permission.service";
 import { getRuleContext } from "app/store/selectors/app.selector";
 import { MatIconRegistry } from "@angular/material";
 import { DomSanitizer } from "@angular/platform-browser";
+import { CustomRuleContext } from "app/model/custom-rule-context.model";
 export interface ViewerRules {
   canPreview?: string;
 }
+
 @Injectable({
   providedIn: "root"
 })
-export class AppExtensionService implements RuleContext {
+export class AppExtensionService implements CustomRuleContext {
   documentListPresets: {
     files: Array<DocumentListPresetRef>;
     libraries: Array<DocumentListPresetRef>;

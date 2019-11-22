@@ -30,14 +30,14 @@ export class ChangeLibraryRoleComponent implements OnInit {
   ngOnInit() {
     const { action } = this.context;
     this.data = <SiteMemberEntry>(<unknown>this.context.row.node);
-    this.store.select(getUserProfile).subscribe(profile => {
-      this.disabled = this.data.entry.id == profile.id;
-    });
     this.roleSelected = this.context.row.getValue(this.context.col.key);
     this.action = action;
-    if (this.action.rules && this.action.rules.enabled) {
-      this.disabled = this.disabled && !this.extensions.checkRule(this.action.rules.enabled);
-    }
+    this.store.select(getUserProfile).subscribe(profile => {
+      this.disabled = this.data.entry.id == profile.id;
+      if (this.action.rules && this.action.rules.enabled) {
+        this.disabled = this.disabled || !this.extensions.checkRule(this.action.rules.enabled);
+      }
+    });
   }
   runAction(data?: any) {
     if (this.action && this.action.click) {

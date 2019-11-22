@@ -1,13 +1,8 @@
 <ng-container *ngIf="nodeId">
   <adf-viewer
-    [ngClass]="{
-      'right_side--hide': !showRightSide
-    }"
     [nodeId]="nodeId"
     [allowNavigate]="navigateMultiple"
-    [allowRightSidebar]="true"
     [allowPrint]="false"
-    [showRightSidebar]="true"
     [allowDownload]="false"
     [allowFullScreen]="false"
     [canNavigateBefore]="previousNodeId"
@@ -17,10 +12,6 @@
     (navigateBefore)="onNavigateBefore()"
     (navigateNext)="onNavigateNext()"
   >
-    <adf-viewer-sidebar *ngIf="infoDrawerOpened$ | async">
-      <app-info-drawer [node]="selection.file"></app-info-drawer>
-    </adf-viewer-sidebar>
-
     <adf-viewer-open-with *ngIf="openWith.length">
       <ng-container *ngFor="let action of openWith; trackBy: trackByActionId">
         <app-toolbar-menu-item [actionRef]="action"></app-toolbar-menu-item>

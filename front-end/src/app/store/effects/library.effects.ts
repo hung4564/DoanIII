@@ -12,7 +12,8 @@ import {
   NavigateLibraryAction,
   UpdateLibraryAction,
   UpdateMemberLibraryAction,
-  DeleteMemberLibraryAction
+  DeleteMemberLibraryAction,
+  AddMemberLibraryAction
 } from "../actions/library.actions";
 import {
   getAppSelection,
@@ -116,6 +117,17 @@ export class LibraryEffects {
             this.content.updateLibrary(id, siteBody);
           }
         });
+    })
+  );
+  @Effect({ dispatch: false })
+  addeMemberLibrary$ = this.actions$.pipe(
+    ofType<AddMemberLibraryAction>(LibraryActionTypes.AddMember),
+    map(action => {
+      this.store.select(getNavigationState).subscribe(navigation => {
+        if (navigation.currentSite) {
+          this.content.addMemberLibrary(navigation.currentSite.id);
+        }
+      });
     })
   );
   @Effect({ dispatch: false })

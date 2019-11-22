@@ -16,7 +16,9 @@ import {
   SiteEntry,
   PersonEntry,
   GroupEntry,
-  SiteMembershipBodyUpdate
+  SiteMembershipBodyUpdate,
+  SiteMembershipBodyCreate,
+  Site
 } from "@alfresco/js-api";
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -47,6 +49,7 @@ import { getSharedUrl, getAppSelection } from "app/store/selectors/app.selector"
 import { NavigateToParentFolder, NavigateRouteAction } from "app/store/actions/router.actions";
 import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
 import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
+import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;
@@ -1195,7 +1198,29 @@ export class ContentManagementService {
       }
     );
   }
-
+  addMemberLibrary(siteId: string) {
+    const dialog = this.dialogRef.open(PersonSearchComponent, {
+      data: {},
+      width: "400px"
+    });
+    dialog.afterClosed().subscribe(person => {
+      if (person) {
+        const body: SiteMembershipBodyCreate = { id: person.id, role: Site.RoleEnum.SiteConsumer };
+        this.contentApi.addMemberLibrary(siteId, body).subscribe(
+          result => {
+            this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_ADD"));
+            this.store.dispatch(new ReloadDocumentListAction());
+          },
+          err => {
+            this.store.dispatch(
+              new SnackbarErrorAction("APP.MESSAGES.ERRORS.ADD_LIBRARY_MEMBER_FAILED")
+            );
+            this.handleError(err);
+          }
+        );
+      }
+    });
+  }
   updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
     this.contentApi.updateMemberLibrary(siteId, personId, body).subscribe(
       result => {

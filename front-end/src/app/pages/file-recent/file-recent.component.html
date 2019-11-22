@@ -62,6 +62,4 @@
   </data-columns>
 </adf-document-list>
 <adf-pagination appPagination [target]="documentList"> </adf-pagination>
-<mat-sidenav *ngIf="infoDrawerOpened$ | async" [mode]="'over'" [opened]="infoDrawerOpened$ | async">
-  <app-info-drawer [node]="selection.last"></app-info-drawer>
-</mat-sidenav>
+

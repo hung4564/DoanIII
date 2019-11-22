@@ -1,15 +1,15 @@
-import { Component, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
-import { MinimalNodeEntity, MinimalNodeEntryEntity, SiteEntry } from '@alfresco/js-api';
-import { SidebarTabRef } from '@alfresco/adf-extensions';
-import { Store } from '@ngrx/store';
-import { ContentApiService } from 'app/services/content-api.service';
-import { SetInfoDrawerStateAction } from 'app/store/actions/app.action';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
+import { Component, Input, OnChanges, OnInit, OnDestroy } from "@angular/core";
+import { MinimalNodeEntity, MinimalNodeEntryEntity, SiteEntry } from "@alfresco/js-api";
+import { SidebarTabRef } from "@alfresco/adf-extensions";
+import { Store } from "@ngrx/store";
+import { ContentApiService } from "app/services/content-api.service";
+import { SetInfoDrawerStateAction } from "app/store/actions/app.action";
+import { AppExtensionService } from "app/extensions/app-extension.service";
 
 @Component({
-  selector: 'app-info-drawer',
-  styleUrls: ['./info-drawer.component.scss'],
-  templateUrl: './info-drawer.component.html'
+  selector: "app-info-drawer",
+  styleUrls: ["./info-drawer.component.scss"],
+  templateUrl: "./info-drawer.component.html"
 })
 export class InfoDrawerComponent implements OnChanges, OnInit, OnDestroy {
   @Input()
@@ -37,7 +37,7 @@ export class InfoDrawerComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges() {
     if (this.node) {
-      if (this.node['isLibrary']) {
+      if (this.node["isLibrary"]) {
         return this.setDisplayNode(this.node);
       }
 
@@ -68,5 +68,8 @@ export class InfoDrawerComponent implements OnChanges, OnInit, OnDestroy {
 
   private setDisplayNode(node: any) {
     this.displayNode = node;
+  }
+  close() {
+    this.store.dispatch(new SetInfoDrawerStateAction(false));
   }
 }

@@ -3,6 +3,9 @@
 </div>
 <ng-container *ngIf="!isLoading && !!displayNode">
   <adf-info-drawer [title]="'APP.INFO_DRAWER.TITLE'">
+    <div info-drawer-buttons>
+      <mat-icon (click)="close()">clear</mat-icon>
+    </div>
     <adf-info-drawer-tab *ngFor="let tab of tabs" [icon]="tab.icon" [label]="tab.title">
       <adf-dynamic-tab
         [node]="displayNode"

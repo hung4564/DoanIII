@@ -129,7 +129,10 @@ export const appRoutes: Routes = [
                 path: "members",
                 component: LibrariesMemberComponent,
                 data: {
-                  useParent: true
+                  useParent: true,
+                  disableShowInfoFile: true,
+                  disableShowCopyNode: true,
+                  disableShowfavoriteNode: true
                 }
               },
               {

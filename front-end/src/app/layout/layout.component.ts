@@ -1,29 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   SidenavLayoutComponent,
   UserPreferencesService,
   AppConfigService
-} from '@alfresco/adf-core';
-import { Subject, Observable } from 'rxjs';
-import { Directionality } from '@angular/cdk/bidi';
-import { Store } from '@ngrx/store';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { map, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
-import { ResetSelectionAction } from 'app/store/actions/app.action';
+} from "@alfresco/adf-core";
+import { Subject, Observable } from "rxjs";
+import { Directionality } from "@angular/cdk/bidi";
+import { Store } from "@ngrx/store";
+import { Router, NavigationEnd, NavigationStart } from "@angular/router";
+import { BreakpointObserver } from "@angular/cdk/layout";
+import { map, withLatestFrom, filter, takeUntil } from "rxjs/operators";
+import { ResetSelectionAction } from "app/store/actions/app.action";
+import { SelectionState } from "@alfresco/adf-extensions";
+import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.selector";
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  selector: "app-layout",
+  templateUrl: "./layout.component.html",
+  styleUrls: ["./layout.component.scss"],
   host: {
-    class: 'app-layout'
+    class: "app-layout"
   }
 })
 export class LayoutComponent implements OnInit {
-  @ViewChild('layout')
+  @ViewChild("layout")
   layout: SidenavLayoutComponent;
 
+  selection: SelectionState;
+  infoDrawerOpened$: Observable<boolean>;
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   isSmallScreen$: Observable<boolean>;
 
@@ -32,9 +36,9 @@ export class LayoutComponent implements OnInit {
   hideSidenav = false;
   direction: Directionality;
 
-  pageHeading = '';
-  private minimizeConditions: string[] = ['search'];
-  private hideConditions: string[] = ['preview'];
+  pageHeading = "";
+  private minimizeConditions: string[] = ["search"];
+  private hideConditions: string[] = ["preview"];
 
   constructor(
     protected store: Store<any>,
@@ -45,11 +49,17 @@ export class LayoutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userPreferenceService.paginationSize = this.appConfigService.get('pagination.size');
+    this.infoDrawerOpened$ = this.store.select(isInfoDrawerOpened);
+    this.userPreferenceService.paginationSize = this.appConfigService.get("pagination.size");
     this.isSmallScreen$ = this.breakpointObserver
-      .observe(['(max-width: 600px)'])
+      .observe(["(max-width: 600px)"])
       .pipe(map(result => result.matches));
-
+    this.store
+      .select(getAppSelection)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(selection => {
+        this.selection = selection;
+      });
     this.hideSidenav = this.hideConditions.some(el =>
       this.router.routerState.snapshot.url.includes(el)
     );
@@ -125,16 +135,16 @@ export class LayoutComponent implements OnInit {
   }
 
   onExpanded(state: boolean) {
-    if (!this.minimizeSidenav && this.appConfigService.get('sideNav.preserveState')) {
-      this.userPreferenceService.set('expandedSidenav', state);
+    if (!this.minimizeSidenav && this.appConfigService.get("sideNav.preserveState")) {
+      this.userPreferenceService.set("expandedSidenav", state);
     }
   }
 
   private getSidenavState(): boolean {
-    const expand = this.appConfigService.get<boolean>('sideNav.expandedSidenav', true);
-    const preserveState = this.appConfigService.get<boolean>('sideNav.preserveState', true);
+    const expand = this.appConfigService.get<boolean>("sideNav.expandedSidenav", true);
+    const preserveState = this.appConfigService.get<boolean>("sideNav.preserveState", true);
     if (preserveState) {
-      return this.userPreferenceService.get('expandedSidenav', expand.toString()) === 'true';
+      return this.userPreferenceService.get("expandedSidenav", expand.toString()) === "true";
     }
 
     return expand;

@@ -23,13 +23,13 @@ import { ChangeLibraryRoleComponent } from "./changeLibraryRole/changeLibraryRol
 export function components() {
   return [
     CreateMenuComponent,
-    PersonSearchComponent,
     AppNodeVersionFormComponent,
     PermissionsManagerComponent
   ];
 }
 export function dialogcomponents() {
   return [
+    PersonSearchComponent,
     ChangeLibraryRoleComponent,
     CustomBtnComponent,
     NodeVersionsDialogComponent,

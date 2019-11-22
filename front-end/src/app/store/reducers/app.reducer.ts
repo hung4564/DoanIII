@@ -111,6 +111,7 @@ function updateUser(state: AppState, action: SetUserProfileAction): AppState {
 function updateCurrentUrl(state: AppState, action: SetCurrentUrlAction) {
   const newState = Object.assign({}, state);
   newState.navigation.url = action.payload;
+  newState.navigation.data = action.data;
   return newState;
 }
 

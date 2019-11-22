@@ -1,6 +1,7 @@
 import { Action } from "@ngrx/store";
 import { Node, Person, Group, RepositoryInfo, Site } from "@alfresco/js-api";
 import { AppState } from "../states/app.state";
+import { DataNavigation } from "app/model/custom-rule-context.model";
 
 export enum AppActionTypes {
   SetInitialState = "SET_INITIAL_STATE",
@@ -54,7 +55,7 @@ export class ReloadDocumentListAction implements Action {
 export class SetCurrentUrlAction implements Action {
   readonly type = AppActionTypes.SetCurrentUrl;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string, public data?: DataNavigation) {}
 }
 
 export class SetRepositoryInfoAction implements Action {

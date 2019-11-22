@@ -60,9 +60,12 @@
         "CREATE_LIBRARY": "Create Library",
         "CREATE_PERSON": "Create Person",
         "CREATE_GROUP": "Create Group",
-        "CREATE_TASK": "Create Task"
+        "CREATE_TASK": "Create Task",
+        "ADD_LIBRARY_MEMBER": "Add library member"
       },
       "TOOLTIPS": {
+        "ADD_LIBRARY_MEMBER": "Add library member",
+        "ADD_LIBRARY_MEMBER_NOT_ALLOWED": "permission to add peson",
         "REMOVE_SITE_MEMBER": "Remove library member",
         "REMOVE_SITE_MEMBER_NOT_ALLOWED": "No permission to remove peson",
         "UPDATE_SITE_MEMBER": "Update library member",
@@ -504,6 +507,7 @@
       "LIBRARY_UPDATE_ERROR": "There was an error updating library properties"
     },
     "SUCCESS": {
+      "LIBRARY_MEMBER_ADD": "Add ibrary member success",
       "LIBRARY_UPDATED": "Library properties updated",
       "LIBRARY_MEMBER_UPDATE": "Library member properties updated",
       "LIBRARY_MEMBER_REMOVE": "Library member removed"

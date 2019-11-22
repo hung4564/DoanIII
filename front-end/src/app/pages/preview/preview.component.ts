@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, HostListener } from "@angular/core";
 import {
   ActivatedRoute,
   Router,
@@ -6,38 +6,39 @@ import {
   UrlSegmentGroup,
   UrlSegment,
   PRIMARY_OUTLET
-} from '@angular/router';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+} from "@angular/router";
+import { debounceTime, map, takeUntil } from "rxjs/operators";
 import {
   UserPreferencesService,
   ObjectUtils,
   UploadService,
   AlfrescoApiService
-} from '@alfresco/adf-core';
-import { Store } from '@ngrx/store';
-import { PageComponent } from '../page.component';
-import { ContentManagementService } from '../../services/content-management.service';
-import { ContentActionRef, ViewerExtensionRef } from '@alfresco/adf-extensions';
-import { SearchRequest } from '@alfresco/js-api';
-import { from } from 'rxjs';
-import { Actions, ofType } from '@ngrx/effects';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { ContentApiService } from 'app/services/content-api.service';
-import { ClosePreviewAction, ViewerActionTypes } from 'app/store/actions/viewer.actions';
-import { SetSelectedNodesAction } from 'app/store/actions/node.action';
+} from "@alfresco/adf-core";
+import { Store } from "@ngrx/store";
+import { PageComponent } from "../page.component";
+import { ContentManagementService } from "../../services/content-management.service";
+import { ContentActionRef, ViewerExtensionRef, SelectionState } from "@alfresco/adf-extensions";
+import { SearchRequest } from "@alfresco/js-api";
+import { from, Observable } from "rxjs";
+import { Actions, ofType } from "@ngrx/effects";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { ContentApiService } from "app/services/content-api.service";
+import { ClosePreviewAction, ViewerActionTypes } from "app/store/actions/viewer.actions";
+import { SetSelectedNodesAction } from "app/store/actions/node.action";
+import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.selector";
 
 @Component({
-  selector: 'app-preview',
-  templateUrl: 'preview.component.html',
-  styleUrls: ['preview.component.scss'],
+  selector: "app-preview",
+  templateUrl: "preview.component.html",
+  styleUrls: ["preview.component.scss"],
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-preview' }
+  host: { class: "app-preview" }
 })
 export class PreviewComponent extends PageComponent implements OnInit, OnDestroy {
   previewLocation: string = null;
-  routesSkipNavigation = ['shared', 'recent-files', 'favorites'];
+  routesSkipNavigation = ["shared", "recent-files", "favorites"];
   navigateSource: string = null;
-  navigationSources = ['favorites', 'libraries', 'personal-files', 'recent-files', 'shared'];
+  navigationSources = ["favorites", "libraries", "personal-files", "recent-files", "shared"];
   folderId: string = null;
   nodeId: string = null;
   previousNodeId: string;
@@ -45,7 +46,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   navigateMultiple = false;
   openWith: Array<ContentActionRef> = [];
   contentExtensions: Array<ViewerExtensionRef> = [];
-  showRightSide = false;
+  viewerToolbarActions: Array<ContentActionRef> = [];
 
   recentFileFilters = [
     'TYPE:"content"',
@@ -88,17 +89,15 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
 
   ngOnInit() {
     super.ngOnInit();
-
-    from(this.infoDrawerOpened$)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(val => {
-        this.showRightSide = val;
-      });
-
     this.previewLocation = this.router.url
-      .substr(0, this.router.url.indexOf('/', 1))
-      .replace(/\//g, '');
-
+      .substr(0, this.router.url.indexOf("/", 1))
+      .replace(/\//g, "");
+    this.store
+      .select(getAppSelection)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(selection => {
+        this.viewerToolbarActions = this.extensions.getViewerToolbarActions();
+      });
     const routeData = this.route.snapshot.data;
 
     if (routeData.navigateMultiple) {
@@ -171,7 +170,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     }
   }
 
-  @HostListener('document:keydown', ['$event'])
+  @HostListener("document:keydown", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent) {
     const key = event.keyCode;
     const rightArrow = 39;
@@ -233,7 +232,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     }
 
     if (nodeId) {
-      route.push('preview', nodeId);
+      route.push("preview", nodeId);
     }
 
     return route;
@@ -280,14 +279,14 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
    * @param folderId Containing folder node identifier for 'personal-files' and 'libraries' sources.
    */
   async getFileIds(source: string, folderId?: string): Promise<string[]> {
-    if ((source === 'personal-files' || source === 'libraries') && folderId) {
-      const sortKey = this.preferences.get('personal-files.sorting.key') || 'modifiedAt';
-      const sortDirection = this.preferences.get('personal-files.sorting.direction') || 'desc';
+    if ((source === "personal-files" || source === "libraries") && folderId) {
+      const sortKey = this.preferences.get("personal-files.sorting.key") || "modifiedAt";
+      const sortDirection = this.preferences.get("personal-files.sorting.direction") || "desc";
       const nodes = await this.contentApi
         .getNodeChildren(folderId, {
           // orderBy: `${sortKey} ${sortDirection}`,
-          fields: ['id', this.getRootField(sortKey)],
-          where: '(isFile=true)'
+          fields: ["id", this.getRootField(sortKey)],
+          where: "(isFile=true)"
         })
         .toPromise();
 
@@ -297,29 +296,29 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
       return entries.map(obj => obj.id);
     }
 
-    if (source === 'favorites') {
+    if (source === "favorites") {
       const nodes = await this.contentApi
-        .getFavorites('-me-', {
-          where: '(EXISTS(target/file))',
-          fields: ['target']
+        .getFavorites("-me-", {
+          where: "(EXISTS(target/file))",
+          fields: ["target"]
         })
         .toPromise();
 
-      const sortKey = this.preferences.get('favorites.sorting.key') || 'modifiedAt';
-      const sortDirection = this.preferences.get('favorites.sorting.direction') || 'desc';
+      const sortKey = this.preferences.get("favorites.sorting.key") || "modifiedAt";
+      const sortDirection = this.preferences.get("favorites.sorting.direction") || "desc";
       const files = nodes.list.entries.map(obj => obj.entry.target.file);
       this.sort(files, sortKey, sortDirection);
 
       return files.map(f => f.id);
     }
 
-    if (source === 'shared') {
-      const sortingKey = this.preferences.get('shared.sorting.key') || 'modifiedAt';
-      const sortingDirection = this.preferences.get('shared.sorting.direction') || 'desc';
+    if (source === "shared") {
+      const sortingKey = this.preferences.get("shared.sorting.key") || "modifiedAt";
+      const sortingDirection = this.preferences.get("shared.sorting.direction") || "desc";
 
       const nodes = await this.contentApi
         .findSharedLinks({
-          fields: ['nodeId', this.getRootField(sortingKey)]
+          fields: ["nodeId", this.getRootField(sortingKey)]
         })
         .toPromise();
 
@@ -329,30 +328,30 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
       return entries.map(obj => obj.nodeId);
     }
 
-    if (source === 'recent-files') {
-      const person = await this.contentApi.getPerson('-me-').toPromise();
+    if (source === "recent-files") {
+      const person = await this.contentApi.getPerson("-me-").toPromise();
       const username = person.entry.id;
-      const sortingKey = this.preferences.get('recent-files.sorting.key') || 'modifiedAt';
-      const sortingDirection = this.preferences.get('recent-files.sorting.direction') || 'desc';
+      const sortingKey = this.preferences.get("recent-files.sorting.key") || "modifiedAt";
+      const sortingDirection = this.preferences.get("recent-files.sorting.direction") || "desc";
 
       const query: SearchRequest = {
         query: {
-          query: '*',
-          language: 'afts'
+          query: "*",
+          language: "afts"
         },
         filterQueries: [
           { query: `cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]` },
           { query: `cm:modifier:${username} OR cm:creator:${username}` },
           {
-            query: this.recentFileFilters.join(' AND ')
+            query: this.recentFileFilters.join(" AND ")
           }
         ],
-        fields: ['id', this.getRootField(sortingKey)],
-        include: ['path', 'properties', 'allowableOperations'],
+        fields: ["id", this.getRootField(sortingKey)],
+        include: ["path", "properties", "allowableOperations"],
         sort: [
           {
-            type: 'FIELD',
-            field: 'cm:modified',
+            type: "FIELD",
+            field: "cm:modified",
             ascending: false
           }
         ]
@@ -371,7 +370,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   private sort(items: any[], key: string, direction: string) {
     const options: Intl.CollatorOptions = {};
 
-    if (key.includes('sizeInBytes') || key === 'name') {
+    if (key.includes("sizeInBytes") || key === "name") {
       options.numeric = true;
     }
 
@@ -380,17 +379,17 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
       if (left) {
         left = left instanceof Date ? left.valueOf().toString() : left.toString();
       } else {
-        left = '';
+        left = "";
       }
 
       let right = ObjectUtils.getValue(b, key);
       if (right) {
         right = right instanceof Date ? right.valueOf().toString() : right.toString();
       } else {
-        right = '';
+        right = "";
       }
 
-      return direction === 'asc'
+      return direction === "asc"
         ? left.localeCompare(right, undefined, options)
         : right.localeCompare(left, undefined, options);
     });
@@ -403,7 +402,7 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
    */
   getRootField(path: string) {
     if (path) {
-      return path.split('.')[0];
+      return path.split(".")[0];
     }
     return path;
   }

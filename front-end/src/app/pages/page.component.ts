@@ -23,14 +23,11 @@ export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   canUpdateNode = false;
   canUpload = false;
-  infoDrawerOpened$: Observable<boolean>;
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
   node: MinimalNodeEntryEntity;
   protected subscriptions: Subscription[] = [];
   actions: Array<ContentActionRef> = [];
-  viewerToolbarActions: Array<ContentActionRef> = [];
-  selection: SelectionState;
   pagination: PaginationModel = new PaginationModel();
   isSmallScreen = false;
   constructor(
@@ -65,16 +62,11 @@ export class PageComponent implements OnInit, OnDestroy {
     this.store.select(isSmallScreenSelector).subscribe(result => {
       this.isSmallScreen = result;
     });
-    this.infoDrawerOpened$ = this.store.select(isInfoDrawerOpened);
     this.store
       .select(getAppSelection)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(selection => {
-        this.selection = selection;
         this.actions = this.extensions.getAllowedToolbarActions();
-        this.viewerToolbarActions = this.extensions.getViewerToolbarActions();
-        this.canUpdateNode =
-          this.selection.count === 1 && this.content.canUpdateNode(selection.first);
       });
     this.store
       .select(getCurrentFolder)

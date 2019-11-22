@@ -1,5 +1,6 @@
-import { SelectionState, ProfileState, NavigationState } from "@alfresco/adf-extensions";
-import { RepositoryInfo, Site } from "@alfresco/js-api";
+import { SelectionState, ProfileState } from "@alfresco/adf-extensions";
+import { RepositoryInfo } from "@alfresco/js-api";
+import { CustomNavigationState } from "app/model/custom-rule-context.model";
 
 export interface AppState {
   appName: string;
@@ -19,8 +20,4 @@ export interface AppState {
 
 export interface AppStore {
   app: AppState;
-}
-
-export interface CustomNavigationState extends NavigationState {
-  currentSite?: Site;
 }

@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
 
         this.pageHeading = data.title || "";
         if (!data.useParent) pageTitle.setTitle(data.title || "");
-        this.store.dispatch(new SetCurrentUrlAction(router.url));
+        this.store.dispatch(new SetCurrentUrlAction(router.url, data || { disableShowInfoFile: true }));
       });
 
     this.uploadService.fileUploadError.subscribe(error => this.onFileUploadedError(error));

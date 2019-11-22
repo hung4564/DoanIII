@@ -21,7 +21,8 @@ import {
   PersonBodyUpdate,
   GroupBodyCreate,
   GroupBodyUpdate,
-  SiteMembershipBodyUpdate
+  SiteMembershipBodyUpdate,
+  SiteMembershipBodyCreate
 } from "@alfresco/js-api";
 import { map } from "rxjs/operators";
 import { TaskPaging, TaskEntry, ProcessDefinitionPaging } from "app/model";
@@ -217,6 +218,9 @@ export class ContentApiService {
 
   updateLibrary(siteId: string, siteBody: SiteBody): Observable<SiteEntry> {
     return from(this.api.sitesApi.updateSite(siteId, siteBody));
+  }
+  addMemberLibrary(siteId: string, body: SiteMembershipBodyCreate) {
+    return from(this.api.sitesApi.addSiteMember(siteId, body));
   }
   updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
     return from(this.api.sitesApi.updateSiteMember(siteId, personId, body));

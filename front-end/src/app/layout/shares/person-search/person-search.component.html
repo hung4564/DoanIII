@@ -1,4 +1,4 @@
-<div style="width: 100%;">
+<mat-dialog-content class="example-container">
   <mat-form-field style="width: 100%;">
     <input
       matInput
@@ -7,7 +7,7 @@
       [matAutocomplete]="auto"
       [formControl]="searchPersonsCtrl"
     />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngIf="isLoading" class="is-loading" disabled>Loading...</mat-option>
       <ng-container *ngIf="!isLoading">
         <mat-option *ngIf="filteredPersons.length == 0" disabled>
@@ -25,4 +25,8 @@
       </ng-container>
     </mat-autocomplete>
   </mat-form-field>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <button mat-button [disabled]="!personSelect" (click)="submit()">Submit</button>
+</mat-dialog-actions>

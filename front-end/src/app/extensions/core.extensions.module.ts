@@ -151,7 +151,12 @@ export class CoreExtensionsModule {
       "app.navigation.isTask": rules.isTask,
       "app.navigation.isNotTask": rules.isNotTask,
       "repository.canRemoveLibraryMember": rules.canRemoveLibraryMember,
-      "repository.canUpdateLibraryMember": rules.canUpadteLibraryMember
+      "repository.canUpdateLibraryMember": rules.canUpadteLibraryMember,
+      "app.navigation.isShowInfo": rules.isShowInfo,
+      "app.navigation.isDisableShowByType": rules.isDisableShowByType,
+      "app.navigation.isLibraryMember": rules.isLibraryMember,
+      "app.navigation.isNotLibraryMember": rules.isNotLibraryMember,
+      "repository.canAddLibraryMember": rules.canAddLibraryMember
     });
   }
 }

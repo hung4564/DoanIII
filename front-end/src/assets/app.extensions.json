@@ -19,7 +19,12 @@
         { "type": "rule", "value": "app.navigation.isNotSearchResults" },
         { "type": "rule", "value": "app.navigation.isNotFavorites" },
         { "type": "rule", "value": "app.navigation.isNotPeople" },
-        { "type": "rule", "value": "app.navigation.isNotGroup" }
+        { "type": "rule", "value": "app.navigation.isNotGroup" },
+        {
+          "type": "rule",
+          "value": "app.navigation.isDisableShowByType",
+          "parameters": [{ "type": "type", "value": "disableShowfavoriteNode" }]
+        }
       ]
     },
     {
@@ -54,9 +59,7 @@
     {
       "id": "app.create.task.canCreate",
       "type": "core.every",
-      "parameters": [
-        { "type": "rule", "value": "app.navigation.isTask" }
-      ]
+      "parameters": [{ "type": "rule", "value": "app.navigation.isTask" }]
     }
   ],
   "features": {
@@ -173,6 +176,20 @@
         "rules": {
           "visible": "app.navigation.isLibraries",
           "enabled": "app.navigation.isLibraries"
+        }
+      },
+      {
+        "id": "app.create.addLibraryMember",
+        "order": 700,
+        "title": "APP.NEW_MENU.MENU_ITEMS.ADD_LIBRARY_MEMBER",
+        "description": "APP.NEW_MENU.TOOLTIPS.ADD_LIBRARY_MEMBER",
+        "icon": "person_add",
+        "actions": {
+          "click": "ADD_LIBRARY_MEMBER"
+        },
+        "rules": {
+          "visible": "repository.canAddLibraryMember",
+          "enabled": "repository.canAddLibraryMember"
         }
       }
     ],
