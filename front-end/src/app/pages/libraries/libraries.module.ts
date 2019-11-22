@@ -9,6 +9,7 @@ import { RouterModule } from "@angular/router";
 import { LibrariesDocumentComponent } from "./libraries-document/libraries-document.component";
 import { LibrariesMemberComponent } from "./libraries-member/libraries-member.component";
 import { LibraryService } from "./library.service";
+import { FavoriteLibrariesComponent } from "./favorite-libraries/favorite-libraries.component";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { LibraryService } from "./library.service";
     ContentModule.forChild()
   ],
   declarations: [
+    FavoriteLibrariesComponent,
     LibrariesComponent,
     LibrariesDetailComponent,
     LibrariesDocumentComponent,

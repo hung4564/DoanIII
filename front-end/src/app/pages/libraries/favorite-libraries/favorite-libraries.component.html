@@ -1,31 +1,28 @@
 <adf-toolbar>
-  <adf-toolbar-title>
-    <adf-breadcrumb root="APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.TITLE"> </adf-breadcrumb>
-  </adf-toolbar-title>
-  <div class="adf-toolbar--spacer"></div>
-  <app-create-menu [expanded]="false"></app-create-menu>
+  <adf-breadcrumb root="APP.BROWSE.LIBRARIES.MENU.FAVORITE_LIBRARIES.TITLE"> </adf-breadcrumb>
   <ng-container *ngFor="let entry of actions; trackBy: trackByActionId">
     <app-toolbar-action [actionRef]="entry"></app-toolbar-action>
   </ng-container>
 </adf-toolbar>
-
 <adf-document-list
   #documentList
-  appDocumentList
-  appContextActions
-  [allowDropFiles]="true"
+  acaDocumentList
+  acaContextActions
+  [node]="list"
+  [loading]="isLoading"
+  [loading]="dataIsLoading"
+  selectionMode="single"
   [navigate]="false"
-  currentFolderId="-mysites-"
-  [stickyHeader]="true"
-  [imageResolver]="imageResolver"
+  [sorting]="['title', 'asc']"
   (node-dblclick)="navigateTo($event.detail?.node)"
+  [imageResolver]="imageResolver"
   (name-click)="navigateTo($event.detail?.node)"
 >
   <adf-custom-empty-content-template>
     <adf-empty-content
       icon="library_books"
-      [title]="'APP.BROWSE.LIBRARIES.EMPTY_STATE.FILE_LIBRARIES.TITLE'"
-      subtitle="APP.BROWSE.LIBRARIES.EMPTY_STATE.FILE_LIBRARIES.TEXT"
+      [title]="'APP.BROWSE.LIBRARIES.EMPTY_STATE.FAVORITE_LIBRARIES.TITLE'"
+      subtitle="APP.BROWSE.LIBRARIES.EMPTY_STATE.FAVORITE_LIBRARIES.TEXT"
     >
     </adf-empty-content>
   </adf-custom-empty-content-template>
@@ -61,4 +58,9 @@
     </ng-container>
   </data-columns>
 </adf-document-list>
-<adf-pagination appPagination [target]="documentList"> </adf-pagination>
+
+<adf-pagination
+  [pagination]="pagination"
+  (change)="onChange($event)"
+>
+</adf-pagination>

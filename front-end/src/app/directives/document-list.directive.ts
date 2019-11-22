@@ -17,10 +17,6 @@ export class DocumentListDirective {
   private isGroup = false;
   onDestroy$ = new Subject<boolean>();
 
-  get sortingPreferenceKey(): string {
-    return this.route.snapshot.data.sortingPreferenceKey;
-  }
-
   constructor(
     private store: Store<any>,
     private content: ContentManagementService,
@@ -40,20 +36,6 @@ export class DocumentListDirective {
       this.router.url.startsWith('/search-libraries');
     this.isPeople = this.router.url.startsWith('/people');
     this.isGroup = this.router.url.startsWith('/groups');
-    if (this.sortingPreferenceKey) {
-      const current = this.documentList.sorting;
-
-      const key = this.preferences.get(`${this.sortingPreferenceKey}.sorting.key`, current[0]);
-      const direction = this.preferences.get(
-        `${this.sortingPreferenceKey}.sorting.direction`,
-        current[1]
-      );
-
-      this.documentList.sorting = [key, direction];
-      // TODO: bug in ADF, the `sorting` binding is not updated when changed from code
-      this.documentList.data.setSorting({ key, direction });
-    }
-
     this.documentList.ready.pipe(takeUntil(this.onDestroy$)).subscribe(() => this.onReady());
 
     this.content.reload.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
@@ -67,17 +49,6 @@ export class DocumentListDirective {
   ngOnDestroy() {
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
-  }
-
-  @HostListener('sorting-changed', ['$event'])
-  onSortingChanged(event: CustomEvent) {
-    if (this.sortingPreferenceKey) {
-      this.preferences.set(`${this.sortingPreferenceKey}.sorting.key`, event.detail.key);
-      this.preferences.set(
-        `${this.sortingPreferenceKey}.sorting.direction`,
-        event.detail.direction
-      );
-    }
   }
 
   @HostListener('node-select', ['$event'])

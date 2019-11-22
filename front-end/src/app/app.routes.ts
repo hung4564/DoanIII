@@ -25,6 +25,7 @@ import { TaskCreateComponent } from "./pages/task/task-create/task-create.compon
 import { LibrariesDetailComponent } from "./pages/libraries/libraries-detail/libraries-detail.component";
 import { LibrariesDocumentComponent } from "./pages/libraries/libraries-document/libraries-document.component";
 import { LibrariesMemberComponent } from "./pages/libraries/libraries-member/libraries-member.component";
+import { FavoriteLibrariesComponent } from "./pages/libraries/favorite-libraries/favorite-libraries.component";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -169,6 +170,18 @@ export const appRoutes: Routes = [
             data: {
               title: "APP.PREVIEW.TITLE",
               navigateSource: "favorites"
+            }
+          }
+        ]
+      },
+      {
+        path: "favorite/libraries",
+        children: [
+          {
+            path: "",
+            component: FavoriteLibrariesComponent,
+            data: {
+              title: "APP.BROWSE.LIBRARIES.MENU.FAVORITE_LIBRARIES.TITLE"
             }
           }
         ]
