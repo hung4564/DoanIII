@@ -610,7 +610,7 @@
         "icon": "delete",
         "order": 202,
         "actions": {
-          "click": "DELETE_PEOPLE"
+          "click": "DELETE_PERSON"
         },
         "rules": {
           "visible": "canShowPeople"

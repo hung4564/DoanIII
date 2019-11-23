@@ -1,15 +1,15 @@
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ContentManagementService } from 'app/services/content-management.service';
+import { Effect, Actions, ofType } from "@ngrx/effects";
+import { Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { ContentManagementService } from "app/services/content-management.service";
 import {
   EditPersonAction,
   PersonActionTypes,
   DeletePersonAction,
   CreatePersonAction
-} from '../actions/person.action';
-import { map, take } from 'rxjs/operators';
-import { getAppSelection } from '../selectors/app.selector';
+} from "../actions/person.action";
+import { map, take } from "rxjs/operators";
+import { getAppSelection } from "../selectors/app.selector";
 
 @Injectable()
 export class PersonEffects {
@@ -37,13 +37,14 @@ export class PersonEffects {
           .select(getAppSelection)
           .pipe(take(1))
           .subscribe(selection => {
-            if (selection && selection.first && selection.first['isPeople']) {
+            if (selection && selection.first && selection.first["isPeople"]) {
               this.content.editPerson(<any>selection.first);
             }
           });
       }
     })
   );
+  @Effect({ dispatch: false })
   deletePeople$ = this.actions$.pipe(
     ofType<DeletePersonAction>(PersonActionTypes.Delete),
     map(action => {
@@ -54,7 +55,7 @@ export class PersonEffects {
           .select(getAppSelection)
           .pipe(take(1))
           .subscribe(selection => {
-            if (selection && selection.first && selection.first['isPeople']) {
+            if (selection && selection.first && selection.first["isPeople"]) {
               this.content.deletePerson(selection.first.entry.id);
             }
           });
@@ -62,3 +63,4 @@ export class PersonEffects {
     })
   );
 }
+

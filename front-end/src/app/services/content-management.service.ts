@@ -36,7 +36,10 @@ import { NodePermissionsDialogComponent } from "app/layout/shares/permission-dia
 import { NodeVersionsDialogComponent } from "app/layout/shares/node-versions/node-versions.dialog";
 import { NodeVersionUploadDialogComponent } from "app/layout/shares/node-version-upload/node-version-upload.dialog";
 import { AppStore } from "app/store/states/app.state";
-import { SetSelectedNodesAction, UndoDeleteNodesAction } from "app/store/actions/node.action";
+import {
+  SetSelectedNodesAction,
+  UndoDeleteNodesAction
+} from "app/store/actions/node.action";
 import { ReloadDocumentListAction } from "app/store/actions/app.action";
 import {
   SnackbarErrorAction,
@@ -45,8 +48,14 @@ import {
   SnackbarAction,
   SnackbarWarningAction
 } from "app/store/actions/snackbar.actions";
-import { getSharedUrl, getAppSelection } from "app/store/selectors/app.selector";
-import { NavigateToParentFolder, NavigateRouteAction } from "app/store/actions/router.actions";
+import {
+  getSharedUrl,
+  getAppSelection
+} from "app/store/selectors/app.selector";
+import {
+  NavigateToParentFolder,
+  NavigateRouteAction
+} from "app/store/actions/router.actions";
 import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
 import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
 import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
@@ -118,7 +127,9 @@ export class ContentManagementService {
           width: "730px"
         });
       } else {
-        this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.PERMISSION"));
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.PERMISSION")
+        );
       }
     }
   }
@@ -147,7 +158,9 @@ export class ContentManagementService {
         width: "630px"
       });
     } else {
-      this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.PERMISSION"));
+      this.store.dispatch(
+        new SnackbarErrorAction("APP.MESSAGES.ERRORS.PERMISSION")
+      );
     }
   }
 
@@ -188,7 +201,9 @@ export class ContentManagementService {
           })
           .afterClosed()
           .subscribe(deletedSharedLink => {
-            this.store.dispatch(new SetSelectedNodesAction([deletedSharedLink || node]));
+            this.store.dispatch(
+              new SetSelectedNodesAction([deletedSharedLink || node])
+            );
             if (deletedSharedLink) {
               this.linksUnshared.next(deletedSharedLink);
             }
@@ -262,10 +277,15 @@ export class ContentManagementService {
   deleteLibrary(id: string): void {
     this.contentApi.deleteSite(id).subscribe(
       () => {
-        this.store.dispatch(new SnackbarInfoAction("APP.MESSAGES.INFO.LIBRARY_DELETED"));
+        this.reload.next();
+        this.store.dispatch(
+          new SnackbarInfoAction("APP.MESSAGES.INFO.LIBRARY_DELETED")
+        );
       },
       () => {
-        this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_LIBRARY_FAILED"));
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_LIBRARY_FAILED")
+        );
       }
     );
   }
@@ -286,11 +306,15 @@ export class ContentManagementService {
         this.contentApi.leaveSite(siteId).subscribe(
           () => {
             this.libraryLeft.next(siteId);
-            this.store.dispatch(new SnackbarInfoAction("APP.MESSAGES.INFO.LEFT_LIBRARY"));
+            this.store.dispatch(
+              new SnackbarInfoAction("APP.MESSAGES.INFO.LEFT_LIBRARY")
+            );
           },
           () => {
             this.store.dispatch(
-              new SnackbarErrorAction("APP.MESSAGES.ERRORS.LEAVE_LIBRARY_FAILED")
+              new SnackbarErrorAction(
+                "APP.MESSAGES.ERRORS.LEAVE_LIBRARY_FAILED"
+              )
             );
           }
         );
@@ -301,16 +325,23 @@ export class ContentManagementService {
   updateLibrary(siteId: string, siteBody: SiteBody) {
     this.contentApi.updateLibrary(siteId, siteBody).subscribe(
       (siteEntry: SiteEntry) => {
-        this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_UPDATED"));
+        this.reload.next();
+        this.store.dispatch(
+          new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_UPDATED")
+        );
       },
       () => {
-        this.store.dispatch(new SnackbarErrorAction("LIBRARY.ERRORS.LIBRARY_UPDATE_ERROR"));
+        this.store.dispatch(
+          new SnackbarErrorAction("LIBRARY.ERRORS.LIBRARY_UPDATE_ERROR")
+        );
       }
     );
   }
 
   async unshareNodes(links: Array<MinimalNodeEntity>) {
-    const promises = links.map(link => this.contentApi.deleteSharedLink(link.entry.id).toPromise());
+    const promises = links.map(link =>
+      this.contentApi.deleteSharedLink(link.entry.id).toPromise()
+    );
     await Promise.all(promises);
     this.linksUnshared.next();
   }
@@ -392,7 +423,10 @@ export class ContentManagementService {
   }
 
   copyNodes(nodes: Array<MinimalNodeEntity>) {
-    zip(this.nodeActionsService.copyNodes(nodes), this.nodeActionsService.contentCopied).subscribe(
+    zip(
+      this.nodeActionsService.copyNodes(nodes),
+      this.nodeActionsService.contentCopied
+    ).subscribe(
       result => {
         const [operationResult, newItems] = result;
         this.showCopyMessage(operationResult, nodes, newItems);
@@ -419,9 +453,11 @@ export class ContentManagementService {
 
         if (failedItems) {
           if (numberOfCopiedItems) {
-            i18MessageSuffix = numberOfCopiedItems === 1 ? "PARTIAL_SINGULAR" : "PARTIAL_PLURAL";
+            i18MessageSuffix =
+              numberOfCopiedItems === 1 ? "PARTIAL_SINGULAR" : "PARTIAL_PLURAL";
           } else {
-            i18MessageSuffix = failedItems === 1 ? "FAIL_SINGULAR" : "FAIL_PLURAL";
+            i18MessageSuffix =
+              failedItems === 1 ? "FAIL_SINGULAR" : "FAIL_PLURAL";
           }
         } else {
           i18MessageSuffix = numberOfCopiedItems === 1 ? "SINGULAR" : "PLURAL";
@@ -441,7 +477,10 @@ export class ContentManagementService {
       } catch {}
     }
 
-    const undo = numberOfCopiedItems > 0 ? this.translation.instant("APP.ACTIONS.UNDO") : "";
+    const undo =
+      numberOfCopiedItems > 0
+        ? this.translation.instant("APP.ACTIONS.UNDO")
+        : "";
 
     const message = this.translation.instant(i18nMessageString, {
       success: numberOfCopiedItems,
@@ -461,7 +500,9 @@ export class ContentManagementService {
     const batch = this.nodeActionsService
       .flatten(nodes)
       .filter(item => item.entry)
-      .map(item => this.contentApi.deleteNode(item.entry.id, { permanent: true }));
+      .map(item =>
+        this.contentApi.deleteNode(item.entry.id, { permanent: true })
+      );
 
     forkJoin(...batch).subscribe(
       () => {
@@ -476,7 +517,11 @@ export class ContentManagementService {
           errorJson = JSON.parse(error.message);
         } catch {}
 
-        if (errorJson && errorJson.error && errorJson.error.statusCode === 403) {
+        if (
+          errorJson &&
+          errorJson.error &&
+          errorJson.error.statusCode === 403
+        ) {
           i18nMessageString = "APP.MESSAGES.ERRORS.PERMISSION";
         }
 
@@ -505,15 +550,22 @@ export class ContentManagementService {
   }
 
   private undoMoveNodes(moveResponse, selectionParentId: string) {
-    const movedNodes = moveResponse && moveResponse["succeeded"] ? moveResponse["succeeded"] : [];
+    const movedNodes =
+      moveResponse && moveResponse["succeeded"]
+        ? moveResponse["succeeded"]
+        : [];
     const partiallyMovedNodes =
-      moveResponse && moveResponse["partiallySucceeded"] ? moveResponse["partiallySucceeded"] : [];
+      moveResponse && moveResponse["partiallySucceeded"]
+        ? moveResponse["partiallySucceeded"]
+        : [];
 
-    const restoreDeletedNodesBatch = this.nodeActionsService.moveDeletedEntries.map(folderEntry => {
-      return this.contentApi
-        .restoreNode(folderEntry.nodeId || folderEntry.id)
-        .pipe(map(node => node.entry));
-    });
+    const restoreDeletedNodesBatch = this.nodeActionsService.moveDeletedEntries.map(
+      folderEntry => {
+        return this.contentApi
+          .restoreNode(folderEntry.nodeId || folderEntry.id)
+          .pipe(map(node => node.entry));
+      }
+    );
 
     zip(...restoreDeletedNodesBatch, of(null))
       .pipe(
@@ -522,7 +574,9 @@ export class ContentManagementService {
 
           const revertMoveBatch = this.nodeActionsService
             .flatten(nodesToBeMovedBack)
-            .filter(node => node.entry || (node.itemMoved && node.itemMoved.entry))
+            .filter(
+              node => node.entry || (node.itemMoved && node.itemMoved.entry)
+            )
             .map(node => {
               if (node.itemMoved) {
                 return this.nodeActionsService.moveNodeAction(
@@ -530,7 +584,10 @@ export class ContentManagementService {
                   node.initialParentId
                 );
               } else {
-                return this.nodeActionsService.moveNodeAction(node.entry, selectionParentId);
+                return this.nodeActionsService.moveNodeAction(
+                  node.entry,
+                  selectionParentId
+                );
               }
             });
 
@@ -549,7 +606,11 @@ export class ContentManagementService {
             errorJson = JSON.parse(error.message);
           } catch {}
 
-          if (errorJson && errorJson.error && errorJson.error.statusCode === 403) {
+          if (
+            errorJson &&
+            errorJson.error &&
+            errorJson.error.statusCode === 403
+          ) {
             message = "APP.MESSAGES.ERRORS.PERMISSION";
           }
 
@@ -630,9 +691,12 @@ export class ContentManagementService {
 
   private getUndoDeleteMessage(status: DeleteStatus): SnackbarAction {
     if (status.someFailed && !status.oneFailed) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.NODE_RESTORE_PLURAL", {
-        number: status.fail.length
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.NODE_RESTORE_PLURAL",
+        {
+          number: status.fail.length
+        }
+      );
     }
 
     if (status.oneFailed) {
@@ -744,41 +808,59 @@ export class ContentManagementService {
 
   private getPurgeMessage(status: DeleteStatus): SnackbarAction {
     if (status.oneSucceeded && status.someFailed && !status.oneFailed) {
-      return new SnackbarWarningAction("APP.MESSAGES.INFO.TRASH.NODES_PURGE.PARTIAL_SINGULAR", {
-        name: status.success[0].name,
-        failed: status.fail.length
-      });
+      return new SnackbarWarningAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_PURGE.PARTIAL_SINGULAR",
+        {
+          name: status.success[0].name,
+          failed: status.fail.length
+        }
+      );
     }
 
     if (status.someSucceeded && !status.oneSucceeded && status.someFailed) {
-      return new SnackbarWarningAction("APP.MESSAGES.INFO.TRASH.NODES_PURGE.PARTIAL_PLURAL", {
-        number: status.success.length,
-        failed: status.fail.length
-      });
+      return new SnackbarWarningAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_PURGE.PARTIAL_PLURAL",
+        {
+          number: status.success.length,
+          failed: status.fail.length
+        }
+      );
     }
 
     if (status.oneSucceeded) {
-      return new SnackbarInfoAction("APP.MESSAGES.INFO.TRASH.NODES_PURGE.SINGULAR", {
-        name: status.success[0].name
-      });
+      return new SnackbarInfoAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_PURGE.SINGULAR",
+        {
+          name: status.success[0].name
+        }
+      );
     }
 
     if (status.oneFailed) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_PURGE.SINGULAR", {
-        name: status.fail[0].name
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.TRASH.NODES_PURGE.SINGULAR",
+        {
+          name: status.fail[0].name
+        }
+      );
     }
 
     if (status.allSucceeded) {
-      return new SnackbarInfoAction("APP.MESSAGES.INFO.TRASH.NODES_PURGE.PLURAL", {
-        number: status.success.length
-      });
+      return new SnackbarInfoAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_PURGE.PLURAL",
+        {
+          number: status.success.length
+        }
+      );
     }
 
     if (status.allFailed) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_PURGE.PLURAL", {
-        number: status.fail.length
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.TRASH.NODES_PURGE.PLURAL",
+        {
+          number: status.fail.length
+        }
+      );
     }
 
     return null;
@@ -792,7 +874,9 @@ export class ContentManagementService {
         const isSite = this.isSite(status.success[0].entry);
         const path: PathInfoEntity = status.success[0].entry.path;
         const parent = path.elements[path.elements.length - 1];
-        const route = isSite ? ["/libraries", parent.id] : ["/personal-files", parent.id];
+        const route = isSite
+          ? ["/libraries", parent.id]
+          : ["/personal-files", parent.id];
 
         let navigate;
 
@@ -802,7 +886,10 @@ export class ContentManagementService {
           navigate = new NavigateRouteAction(route);
         }
 
-        message.userAction = new SnackbarUserAction("APP.ACTIONS.VIEW", navigate);
+        message.userAction = new SnackbarUserAction(
+          "APP.ACTIONS.VIEW",
+          navigate
+        );
       }
 
       this.store.dispatch(message);
@@ -814,7 +901,11 @@ export class ContentManagementService {
   }
 
   private isLibraryContent(path: PathInfoEntity): boolean {
-    if (path && path.elements.length >= 2 && path.elements[1].name === "Sites") {
+    if (
+      path &&
+      path.elements.length >= 2 &&
+      path.elements[1].name === "Sites"
+    ) {
       return true;
     }
 
@@ -823,37 +914,54 @@ export class ContentManagementService {
 
   private getRestoreMessage(status: DeleteStatus): SnackbarAction {
     if (status.someFailed && !status.oneFailed) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.PARTIAL_PLURAL", {
-        number: status.fail.length
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.PARTIAL_PLURAL",
+        {
+          number: status.fail.length
+        }
+      );
     }
 
     if (status.oneFailed && status.fail[0].statusCode) {
       if (status.fail[0].statusCode === 409) {
-        return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.NODE_EXISTS", {
-          name: status.fail[0].entry.name
-        });
+        return new SnackbarErrorAction(
+          "APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.NODE_EXISTS",
+          {
+            name: status.fail[0].entry.name
+          }
+        );
       } else {
-        return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.GENERIC", {
-          name: status.fail[0].entry.name
-        });
+        return new SnackbarErrorAction(
+          "APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.GENERIC",
+          {
+            name: status.fail[0].entry.name
+          }
+        );
       }
     }
 
     if (status.oneFailed && !status.fail[0].statusCode) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.LOCATION_MISSING", {
-        name: status.fail[0].entry.name
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.TRASH.NODES_RESTORE.LOCATION_MISSING",
+        {
+          name: status.fail[0].entry.name
+        }
+      );
     }
 
     if (status.allSucceeded && !status.oneSucceeded) {
-      return new SnackbarInfoAction("APP.MESSAGES.INFO.TRASH.NODES_RESTORE.PLURAL");
+      return new SnackbarInfoAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_RESTORE.PLURAL"
+      );
     }
 
     if (status.allSucceeded && status.oneSucceeded) {
-      return new SnackbarInfoAction("APP.MESSAGES.INFO.TRASH.NODES_RESTORE.SINGULAR", {
-        name: status.success[0].entry.name
-      });
+      return new SnackbarInfoAction(
+        "APP.MESSAGES.INFO.TRASH.NODES_RESTORE.SINGULAR",
+        {
+          name: status.success[0].entry.name
+        }
+      );
     }
 
     return null;
@@ -895,9 +1003,12 @@ export class ContentManagementService {
 
   private getDeleteMessage(status: DeleteStatus): SnackbarAction {
     if (status.allFailed && !status.oneFailed) {
-      return new SnackbarErrorAction("APP.MESSAGES.ERRORS.NODE_DELETION_PLURAL", {
-        number: status.fail.length
-      });
+      return new SnackbarErrorAction(
+        "APP.MESSAGES.ERRORS.NODE_DELETION_PLURAL",
+        {
+          number: status.fail.length
+        }
+      );
     }
 
     if (status.allSucceeded && !status.oneSucceeded) {
@@ -907,17 +1018,23 @@ export class ContentManagementService {
     }
 
     if (status.someFailed && status.someSucceeded && !status.oneSucceeded) {
-      return new SnackbarWarningAction("APP.MESSAGES.INFO.NODE_DELETION.PARTIAL_PLURAL", {
-        success: status.success.length,
-        failed: status.fail.length
-      });
+      return new SnackbarWarningAction(
+        "APP.MESSAGES.INFO.NODE_DELETION.PARTIAL_PLURAL",
+        {
+          success: status.success.length,
+          failed: status.fail.length
+        }
+      );
     }
 
     if (status.someFailed && status.oneSucceeded) {
-      return new SnackbarWarningAction("APP.MESSAGES.INFO.NODE_DELETION.PARTIAL_SINGULAR", {
-        success: status.success.length,
-        failed: status.fail.length
-      });
+      return new SnackbarWarningAction(
+        "APP.MESSAGES.INFO.NODE_DELETION.PARTIAL_SINGULAR",
+        {
+          success: status.success.length,
+          failed: status.fail.length
+        }
+      );
     }
 
     if (status.oneFailed && !status.someSucceeded) {
@@ -927,22 +1044,34 @@ export class ContentManagementService {
     }
 
     if (status.oneSucceeded && !status.someFailed) {
-      return new SnackbarInfoAction("APP.MESSAGES.INFO.NODE_DELETION.SINGULAR", {
-        name: status.success[0].name
-      });
+      return new SnackbarInfoAction(
+        "APP.MESSAGES.INFO.NODE_DELETION.SINGULAR",
+        {
+          name: status.success[0].name
+        }
+      );
     }
 
     return null;
   }
 
-  private showMoveMessage(nodes: Array<MinimalNodeEntity>, info: any, moveResponse?: any) {
+  private showMoveMessage(
+    nodes: Array<MinimalNodeEntity>,
+    info: any,
+    moveResponse?: any
+  ) {
     const succeeded =
-      moveResponse && moveResponse["succeeded"] ? moveResponse["succeeded"].length : 0;
+      moveResponse && moveResponse["succeeded"]
+        ? moveResponse["succeeded"].length
+        : 0;
     const partiallySucceeded =
       moveResponse && moveResponse["partiallySucceeded"]
         ? moveResponse["partiallySucceeded"].length
         : 0;
-    const failures = moveResponse && moveResponse["failed"] ? moveResponse["failed"].length : 0;
+    const failures =
+      moveResponse && moveResponse["failed"]
+        ? moveResponse["failed"].length
+        : 0;
 
     let successMessage = "";
     let partialSuccessMessage = "";
@@ -961,14 +1090,17 @@ export class ContentManagementService {
         }
 
         if (partiallySucceeded) {
-          i18MessageSuffix = partiallySucceeded === 1 ? "PARTIAL.SINGULAR" : "PARTIAL.PLURAL";
+          i18MessageSuffix =
+            partiallySucceeded === 1 ? "PARTIAL.SINGULAR" : "PARTIAL.PLURAL";
           partialSuccessMessage = `${i18nMessageString}${i18MessageSuffix}`;
         }
 
         if (failures) {
           // if moving failed for ALL nodes, emit error
           if (failures === nodes.length) {
-            const errors = this.nodeActionsService.flatten(moveResponse["failed"]);
+            const errors = this.nodeActionsService.flatten(
+              moveResponse["failed"]
+            );
             errorMessage = this.getErrorMessage(errors[0]);
           } else {
             i18MessageSuffix = "PARTIAL.FAIL";
@@ -983,14 +1115,19 @@ export class ContentManagementService {
     }
 
     const undo =
-      succeeded + partiallySucceeded > 0 ? this.translation.instant("APP.ACTIONS.UNDO") : "";
+      succeeded + partiallySucceeded > 0
+        ? this.translation.instant("APP.ACTIONS.UNDO")
+        : "";
     failedMessage = errorMessage ? errorMessage : failedMessage;
 
-    const beforePartialSuccessMessage = successMessage && partialSuccessMessage ? " " : "";
+    const beforePartialSuccessMessage =
+      successMessage && partialSuccessMessage ? " " : "";
     const beforeFailedMessage =
       (successMessage || partialSuccessMessage) && failedMessage ? " " : "";
 
-    const initialParentId = this.nodeActionsService.getEntryParentId(nodes[0].entry);
+    const initialParentId = this.nodeActionsService.getEntryParentId(
+      nodes[0].entry
+    );
 
     const messages = this.translation.instant(
       [successMessage, partialSuccessMessage, failedMessage],
@@ -1080,12 +1217,16 @@ export class ContentManagementService {
       if (person && person.id) {
         this.contentApi.createPerson(person).subscribe(
           result => {
-            this.store.dispatch(new SnackbarInfoAction("PERSON.SUCCESS.PERSON_CREATED"));
+            this.store.dispatch(
+              new SnackbarInfoAction("PERSON.SUCCESS.PERSON_CREATED")
+            );
             this.store.dispatch(new ReloadDocumentListAction());
           },
           error => {
             this.store.dispatch(
-              new SnackbarErrorAction("APP.MESSAGES.ERRORS.CREATE_PERSON_FAILED")
+              new SnackbarErrorAction(
+                "APP.MESSAGES.ERRORS.CREATE_PERSON_FAILED"
+              )
             );
             this.handleError(error);
           }
@@ -1113,12 +1254,16 @@ export class ContentManagementService {
       if (person && person.id) {
         this.contentApi.editPerson(person.id, person).subscribe(
           result => {
-            this.store.dispatch(new SnackbarInfoAction("PERSON.SUCCESS.PERSON_UPDATED"));
+            this.store.dispatch(
+              new SnackbarInfoAction("PERSON.SUCCESS.PERSON_UPDATED")
+            );
             this.store.dispatch(new ReloadDocumentListAction());
           },
           err => {
             this.store.dispatch(
-              new SnackbarErrorAction("APP.MESSAGES.ERRORS.UPDATE_PERSON_FAILED")
+              new SnackbarErrorAction(
+                "APP.MESSAGES.ERRORS.UPDATE_PERSON_FAILED"
+              )
             );
             this.handleError(err);
           }
@@ -1129,11 +1274,15 @@ export class ContentManagementService {
   deletePerson(id: string) {
     this.contentApi.deletePerson(id).subscribe(
       result => {
-        this.store.dispatch(new SnackbarInfoAction("PERSON.SUCCESS.PERSON_DELETED"));
+        this.store.dispatch(
+          new SnackbarInfoAction("PERSON.SUCCESS.PERSON_DELETED")
+        );
         this.store.dispatch(new ReloadDocumentListAction());
       },
       err => {
-        this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_PERSON_FAILED"));
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_PERSON_FAILED")
+        );
         this.handleError(err);
       }
     );
@@ -1151,11 +1300,15 @@ export class ContentManagementService {
       if (group) {
         this.contentApi.createGroup(group).subscribe(
           result => {
-            this.store.dispatch(new SnackbarInfoAction("GROUP.SUCCESS.GROUP_CREATED"));
+            this.store.dispatch(
+              new SnackbarInfoAction("GROUP.SUCCESS.GROUP_CREATED")
+            );
             this.store.dispatch(new ReloadDocumentListAction());
           },
           error => {
-            this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED"));
+            this.store.dispatch(
+              new SnackbarErrorAction("APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED")
+            );
             this.handleError(error);
           }
         );
@@ -1175,11 +1328,15 @@ export class ContentManagementService {
       if (group) {
         this.contentApi.editGroup(group.id, group).subscribe(
           result => {
-            this.store.dispatch(new SnackbarInfoAction("GROUP.SUCCESS.GROUP_CREATED"));
+            this.store.dispatch(
+              new SnackbarInfoAction("GROUP.SUCCESS.GROUP_CREATED")
+            );
             this.store.dispatch(new ReloadDocumentListAction());
           },
           error => {
-            this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED"));
+            this.store.dispatch(
+              new SnackbarErrorAction("APP.MESSAGES.ERRORS.CREATE_GROUP_FAILED")
+            );
             this.handleError(error);
           }
         );
@@ -1189,11 +1346,15 @@ export class ContentManagementService {
   deleteGroup(id: string) {
     this.contentApi.deleteGroup(id).subscribe(
       result => {
-        this.store.dispatch(new SnackbarInfoAction("GROUP.SUCCESS.GROUP_DELETED"));
+        this.store.dispatch(
+          new SnackbarInfoAction("GROUP.SUCCESS.GROUP_DELETED")
+        );
         this.store.dispatch(new ReloadDocumentListAction());
       },
       err => {
-        this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_GROUP_FAILED"));
+        this.store.dispatch(
+          new SnackbarErrorAction("APP.MESSAGES.ERRORS.DELETE_GROUP_FAILED")
+        );
         this.handleError(err);
       }
     );
@@ -1205,15 +1366,22 @@ export class ContentManagementService {
     });
     dialog.afterClosed().subscribe(person => {
       if (person) {
-        const body: SiteMembershipBodyCreate = { id: person.id, role: Site.RoleEnum.SiteConsumer };
+        const body: SiteMembershipBodyCreate = {
+          id: person.id,
+          role: Site.RoleEnum.SiteConsumer
+        };
         this.contentApi.addMemberLibrary(siteId, body).subscribe(
           result => {
-            this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_ADD"));
+            this.store.dispatch(
+              new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_ADD")
+            );
             this.store.dispatch(new ReloadDocumentListAction());
           },
           err => {
             this.store.dispatch(
-              new SnackbarErrorAction("APP.MESSAGES.ERRORS.ADD_LIBRARY_MEMBER_FAILED")
+              new SnackbarErrorAction(
+                "APP.MESSAGES.ERRORS.ADD_LIBRARY_MEMBER_FAILED"
+              )
             );
             this.handleError(err);
           }
@@ -1221,15 +1389,23 @@ export class ContentManagementService {
       }
     });
   }
-  updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
+  updateMemberLibrary(
+    siteId: string,
+    personId: string,
+    body: SiteMembershipBodyUpdate
+  ) {
     this.contentApi.updateMemberLibrary(siteId, personId, body).subscribe(
       result => {
-        this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_UPDATE"));
+        this.store.dispatch(
+          new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_UPDATE")
+        );
         this.store.dispatch(new ReloadDocumentListAction());
       },
       err => {
         this.store.dispatch(
-          new SnackbarErrorAction("APP.MESSAGES.ERRORS.UPDATE_LIBRARY_MEMBER_FAILED")
+          new SnackbarErrorAction(
+            "APP.MESSAGES.ERRORS.UPDATE_LIBRARY_MEMBER_FAILED"
+          )
         );
         this.handleError(err);
       }
@@ -1238,12 +1414,16 @@ export class ContentManagementService {
   deleteMemberLibrary(siteId: string, personId: string) {
     this.contentApi.deleteMemberLibrary(siteId, personId).subscribe(
       result => {
-        this.store.dispatch(new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_REMOVE"));
+        this.store.dispatch(
+          new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_REMOVE")
+        );
         this.store.dispatch(new ReloadDocumentListAction());
       },
       err => {
         this.store.dispatch(
-          new SnackbarErrorAction("APP.MESSAGES.ERRORS.REMOVE_LIBRARY_MEMBER_FAILED")
+          new SnackbarErrorAction(
+            "APP.MESSAGES.ERRORS.REMOVE_LIBRARY_MEMBER_FAILED"
+          )
         );
         this.handleError(err);
       }

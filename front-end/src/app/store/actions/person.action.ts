@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { PersonEntry } from '@alfresco/js-api';
 export enum PersonActionTypes {
-  Delete = 'DELETE_PEOPLE',
+  Delete = 'DELETE_PERSON',
   Create = 'CREATE_PERSON',
   Edit = 'EDIT_PERSON'
 }

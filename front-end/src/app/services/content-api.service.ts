@@ -22,7 +22,8 @@ import {
   GroupBodyCreate,
   GroupBodyUpdate,
   SiteMembershipBodyUpdate,
-  SiteMembershipBodyCreate
+  SiteMembershipBodyCreate,
+  SitesApi
 } from "@alfresco/js-api";
 import { map } from "rxjs/operators";
 import { TaskPaging, TaskEntry, ProcessDefinitionPaging } from "app/model";
@@ -31,7 +32,10 @@ import { TaskPaging, TaskEntry, ProcessDefinitionPaging } from "app/model";
   providedIn: "root"
 })
 export class ContentApiService {
-  constructor(private api: AlfrescoApiService, private preferences: UserPreferencesService) {}
+  constructor(
+    private api: AlfrescoApiService,
+    private preferences: UserPreferencesService
+  ) {}
 
   /**
    * Moves a node to the trashcan.
@@ -39,7 +43,10 @@ export class ContentApiService {
    * @param options Optional parameters supported by JS-API
    * @returns Empty result that notifies when the deletion is complete
    */
-  deleteNode(nodeId: string, options: { permanent?: boolean } = {}): Observable<void> {
+  deleteNode(
+    nodeId: string,
+    options: { permanent?: boolean } = {}
+  ): Observable<void> {
     return from(this.api.nodesApi.deleteNode(nodeId, options));
   }
 
@@ -77,7 +84,13 @@ export class ContentApiService {
     const defaults = {
       maxItems: this.preferences.paginationSize,
       skipCount: 0,
-      include: ["isLocked", "path", "properties", "allowableOperations", "permissions"]
+      include: [
+        "isLocked",
+        "path",
+        "properties",
+        "allowableOperations",
+        "permissions"
+      ]
     };
     const queryOptions = Object.assign(defaults, options);
 
@@ -110,7 +123,10 @@ export class ContentApiService {
    * @param personId ID of the target user
    * @returns User information
    */
-  getPerson(personId: string, options?: { fields?: Array<string> }): Observable<PersonEntry> {
+  getPerson(
+    personId: string,
+    options?: { fields?: Array<string> }
+  ): Observable<PersonEntry> {
     return from(this.api.peopleApi.getPerson(personId, options));
   }
 
@@ -127,7 +143,9 @@ export class ContentApiService {
     name?: string,
     opts?: { include?: Array<string>; fields?: Array<string> }
   ): Observable<NodeEntry> {
-    return from(this.api.nodesApi.copyNode(nodeId, { targetParentId, name }, opts));
+    return from(
+      this.api.nodesApi.copyNode(nodeId, { targetParentId, name }, opts)
+    );
   }
 
   /**
@@ -135,7 +153,9 @@ export class ContentApiService {
    * @returns ProductVersionModel containing product details
    */
   getRepositoryInformation(): Observable<DiscoveryEntry> {
-    return from(this.api.getInstance().discovery.discoveryApi.getRepositoryInformation());
+    return from(
+      this.api.getInstance().discovery.discoveryApi.getRepositoryInformation()
+    );
   }
 
   getFavorites(
@@ -150,7 +170,10 @@ export class ContentApiService {
     return from(this.api.favoritesApi.getFavorites(personId, opts));
   }
 
-  getFavoriteLibraries(personId: string = "-me-", opts?: any): Observable<FavoritePaging> {
+  getFavoriteLibraries(
+    personId: string = "-me-",
+    opts?: any
+  ): Observable<FavoritePaging> {
     return this.getFavorites(personId, {
       ...opts,
       where: "(EXISTS(target/site))"
@@ -213,7 +236,8 @@ export class ContentApiService {
     return from(this.api.sitesApi.getSite(siteId, opts));
   }
   getSiteMember(siteId: string, opts?: any) {
-    return from(this.api.sitesApi.getSiteMembers(siteId, opts));
+    const siteMemberApi = new SitesApi(this.api.getInstance());
+    return from(siteMemberApi.listSiteMemberships(siteId, opts));
   }
 
   updateLibrary(siteId: string, siteBody: SiteBody): Observable<SiteEntry> {
@@ -222,7 +246,11 @@ export class ContentApiService {
   addMemberLibrary(siteId: string, body: SiteMembershipBodyCreate) {
     return from(this.api.sitesApi.addSiteMember(siteId, body));
   }
-  updateMemberLibrary(siteId: string, personId: string, body: SiteMembershipBodyUpdate) {
+  updateMemberLibrary(
+    siteId: string,
+    personId: string,
+    body: SiteMembershipBodyUpdate
+  ) {
     return from(this.api.sitesApi.updateSiteMember(siteId, personId, body));
   }
   deleteMemberLibrary(siteId: string, personId: string) {
@@ -270,11 +298,11 @@ export class ContentApiService {
     if (!person.password) {
       person.password = "12345678";
     }
-    return from(this.api.peopleApi.addPerson(person));
+    return from(this.api.peopleApi.addPerson(clean(person)));
   }
   editPerson(id: string, person: PersonBodyUpdate) {
     delete person["id"];
-    return from(this.api.peopleApi.updatePerson(id, person));
+    return from(this.api.peopleApi.updatePerson(id, clean(person)));
   }
   deletePerson(id: string) {
     return from(
@@ -378,4 +406,18 @@ export class ContentApiService {
         )
     );
   }
+}
+function clean(obj) {
+  var propNames = Object.getOwnPropertyNames(obj);
+  for (var i = 0; i < propNames.length; i++) {
+    var propName = propNames[i];
+    if (
+      obj[propName] === null ||
+      obj[propName] === undefined ||
+      obj[propName] === ""
+    ) {
+      delete obj[propName];
+    }
+  }
+  return obj;
 }
