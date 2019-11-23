@@ -49,6 +49,7 @@ export class AppExtensionService implements CustomRuleContext {
     groups: Array<DocumentListPresetRef>;
     tasks: Array<DocumentListPresetRef>;
     siteMembers: DocumentListPresetRef[];
+    siteMembersRequest: DocumentListPresetRef[];
   } = {
     files: [],
     libraries: [],
@@ -61,7 +62,8 @@ export class AppExtensionService implements CustomRuleContext {
     people: [],
     groups: [],
     tasks: [],
-    siteMembers: []
+    siteMembers: [],
+    siteMembersRequest: []
   };
 
   contentMetadata: any;
@@ -110,8 +112,14 @@ export class AppExtensionService implements CustomRuleContext {
       console.error("Extension configuration not found");
       return;
     }
-    this.openWithActions = this.loader.getContentActions(config, "features.viewer.openWith");
-    this.toolbarActions = this.loader.getContentActions(config, "features.toolbar");
+    this.openWithActions = this.loader.getContentActions(
+      config,
+      "features.viewer.openWith"
+    );
+    this.toolbarActions = this.loader.getContentActions(
+      config,
+      "features.toolbar"
+    );
     this.viewerToolbarActions = this.loader.getContentActions(
       config,
       "features.viewer.toolbarActions"
@@ -121,14 +129,26 @@ export class AppExtensionService implements CustomRuleContext {
       "features.viewer.shared.toolbarActions"
     );
     this.contentMetadata = this.loadContentMetadata(config);
-    this.createActions = this.loader.getElements<ContentActionRef>(config, "features.create");
-    this.contextMenuActions = this.loader.getContentActions(config, "features.contextMenu");
+    this.createActions = this.loader.getElements<ContentActionRef>(
+      config,
+      "features.create"
+    );
+    this.contextMenuActions = this.loader.getContentActions(
+      config,
+      "features.contextMenu"
+    );
     this.navbar = this.loadNavBar(config);
-    this.sidebar = this.loader.getElements<SidebarTabRef>(config, "features.sidebar");
+    this.sidebar = this.loader.getElements<SidebarTabRef>(
+      config,
+      "features.sidebar"
+    );
     this.documentListPresets = {
       files: this.getDocumentListPreset(config, "files"),
       libraries: this.getDocumentListPreset(config, "libraries"),
-      favoriteLibraries: this.getDocumentListPreset(config, "favoriteLibraries"),
+      favoriteLibraries: this.getDocumentListPreset(
+        config,
+        "favoriteLibraries"
+      ),
       shared: this.getDocumentListPreset(config, "shared"),
       recent: this.getDocumentListPreset(config, "recent"),
       favorites: this.getDocumentListPreset(config, "favorites"),
@@ -137,7 +157,11 @@ export class AppExtensionService implements CustomRuleContext {
       people: this.getDocumentListPreset(config, "people"),
       groups: this.getDocumentListPreset(config, "groups"),
       tasks: this.getDocumentListPreset(config, "tasks"),
-      siteMembers: this.getDocumentListPreset(config, "siteMembers")
+      siteMembers: this.getDocumentListPreset(config, "siteMembers"),
+      siteMembersRequest: this.getDocumentListPreset(
+        config,
+        "siteMembersRequest"
+      )
     };
 
     if (config.features && config.features.viewer) {
@@ -156,7 +180,10 @@ export class AppExtensionService implements CustomRuleContext {
    */
   protected getDocumentListPreset(config: ExtensionConfig, key: string) {
     return this.loader
-      .getElements<DocumentListPresetRef>(config, `features.documentList.${key}`)
+      .getElements<DocumentListPresetRef>(
+        config,
+        `features.documentList.${key}`
+      )
       .filter(entry => !entry.disabled);
   }
   getCreateActions(): Array<ContentActionRef> {
@@ -192,7 +219,10 @@ export class AppExtensionService implements CustomRuleContext {
           let disabled = false;
 
           if (action.rules && action.rules.enabled) {
-            disabled = !this.extensions.evaluateRule(action.rules.enabled, this);
+            disabled = !this.extensions.evaluateRule(
+              action.rules.enabled,
+              this
+            );
           }
 
           return {
@@ -320,8 +350,12 @@ export class AppExtensionService implements CustomRuleContext {
                   }
 
                   if (!child.click) {
-                    const childRouteRef = this.extensions.getRouteById(child.route);
-                    const childUrl = `/${childRouteRef ? childRouteRef.path : child.route}`;
+                    const childRouteRef = this.extensions.getRouteById(
+                      child.route
+                    );
+                    const childUrl = `/${
+                      childRouteRef ? childRouteRef.path : child.route
+                    }`;
                     return {
                       ...child,
                       url: childUrl
@@ -390,7 +424,10 @@ export class AppExtensionService implements CustomRuleContext {
     return this.getAllowedActions(this.sharedLinkViewerToolbarActions);
   }
   loadContentMetadata(config: ExtensionConfig): any {
-    const elements = this.loader.getElements<any>(config, "features.content-metadata-presets");
+    const elements = this.loader.getElements<any>(
+      config,
+      "features.content-metadata-presets"
+    );
     if (!elements.length) {
       return null;
     }
@@ -401,14 +438,19 @@ export class AppExtensionService implements CustomRuleContext {
     try {
       this.appConfig.config["content-metadata"] = { presets };
     } catch (error) {
-      console.error(error, "- could not change content-metadata from app.config -");
+      console.error(
+        error,
+        "- could not change content-metadata from app.config -"
+      );
     }
 
     return { presets };
   }
   filterDisabled(object: Array<{ disabled: boolean }> | { disabled: boolean }) {
     if (Array.isArray(object)) {
-      return object.filter(item => !item.disabled).map(item => this.filterDisabled(item));
+      return object
+        .filter(item => !item.disabled)
+        .map(item => this.filterDisabled(item));
     } else if (typeof object === "object") {
       if (!object.disabled) {
         Object.keys(object).forEach(prop => {

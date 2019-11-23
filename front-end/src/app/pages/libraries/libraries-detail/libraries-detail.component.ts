@@ -17,10 +17,15 @@ import {
   MinimalNodeEntity,
   PathElementEntity,
   MinimalNodeEntryEntity,
-  PathElement
+  PathElement,
+  Site
 } from "@alfresco/js-api";
 import { NodeActionsService } from "app/services/node-actions.service";
-import { UploadService, FileUploadEvent, PageTitleService } from "@alfresco/adf-core";
+import {
+  UploadService,
+  FileUploadEvent,
+  PageTitleService
+} from "@alfresco/adf-core";
 import { LibraryService } from "../library.service";
 
 @Component({
@@ -37,9 +42,10 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
   links: {
     link: string;
     title: string;
+    active: boolean;
   }[] = [
-    { link: "", title: "Documents" },
-    { link: "members", title: "Members" }
+    { link: "", title: "Documents", active: true },
+    { link: "members", title: "Members", active: false }
   ];
   isAdmin = false;
   actions: Array<ContentActionRef> = [];
@@ -85,6 +91,16 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
       this.libraySv.getSite(this.librariesId).subscribe(site => {
         this.pageTitle.setTitle(site.entry.title || "");
         this.store.dispatch(new SetCurrentLibraryAction(site.entry));
+        if (
+          site.entry.visibility == Site.VisibilityEnum.MODERATED &&
+          site.entry.role == Site.RoleEnum.SiteManager
+        ) {
+          this.links.push({
+            link: "pendings",
+            title: "Pending",
+            active: false
+          });
+        }
         const found = this.libraySv.getNodeOfDocumentLibrary(site);
         if (found) {
           const nodeId = found.entry.id;
@@ -102,7 +118,9 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
           this.updateCurrentNode(node.entry);
         }
       }),
-      nodeActionsService.contentCopied.subscribe(nodes => this.onContentCopied(nodes)),
+      nodeActionsService.contentCopied.subscribe(nodes =>
+        this.onContentCopied(nodes)
+      ),
       uploadService.fileUploadComplete
         .pipe(debounceTime(300))
         .subscribe(file => this.onFileUploadedEvent(file)),
@@ -160,7 +178,9 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     if (this.isSiteContainer(node)) {
       // rename 'documentLibrary' entry to the target site display name
       // clicking on the breadcrumb entry loads the site content
-      const parentNode = await this.contentApi.getNodeInfo(node.parentId).toPromise();
+      const parentNode = await this.contentApi
+        .getNodeInfo(node.parentId)
+        .toPromise();
       node.name = parentNode.properties["cm:title"] || parentNode.name;
 
       // remove the site entry
@@ -170,7 +190,9 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
       const docLib = elements.findIndex(el => el.name === "documentLibrary");
       if (docLib > -1) {
         const siteFragment = elements[docLib - 1];
-        const siteNode = await this.contentApi.getNodeInfo(siteFragment.id).toPromise();
+        const siteNode = await this.contentApi
+          .getNodeInfo(siteFragment.id)
+          .toPromise();
 
         // apply Site Name to the parent fragment
         siteFragment.name = siteNode.properties["cm:title"] || siteNode.name;
@@ -184,12 +206,18 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-  navigate(link: string = null) {
+  navigate(index: number) {
     const commands = ["./"];
 
     commands.push(this.librariesId);
-    if (link) {
-      commands.push(link);
+    if (index >= 0) {
+      this.links.forEach((element, i) => {
+        element.active = false;
+        if (i == index) {
+          element.active = true;
+          commands.push(element.link);
+        }
+      });
     }
     this.router.navigate(commands, {
       relativeTo: this.route.parent
@@ -198,7 +226,10 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
   onBreadcrumbNavigate(route: PathElementEntity) {
     let navigateId = route.id;
     if (this.nodePath && this.nodePath.length > 2) {
-      if (this.nodePath[1].name === "Sites" && this.nodePath[2].id === route.id) {
+      if (
+        this.nodePath[1].name === "Sites" &&
+        this.nodePath[2].id === route.id
+      ) {
         navigateId = this.nodePath[3].id;
       }
     }
@@ -225,7 +256,9 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
 
   onContentCopied(nodes: MinimalNodeEntity[]) {
     const newNode = nodes.find(node => {
-      return node && node.entry && node.entry.parentId === this.getParentNodeId();
+      return (
+        node && node.entry && node.entry.parentId === this.getParentNodeId()
+      );
     });
     if (newNode) {
       this.reload();

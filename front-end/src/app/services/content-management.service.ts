@@ -1429,4 +1429,40 @@ export class ContentManagementService {
       }
     );
   }
+  approveMemberLibrary(siteId: string, inviteeId: string, opts?: any) {
+    this.contentApi.approveMemberLibrary(siteId, inviteeId, opts).subscribe(
+      result => {
+        this.store.dispatch(
+          new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_APPROVE")
+        );
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(
+          new SnackbarErrorAction(
+            "APP.MESSAGES.ERRORS.REMOVE_LIBRARY_MEMBER_FAILED"
+          )
+        );
+        this.handleError(err);
+      }
+    );
+  }
+  rejectMemberLibrary(siteId: string, inviteeId: string, opts?: any) {
+    this.contentApi.rejectMemberLibrary(siteId, inviteeId, opts).subscribe(
+      result => {
+        this.store.dispatch(
+          new SnackbarInfoAction("LIBRARY.SUCCESS.LIBRARY_MEMBER_REJECT")
+        );
+        this.store.dispatch(new ReloadDocumentListAction());
+      },
+      err => {
+        this.store.dispatch(
+          new SnackbarErrorAction(
+            "APP.MESSAGES.ERRORS.REMOVE_LIBRARY_MEMBER_FAILED"
+          )
+        );
+        this.handleError(err);
+      }
+    );
+  }
 }

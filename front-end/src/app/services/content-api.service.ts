@@ -236,8 +236,16 @@ export class ContentApiService {
     return from(this.api.sitesApi.getSite(siteId, opts));
   }
   getSiteMember(siteId: string, opts?: any) {
-    const siteMemberApi = new SitesApi(this.api.getInstance());
-    return from(siteMemberApi.listSiteMemberships(siteId, opts));
+    return from(this.api.sitesApi.getSiteMembers(siteId, opts));
+  }
+  getSiteMemberRequest(siteId: string, opts?: any) {
+    const siteApi = new SitesApi(this.api.getInstance());
+    return from(
+      siteApi.getSiteMembershipRequests({
+        ...opts,
+        where: `(siteId=${siteId})`
+      })
+    );
   }
 
   updateLibrary(siteId: string, siteBody: SiteBody): Observable<SiteEntry> {
@@ -256,7 +264,14 @@ export class ContentApiService {
   deleteMemberLibrary(siteId: string, personId: string) {
     return from(this.api.sitesApi.removeSiteMember(siteId, personId));
   }
-
+  approveMemberLibrary(siteId: string, inviteeId: string, opts?: any) {
+    const siteApi = new SitesApi(this.api.getInstance());
+    return from(siteApi.approveSiteMembershipRequest(siteId, inviteeId, opts));
+  }
+  rejectMemberLibrary(siteId: string, inviteeId: string, opts?: any) {
+    const siteApi = new SitesApi(this.api.getInstance());
+    return from(siteApi.rejectSiteMembershipRequest(siteId, inviteeId, opts));
+  }
   addFavorite(nodes: Array<MinimalNodeEntity>): Observable<FavoriteEntry> {
     const payload: FavoriteBody[] = nodes.map(node => {
       const { isFolder, nodeId, id } = <any>node.entry;

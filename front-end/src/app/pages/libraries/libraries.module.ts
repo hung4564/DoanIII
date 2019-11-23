@@ -10,6 +10,7 @@ import { LibrariesDocumentComponent } from "./libraries-document/libraries-docum
 import { LibrariesMemberComponent } from "./libraries-member/libraries-member.component";
 import { LibraryService } from "./library.service";
 import { FavoriteLibrariesComponent } from "./favorite-libraries/favorite-libraries.component";
+import { LibraiesPendingComponent } from "./libraies-pending/libraies-pending.component";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { FavoriteLibrariesComponent } from "./favorite-libraries/favorite-librar
     LibrariesComponent,
     LibrariesDetailComponent,
     LibrariesDocumentComponent,
-    LibrariesMemberComponent
+    LibrariesMemberComponent,
+    LibraiesPendingComponent
   ],
   providers: [LibraryService]
 })

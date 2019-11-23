@@ -13,7 +13,9 @@ import {
   UpdateLibraryAction,
   UpdateMemberLibraryAction,
   DeleteMemberLibraryAction,
-  AddMemberLibraryAction
+  AddMemberLibraryAction,
+  ApproveMemberLibraryAction,
+  RejectMemberLibraryAction
 } from "../actions/library.actions";
 import {
   getAppSelection,
@@ -84,14 +86,20 @@ export class LibraryEffects {
     map(action => {
       const library = action.payload.entry;
       if (library) {
-        this.contentApi.getNode(library.guid, { relativePath: "/documentLibrary" }).subscribe(
-          () => {
-            this.store.dispatch(new NavigateRouteAction(["libraries", library.id]));
-          },
-          () => {
-            this.store.dispatch(new SnackbarErrorAction("APP.MESSAGES.ERRORS.MISSING_CONTENT"));
-          }
-        );
+        this.contentApi
+          .getNode(library.guid, { relativePath: "/documentLibrary" })
+          .subscribe(
+            () => {
+              this.store.dispatch(
+                new NavigateRouteAction(["libraries", library.id])
+              );
+            },
+            () => {
+              this.store.dispatch(
+                new SnackbarErrorAction("APP.MESSAGES.ERRORS.MISSING_CONTENT")
+              );
+            }
+          );
       }
     })
   );
@@ -137,9 +145,13 @@ export class LibraryEffects {
       this.store.select(getNavigationState).subscribe(navigation => {
         if (navigation.currentSite) {
           const data = action.payload;
-          this.content.updateMemberLibrary(navigation.currentSite.id, data.personId, {
-            role: data.role
-          });
+          this.content.updateMemberLibrary(
+            navigation.currentSite.id,
+            data.personId,
+            {
+              role: data.role
+            }
+          );
         }
       });
     })
@@ -151,7 +163,40 @@ export class LibraryEffects {
       this.store.select(getNavigationState).subscribe(navigation => {
         if (navigation.currentSite) {
           const data = action.payload;
-          this.content.deleteMemberLibrary(navigation.currentSite.id, data.entry.person.id);
+          this.content.deleteMemberLibrary(
+            navigation.currentSite.id,
+            data.entry.person.id
+          );
+        }
+      });
+    })
+  );
+  @Effect({ dispatch: false })
+  ApproveMemberLibrary$ = this.actions$.pipe(
+    ofType<ApproveMemberLibraryAction>(LibraryActionTypes.ApproveMember),
+    map(action => {
+      this.store.select(getNavigationState).subscribe(navigation => {
+        if (navigation.currentSite) {
+          const data = action.payload;
+          this.content.approveMemberLibrary(
+            navigation.currentSite.id,
+            data.entry.person.id
+          );
+        }
+      });
+    })
+  );
+  @Effect({ dispatch: false })
+  RejectMemberLibrary$ = this.actions$.pipe(
+    ofType<RejectMemberLibraryAction>(LibraryActionTypes.RejectMember),
+    map(action => {
+      this.store.select(getNavigationState).subscribe(navigation => {
+        if (navigation.currentSite) {
+          const data = action.payload;
+          this.content.rejectMemberLibrary(
+            navigation.currentSite.id,
+            data.entry.person.id
+          );
         }
       });
     })

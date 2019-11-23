@@ -24,9 +24,9 @@ export class LibraryService {
   getSite(siteId: string, opts?: any) {
     if (!this.getSite$) {
       opts = { ...opts, relations: ["containers"] };
-      this.getSite$ = this.contentApi.getSite(siteId, opts).pipe(shareReplay(1)) as Observable<
-        SiteAndContainers
-      >;
+      this.getSite$ = this.contentApi
+        .getSite(siteId, opts)
+        .pipe(shareReplay(1)) as Observable<SiteAndContainers>;
     }
     return this.getSite$;
   }
@@ -42,6 +42,9 @@ export class LibraryService {
   }
   getSiteMember(opts: any) {
     return this.contentApi.getSiteMember(this._siteId, opts);
+  }
+  getSiteMemberRequest(opts: any) {
+    return this.contentApi.getSiteMemberRequest(this._siteId, opts);
   }
 }
 interface SiteAndContainers extends SiteEntry {

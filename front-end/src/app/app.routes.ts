@@ -26,6 +26,7 @@ import { LibrariesDetailComponent } from "./pages/libraries/libraries-detail/lib
 import { LibrariesDocumentComponent } from "./pages/libraries/libraries-document/libraries-document.component";
 import { LibrariesMemberComponent } from "./pages/libraries/libraries-member/libraries-member.component";
 import { FavoriteLibrariesComponent } from "./pages/libraries/favorite-libraries/favorite-libraries.component";
+import { LibraiesPendingComponent } from "./pages/libraries/libraies-pending/libraies-pending.component";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -129,6 +130,16 @@ export const appRoutes: Routes = [
               {
                 path: "members",
                 component: LibrariesMemberComponent,
+                data: {
+                  useParent: true,
+                  disableShowInfoFile: true,
+                  disableShowCopyNode: true,
+                  disableShowfavoriteNode: true
+                }
+              },
+              {
+                path: "pendings",
+                component: LibraiesPendingComponent,
                 data: {
                   useParent: true,
                   disableShowInfoFile: true,
@@ -261,7 +272,11 @@ export const appRoutes: Routes = [
           }
         ]
       },
-      { path: "people", component: PeopleComponent, data: { title: "APP.BROWSE.PEOPLE.TITLE" } },
+      {
+        path: "people",
+        component: PeopleComponent,
+        data: { title: "APP.BROWSE.PEOPLE.TITLE" }
+      },
       {
         path: "groups",
         component: GroupsMainComponent,

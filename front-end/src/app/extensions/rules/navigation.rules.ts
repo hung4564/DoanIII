@@ -238,7 +238,6 @@ export function isNotTask(context: CustomRuleContext): boolean {
  */
 export function isLibraryMember(context: CustomRuleContext): boolean {
   const { url } = context.navigation;
-  console.log("TCL: url", url)
   return url && url.startsWith("/libraries") && url.includes("members");
 }
 

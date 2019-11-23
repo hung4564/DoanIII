@@ -22,7 +22,6 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.content.changeTaskForm.subscribe(id => {
       this.contentApi.getProcessDefinitionForm(id).subscribe(result => {
-        console.log("TCL: TaskCreateComponent -> ngOnInit -> result", result);
       });
     });
   }

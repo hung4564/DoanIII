@@ -92,7 +92,9 @@
       "UNSHARE": "Unshare",
       "UPLOAD_VERSION": "Upload New Version",
       "VERSIONS": "Manage Versions",
-      "VIEW": "View"
+      "VIEW": "View",
+      "APPROVE": "Approve",
+      "REJECT": "Reject"
     },
     "BROWSE": {
       "ABOUT": {
@@ -416,8 +418,12 @@
       },
       "TOOLTIP": "Add new files and folders, or create a new File Library",
       "TOOLTIPS": {
+        "APPROVE_SITE_MEMBER": "Approve request",
+        "APPROVE_SITE_MEMBER_NOT_ALLOWED": "No permission to approve request",
+        "REJECT_SITE_MEMBER": "Reject request",
+        "REJECT_SITE_MEMBER_NOT_ALLOWED": "No permission to reject request",
         "ADD_LIBRARY_MEMBER": "Add library member",
-        "ADD_LIBRARY_MEMBER_NOT_ALLOWED": "permission to add peson",
+        "ADD_LIBRARY_MEMBER_NOT_ALLOWED": "No permission to add peson",
         "CREATE_FOLDER": "Create new folder",
         "CREATE_FOLDER_NOT_ALLOWED": "Folders cannot be created whilst viewing the current items",
         "CREATE_GROUP": "Create Group",
@@ -515,7 +521,9 @@
       "LIBRARY_MEMBER_ADD": "Add ibrary member success",
       "LIBRARY_MEMBER_REMOVE": "Library member removed",
       "LIBRARY_MEMBER_UPDATE": "Library member properties updated",
-      "LIBRARY_UPDATED": "Library properties updated"
+      "LIBRARY_UPDATED": "Library properties updated",
+      "LIBRARY_MEMBER_APPROVE": "Approve member success",
+      "LIBRARY_MEMBER_REJECT": "Reject member success"
     },
     "VISIBILITY": {
       "MODERATED": "Moderated",

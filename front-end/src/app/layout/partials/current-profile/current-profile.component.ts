@@ -83,7 +83,6 @@ export class CurrentProfileComponent implements OnInit {
             );
           },
           err => {
-            console.log("TCL: CurrentProfileComponent -> submit -> err", err);
           }
         );
       } else {

@@ -36,7 +36,6 @@ export class PersonDetailComponent implements OnInit {
     return this.userForm.controls[controlName].hasError(errorName);
   };
   onSubmit(userData) {
-    console.log("TCL: PersonDetailComponent -> onSubmit -> userData", userData);
     this.dialogRef.close(userData);
   }
   ngOnInit() {}

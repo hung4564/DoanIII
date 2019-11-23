@@ -555,6 +555,58 @@
           "sortable": false,
           "desktopOnly": false
         }
+      ],
+      "siteMembersRequest": [
+        {
+          "id": "app.siteMembersRequest.person",
+          "key": "person.id",
+          "class": "adf-ellipsis-cell",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.USER_NAME",
+          "type": "text",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteMembersRequest.person",
+          "key": "person.firstName",
+          "class": "adf-ellipsis-cell",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.FIRST_NAME",
+          "type": "text",
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteMembersRequest.btnApprove",
+          "key": "",
+          "title": "",
+          "type": "",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.button",
+          "actions": {
+            "title": "APP.ACTIONS.APPROVE",
+            "description": "APP.NEW_MENU.TOOLTIPS.APPROVE_SITE_MEMBER",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.APPROVE_SITE_MEMBER_NOT_ALLOWED",
+            "click": "APPROVE_LIBRARY_MEMBER"
+          },
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteMembersRequest.btnReject",
+          "key": "",
+          "title": "",
+          "type": "",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.button",
+          "actions": {
+            "title": "APP.ACTIONS.REJECT",
+            "description": "APP.NEW_MENU.TOOLTIPS.REJECT_SITE_MEMBER",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.REJECT_SITE_MEMBER_NOT_ALLOWED",
+            "click": "REJECT_LIBRARY_MEMBER"
+          },
+          "sortable": false,
+          "desktopOnly": false
+        }
       ]
     }
   }
