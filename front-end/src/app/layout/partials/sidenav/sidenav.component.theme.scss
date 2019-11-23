@@ -5,56 +5,10 @@
   $background: map-get($theme, background);
 
   $border: 1px solid mat-color($foreground, divider, 0.07);
-
-  .app-menu-panel {
-    .action-button--active {
-      color: mat-color($accent) !important;
-    }
-
-    .action-button {
+  .adf-sidenav-linklist {
+    .active {
       color: mat-color($primary);
-    }
-
-    .action-button:hover {
-      color: mat-color($accent);
-    }
-  }
-
-  .sidenav {
-    background-color: mat-color($background, background);
-
-    .item:hover .action-button__label {
-      color: mat-color($accent);
-    }
-
-    .mat-expansion-panel {
-      background-color: unset;
-      color: mat-color($primary, 0.87) !important;
-    }
-
-    .mat-expansion-panel {
-      box-shadow: none !important;
-    }
-
-    .mat-expansion-panel:not(.mat-expanded)
-      .mat-expansion-panel-header:not([aria-disabled='true']):hover {
-      background: none !important;
-    }
-
-    .mat-expansion-panel-header {
-      font-size: 14px !important;
-    }
-
-    .action-button--active {
-      color: mat-color($accent) !important;
-    }
-
-    .action-button {
-      color: mat-color($primary);
-    }
-
-    .section {
-      border-bottom: $border;
+      border: $border;
     }
   }
 }

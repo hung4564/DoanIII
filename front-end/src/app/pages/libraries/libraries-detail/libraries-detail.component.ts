@@ -215,7 +215,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
         element.active = false;
         if (i == index) {
           element.active = true;
-          commands.push(element.link);
+          if (element.link) commands.push(element.link);
         }
       });
     }
