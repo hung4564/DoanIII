@@ -14,7 +14,8 @@ import { LibraryService } from "../library.service";
   styleUrls: ["./libraries-document.component.scss"],
   host: { class: "app-layout" }
 })
-export class LibrariesDocumentComponent extends PageComponent implements OnInit {
+export class LibrariesDocumentComponent extends PageComponent
+  implements OnInit {
   librariesId: string;
   currentNodeId: string;
   constructor(
@@ -32,7 +33,7 @@ export class LibrariesDocumentComponent extends PageComponent implements OnInit 
     const { route } = this;
     route.params.subscribe(params => {
       this.librariesId = params.id;
-      this.libraySv.getSite(this.librariesId).subscribe(site => {
+      this.libraySv.getSite(this.pagination).subscribe(site => {
         const found = this.libraySv.getNodeOfDocumentLibrary(site);
         if (found) {
           const nodeId = found.entry.id;
@@ -48,7 +49,9 @@ export class LibrariesDocumentComponent extends PageComponent implements OnInit 
   }
   onContentCopied(nodes: MinimalNodeEntity[]) {
     const newNode = nodes.find(node => {
-      return node && node.entry && node.entry.parentId === this.getParentNodeId();
+      return (
+        node && node.entry && node.entry.parentId === this.getParentNodeId()
+      );
     });
     if (newNode) {
       this.reload();

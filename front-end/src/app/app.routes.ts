@@ -27,6 +27,8 @@ import { LibrariesDocumentComponent } from "./pages/libraries/libraries-document
 import { LibrariesMemberComponent } from "./pages/libraries/libraries-member/libraries-member.component";
 import { FavoriteLibrariesComponent } from "./pages/libraries/favorite-libraries/favorite-libraries.component";
 import { LibraiesPendingComponent } from "./pages/libraries/libraies-pending/libraies-pending.component";
+import { LibrariesSettingComponent } from "./pages/libraries/libraries-setting/libraries-setting.component";
+import { LibrariesApproveComponent } from "./pages/libraries/libraries-approve/libraries-approve.component";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -122,9 +124,24 @@ export const appRoutes: Routes = [
             children: [
               {
                 path: "",
+                pathMatch: "full",
+                redirectTo: "library"
+              },
+              {
+                path: "library",
                 component: LibrariesDocumentComponent,
                 data: {
                   useParent: true
+                }
+              },
+              {
+                path: "approve",
+                component: LibrariesApproveComponent,
+                data: {
+                  useParent: true,
+                  disableShowInfoFile: true,
+                  disableShowCopyNode: true,
+                  disableShowfavoriteNode: true
                 }
               },
               {
@@ -140,6 +157,16 @@ export const appRoutes: Routes = [
               {
                 path: "pendings",
                 component: LibraiesPendingComponent,
+                data: {
+                  useParent: true,
+                  disableShowInfoFile: true,
+                  disableShowCopyNode: true,
+                  disableShowfavoriteNode: true
+                }
+              },
+              {
+                path: "setting",
+                component: LibrariesSettingComponent,
                 data: {
                   useParent: true,
                   disableShowInfoFile: true,

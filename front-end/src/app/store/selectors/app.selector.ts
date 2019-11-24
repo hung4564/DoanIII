@@ -1,5 +1,5 @@
-import { createSelector } from '@ngrx/store';
-import { AppStore } from '../states/app.state';
+import { createSelector } from "@ngrx/store";
+import { AppStore } from "../states/app.state";
 
 export const selectApp = (state: AppStore) => state.app;
 
@@ -8,29 +8,25 @@ export const getHeaderColor = createSelector(
   state => state.headerColor
 );
 
-export const getAppName = createSelector(
-  selectApp,
-  state => state.appName
-);
+export const getAppName = createSelector(selectApp, state => state.appName);
 
-export const getLogoPath = createSelector(
-  selectApp,
-  state => state.logoPath
-);
+export const getLogoPath = createSelector(selectApp, state => state.logoPath);
 
 export const getLanguagePickerState = createSelector(
   selectApp,
   state => state.languagePicker
 );
 
-export const getUserProfile = createSelector(
-  selectApp,
-  state => state.user
-);
+export const getUserProfile = createSelector(selectApp, state => state.user);
 
 export const getCurrentFolder = createSelector(
   selectApp,
   state => state.navigation.currentFolder
+);
+
+export const getCurrentSite = createSelector(
+  selectApp,
+  state => state.navigation.currentSite
 );
 
 export const getAppSelection = createSelector(
@@ -38,20 +34,14 @@ export const getAppSelection = createSelector(
   state => state.selection
 );
 
-export const getSharedUrl = createSelector(
-  selectApp,
-  state => state.sharedUrl
-);
+export const getSharedUrl = createSelector(selectApp, state => state.sharedUrl);
 
 export const getNavigationState = createSelector(
   selectApp,
   state => state.navigation
 );
 
-export const isAdmin = createSelector(
-  selectApp,
-  state => state.user.isAdmin
-);
+export const isAdmin = createSelector(selectApp, state => state.user.isAdmin);
 
 export const getSideNavState = createSelector(
   getAppSelection,

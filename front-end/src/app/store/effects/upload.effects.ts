@@ -1,14 +1,19 @@
-import { FileModel, FileUtils, UploadService } from '@alfresco/adf-core';
-import { Injectable, NgZone, RendererFactory2 } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { forkJoin, of } from 'rxjs';
-import { tap, filter, catchError, flatMap, map, take } from 'rxjs/operators';
-import { ContentManagementService } from '../../services/content-management.service';
-import { UploadFilesAction, UploadActionTypes, UploadFolderAction, UploadFileVersionAction } from '../actions/upload.actions';
-import { SnackbarErrorAction } from '../actions/snackbar.actions';
-import { getCurrentFolder } from '../selectors/app.selector';
-import { UnlockWriteAction } from '../actions/node.action';
+import { FileModel, FileUtils, UploadService } from "@alfresco/adf-core";
+import { Injectable, NgZone, RendererFactory2 } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { forkJoin, of } from "rxjs";
+import { tap, filter, catchError, flatMap, map, take } from "rxjs/operators";
+import { ContentManagementService } from "../../services/content-management.service";
+import {
+  UploadFilesAction,
+  UploadActionTypes,
+  UploadFolderAction,
+  UploadFileVersionAction
+} from "../actions/upload.actions";
+import { SnackbarErrorAction } from "../actions/snackbar.actions";
+import { getNavigationState } from "../selectors/app.selector";
+import { UnlockWriteAction } from "../actions/node.action";
 
 @Injectable()
 export class UploadEffects {
@@ -26,28 +31,30 @@ export class UploadEffects {
   ) {
     const renderer = rendererFactory.createRenderer(null, null);
 
-    this.fileInput = renderer.createElement('input') as HTMLInputElement;
-    this.fileInput.id = 'app-upload-files';
-    this.fileInput.type = 'file';
-    this.fileInput.style.display = 'none';
-    this.fileInput.setAttribute('multiple', '');
-    this.fileInput.addEventListener('change', event => this.upload(event));
+    this.fileInput = renderer.createElement("input") as HTMLInputElement;
+    this.fileInput.id = "app-upload-files";
+    this.fileInput.type = "file";
+    this.fileInput.style.display = "none";
+    this.fileInput.setAttribute("multiple", "");
+    this.fileInput.addEventListener("change", event => this.upload(event));
     renderer.appendChild(document.body, this.fileInput);
 
-    this.fileVersionInput = renderer.createElement('input') as HTMLInputElement;
-    this.fileVersionInput.id = 'app-upload-file-version';
-    this.fileVersionInput.type = 'file';
-    this.fileVersionInput.style.display = 'none';
-    this.fileVersionInput.addEventListener('change', () => this.uploadVersion());
+    this.fileVersionInput = renderer.createElement("input") as HTMLInputElement;
+    this.fileVersionInput.id = "app-upload-file-version";
+    this.fileVersionInput.type = "file";
+    this.fileVersionInput.style.display = "none";
+    this.fileVersionInput.addEventListener("change", () =>
+      this.uploadVersion()
+    );
     renderer.appendChild(document.body, this.fileVersionInput);
 
-    this.folderInput = renderer.createElement('input') as HTMLInputElement;
-    this.folderInput.id = 'app-upload-folder';
-    this.folderInput.type = 'file';
-    this.folderInput.style.display = 'none';
-    this.folderInput.setAttribute('directory', '');
-    this.folderInput.setAttribute('webkitdirectory', '');
-    this.folderInput.addEventListener('change', event => this.upload(event));
+    this.folderInput = renderer.createElement("input") as HTMLInputElement;
+    this.folderInput.id = "app-upload-folder";
+    this.folderInput.type = "file";
+    this.folderInput.style.display = "none";
+    this.folderInput.setAttribute("directory", "");
+    this.folderInput.setAttribute("webkitdirectory", "");
+    this.folderInput.addEventListener("change", event => this.upload(event));
     renderer.appendChild(document.body, this.folderInput);
   }
 
@@ -82,7 +89,7 @@ export class UploadEffects {
       .pipe(
         tap(form => {
           if (!form) {
-            this.fileVersionInput.value = '';
+            this.fileVersionInput.value = "";
           }
         }),
         filter(form => !!form),
@@ -91,7 +98,9 @@ export class UploadEffects {
             of(form),
             this.contentService.getNodeInfo().pipe(
               catchError(_ => {
-                this.store.dispatch(new SnackbarErrorAction('VERSION.ERROR.GENERIC'));
+                this.store.dispatch(
+                  new SnackbarErrorAction("VERSION.ERROR.GENERIC")
+                );
                 return of(null);
               })
             )
@@ -107,36 +116,50 @@ export class UploadEffects {
               comment: form.comment,
               majorVersion: form.version,
               parentId: node.parentId,
-              path: ((<any>file).webkitRelativePath || '').replace(/\/[^\/]*$/, ''),
+              path: ((<any>file).webkitRelativePath || "").replace(
+                /\/[^\/]*$/,
+                ""
+              ),
               newVersion: true,
-              nodeType: 'cm:content'
+              nodeType: "cm:content"
             },
             node.id
           );
           this.uploadAndUnlock(fileModel);
         }
 
-        this.fileVersionInput.value = '';
+        this.fileVersionInput.value = "";
       });
   }
 
   private upload(event: any): void {
     this.store
-      .select(getCurrentFolder)
+      .select(getNavigationState)
       .pipe(take(1))
-      .subscribe(node => {
-        if (node && node.id) {
+      .subscribe(navigation => {
+        let noded = navigation.currentFolder || { id: "" };
+        let nodeId = noded.id;
+        if (navigation.currentSite) {
+          const site = navigation.currentSite;
+          if (site.isApprove && site.nodeIdFolerApprove) {
+            nodeId = site.nodeIdFolerApprove;
+          }
+        }
+        if (nodeId) {
           const input = <HTMLInputElement>event.currentTarget;
           const files = FileUtils.toFileArray(input.files).map(file => {
             return new FileModel(file, {
-              parentId: node.id,
-              path: ((<any>file).webkitRelativePath || '').replace(/\/[^\/]*$/, ''),
-              nodeType: 'cm:content'
+              parentId: nodeId,
+              path: ((<any>file).webkitRelativePath || "").replace(
+                /\/[^\/]*$/,
+                ""
+              ),
+              nodeType: "cm:content"
             });
           });
 
           this.uploadQueue(files);
-          event.target.value = '';
+          event.target.value = "";
         }
       });
   }
@@ -159,19 +182,21 @@ export class UploadEffects {
       this.uploadService.addToQueue(file);
       this.uploadService.uploadFilesInTheQueue();
 
-      const subscription = this.uploadService.fileUploadComplete.subscribe(completed => {
-        if (
-          file.data &&
-          file.data.entry &&
-          file.data.entry.properties &&
-          file.data.entry.properties['cm:lockType'] === 'WRITE_LOCK' &&
-          file.data.entry.id === completed.data.entry.id
-        ) {
-          this.store.dispatch(new UnlockWriteAction(completed.data));
-        }
+      const subscription = this.uploadService.fileUploadComplete.subscribe(
+        completed => {
+          if (
+            file.data &&
+            file.data.entry &&
+            file.data.entry.properties &&
+            file.data.entry.properties["cm:lockType"] === "WRITE_LOCK" &&
+            file.data.entry.id === completed.data.entry.id
+          ) {
+            this.store.dispatch(new UnlockWriteAction(completed.data));
+          }
 
-        subscription.unsubscribe();
-      });
+          subscription.unsubscribe();
+        }
+      );
     });
   }
 }

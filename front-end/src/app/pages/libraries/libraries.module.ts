@@ -11,6 +11,8 @@ import { LibrariesMemberComponent } from "./libraries-member/libraries-member.co
 import { LibraryService } from "./library.service";
 import { FavoriteLibrariesComponent } from "./favorite-libraries/favorite-libraries.component";
 import { LibraiesPendingComponent } from "./libraies-pending/libraies-pending.component";
+import { LibrariesSettingComponent } from "./libraries-setting/libraries-setting.component";
+import { LibrariesApproveComponent } from "./libraries-approve/libraries-approve.component";
 
 @NgModule({
   imports: [
@@ -21,6 +23,8 @@ import { LibraiesPendingComponent } from "./libraies-pending/libraies-pending.co
     ContentModule.forChild()
   ],
   declarations: [
+    LibrariesApproveComponent,
+    LibrariesSettingComponent,
     FavoriteLibrariesComponent,
     LibrariesComponent,
     LibrariesDetailComponent,

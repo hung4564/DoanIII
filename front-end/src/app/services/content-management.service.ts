@@ -73,6 +73,7 @@ export class ContentManagementService {
   reset = new Subject<any>();
   changeTaskForm = new Subject<any>();
   nodesDeleted = new Subject<any>();
+  libraryUpdated = new Subject<SiteEntry>();
   libraryJoined = new Subject<string>();
   libraryLeft = new Subject<string>();
   library400Error = new Subject<any>();

@@ -15,16 +15,22 @@ import {
   DeleteMemberLibraryAction,
   AddMemberLibraryAction,
   ApproveMemberLibraryAction,
-  RejectMemberLibraryAction
+  RejectMemberLibraryAction,
+  AddApproveFolderAction,
+  DeleteApproveFolderAction,
+  RejectLibraryNodeAction,
+  ApproveLibraryNodeAction
 } from "../actions/library.actions";
 import {
   getAppSelection,
   getRepositoryStatus,
-  getNavigationState
+  getNavigationState,
+  getCurrentSite
 } from "../selectors/app.selector";
 import { NavigateRouteAction } from "../actions/router.actions";
 import { SnackbarErrorAction } from "../actions/snackbar.actions";
 import { ContentApiService } from "app/services/content-api.service";
+import { ReloadDocumentListAction } from "../actions/app.action";
 
 @Injectable()
 export class LibraryEffects {
@@ -108,23 +114,37 @@ export class LibraryEffects {
   updateLibrary$ = this.actions$.pipe(
     ofType<UpdateLibraryAction>(LibraryActionTypes.Update),
     map(action => {
-      this.store
-        .select(getAppSelection)
-        .pipe(take(1))
-        .subscribe(selection => {
-          if (selection && selection.library) {
-            const { id } = selection.library.entry;
-            const { title, description, visibility } = action.payload;
+      if (action.payload) {
+        const { id, title, description, visibility } = action.payload;
+        const siteBody = {
+          title,
+          description,
+          visibility
+        };
+        this.content.updateLibrary(id, siteBody);
+      } else {
+        this.store
+          .select(getAppSelection)
+          .pipe(take(1))
+          .subscribe(selection => {
+            if (selection && selection.library) {
+              const { id } = selection.library.entry;
+              const {
+                title,
+                description,
+                visibility
+              } = selection.library.entry;
 
-            const siteBody = {
-              title,
-              description,
-              visibility
-            };
+              const siteBody = {
+                title,
+                description,
+                visibility
+              };
 
-            this.content.updateLibrary(id, siteBody);
-          }
-        });
+              this.content.updateLibrary(id, siteBody);
+            }
+          });
+      }
     })
   );
   @Effect({ dispatch: false })
@@ -199,6 +219,75 @@ export class LibraryEffects {
           );
         }
       });
+    })
+  );
+  @Effect({ dispatch: false })
+  addApproveFolder$ = this.actions$.pipe(
+    ofType<AddApproveFolderAction>(LibraryActionTypes.AddApproveFolder),
+    map(action => {
+      if (action.payload) {
+        this.contentApi
+          .createApproveFolder(action.payload.guid)
+          .subscribe(() => {
+            this.store.select(getCurrentSite).subscribe(site => {
+              site.isApprove = true;
+              this.content.libraryUpdated.next({ entry: site });
+            });
+          })
+          .unsubscribe();
+      }
+    })
+  );
+  @Effect({ dispatch: false })
+  deleteApproveFolder$ = this.actions$.pipe(
+    ofType<DeleteApproveFolderAction>(LibraryActionTypes.DeleteApproveFolder),
+    map(action => {
+      if (action.payload) {
+        this.contentApi
+          .deleteNode(action.payload, { permanent: true })
+          .subscribe(() => {
+            this.store.select(getCurrentSite).subscribe(site => {
+              site.isApprove = false;
+              this.content.libraryUpdated.next({ entry: site });
+            });
+          })
+          .unsubscribe();
+      }
+    })
+  );
+  @Effect({ dispatch: false })
+  rejectLibraryNode$ = this.actions$.pipe(
+    ofType<RejectLibraryNodeAction>(LibraryActionTypes.RejectLibraryNode),
+    map(action => {
+      if (action.payload) {
+        const data = action.payload.entry;
+        this.contentApi
+          .deleteNode(data.id, { permanent: true })
+          .subscribe(() => {
+            this.store.dispatch(new ReloadDocumentListAction());
+          });
+      }
+    })
+  );
+  @Effect({ dispatch: false })
+  approveLibraryNode$ = this.actions$.pipe(
+    ofType<ApproveLibraryNodeAction>(LibraryActionTypes.ApproveLibraryNode),
+    map(action => {
+      if (action.payload) {
+        const data = action.payload.entry;
+        this.store.select(getNavigationState).subscribe(navigate => {
+          if (
+            navigate.currentSite &&
+            navigate.currentSite.nodeIdFolderDocument
+          ) {
+            this.contentApi
+              .moveFile(data.id, navigate.currentSite.nodeIdFolderDocument)
+              .subscribe(() => {
+                this.store.dispatch(new ReloadDocumentListAction());
+              });
+          }
+        });
+      }
     })
   );
 }

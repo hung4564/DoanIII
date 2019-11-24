@@ -607,6 +607,78 @@
           "sortable": false,
           "desktopOnly": false
         }
+      ],
+      "siteNodeRequert": [
+        {
+          "id": "app.files.name",
+          "key": "name",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.NAME",
+          "type": "text",
+          "class": "adf-ellipsis-cell adf-expand-cell-5",
+          "sortable": true,
+          "template": "app.columns.name",
+          "desktopOnly": false
+        },
+        {
+          "id": "app.files.size",
+          "key": "content.sizeInBytes",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.SIZE",
+          "type": "fileSize",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.files.modifiedOn",
+          "key": "modifiedAt",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.MODIFIED_ON",
+          "type": "date",
+          "format": "timeAgo",
+          "class": "adf-ellipsis-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.files.modifiedBy",
+          "key": "modifiedByUser.displayName",
+          "title": "APP.DOCUMENT_LIST.COLUMNS.MODIFIED_BY",
+          "type": "text",
+          "class": "adf-ellipsis-cell adf-no-grow-cell",
+          "sortable": true,
+          "desktopOnly": true
+        },
+        {
+          "id": "app.siteNodeRequert.btnApprove",
+          "key": "",
+          "title": "",
+          "type": "",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.button",
+          "actions": {
+            "title": "APP.ACTIONS.APPROVE",
+            "description": "APP.NEW_MENU.TOOLTIPS.APPROVE_SITE_MEMBER",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.APPROVE_SITE_MEMBER_NOT_ALLOWED",
+            "click": "APPROVE_LIBRARY_NODE"
+          },
+          "sortable": false,
+          "desktopOnly": false
+        },
+        {
+          "id": "app.siteNodeRequert.btnReject",
+          "key": "",
+          "title": "",
+          "type": "",
+          "class": "adf-no-grow-cell adf-ellipsis-cell",
+          "template": "app.columns.button",
+          "actions": {
+            "title": "APP.ACTIONS.REJECT",
+            "description": "APP.NEW_MENU.TOOLTIPS.REJECT_SITE_MEMBER",
+            "description-disabled": "APP.NEW_MENU.TOOLTIPS.REJECT_SITE_MEMBER_NOT_ALLOWED",
+            "click": "REJECT_LIBRARY_NODE"
+          },
+          "sortable": false,
+          "desktopOnly": false
+        }
       ]
     }
   }

@@ -44,7 +44,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     title: string;
     active: boolean;
   }[] = [
-    { link: "", title: "Documents", active: true },
+    { link: "library", title: "Documents", active: false },
     { link: "members", title: "Members", active: false }
   ];
   isAdmin = false;
@@ -88,7 +88,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     route.params.subscribe(params => {
       this.librariesId = params.id;
       this.libraySv.setSiteId(this.librariesId);
-      this.libraySv.getSite(this.librariesId).subscribe(site => {
+      this.libraySv.getSite().subscribe(site => {
         this.pageTitle.setTitle(site.entry.title || "");
         this.store.dispatch(new SetCurrentLibraryAction(site.entry));
         if (
@@ -101,6 +101,18 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
             active: false
           });
         }
+        if (site.entry.role == Site.RoleEnum.SiteManager) {
+          this.links.push({ link: "setting", title: "Setting", active: false });
+        }
+        if (
+          site.entry.isApprove &&
+          site.entry.role == Site.RoleEnum.SiteManager
+        ) {
+          this.links.push({ link: "approve", title: "Approve", active: false });
+        }
+        this.links.forEach(x => {
+          x.active = this.router.url.endsWith(x.link);
+        });
         const found = this.libraySv.getNodeOfDocumentLibrary(site);
         if (found) {
           const nodeId = found.entry.id;

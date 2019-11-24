@@ -183,6 +183,7 @@ export class NodeEffects {
   moveNodes$ = this.actions$.pipe(
     ofType<MoveNodesAction>(NodeActionTypes.Move),
     map(action => {
+    console.log("TCL: NodeEffects -> action", action)
       if (action.payload && action.payload.length > 0) {
         this.contentService.moveNodes(action.payload);
       } else {

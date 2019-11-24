@@ -28,6 +28,7 @@ export class LibrariesComponent extends PageComponent implements OnInit {
     super.ngOnInit();
     this.store.dispatch(new SetCurrentFolderAction(null));
     this.subscriptions.push(
+      this.content.libraryUpdated.subscribe(() => this.reload()),
       this.content.libraryLeft.subscribe(() => this.reload())
     );
     this.columns = this.extensions.documentListPresets.libraries || [];

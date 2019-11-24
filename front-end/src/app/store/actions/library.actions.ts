@@ -4,7 +4,8 @@ import {
   SiteEntry,
   Site,
   SiteMemberEntry,
-  SiteMembershipRequestWithPersonEntry
+  SiteMembershipRequestWithPersonEntry,
+  MinimalNodeEntity
 } from "@alfresco/js-api";
 
 export enum LibraryActionTypes {
@@ -17,7 +18,11 @@ export enum LibraryActionTypes {
   UpdateMember = "UPDATE_LIBRARY_MEMBER",
   DeleteMember = "REMOVE_LIBRARY_MEMBER",
   ApproveMember = "APPROVE_LIBRARY_MEMBER",
-  RejectMember = "REJECT_LIBRARY_MEMBER"
+  RejectMember = "REJECT_LIBRARY_MEMBER",
+  AddApproveFolder = "ADD_APPROVE_LIBRARY_FOLDER",
+  DeleteApproveFolder = "DELETE_APPROVE_LIBRARY_FOLDER",
+  ApproveLibraryNode = "APPROVE_LIBRARY_NODE",
+  RejectLibraryNode = "REJECT_LIBRARY_NODE"
 }
 
 export class DeleteLibraryAction implements Action {
@@ -71,4 +76,24 @@ export class RejectMemberLibraryAction implements Action {
   readonly type = LibraryActionTypes.RejectMember;
 
   constructor(public payload?: SiteMembershipRequestWithPersonEntry) {}
+}
+export class AddApproveFolderAction implements Action {
+  readonly type = LibraryActionTypes.AddApproveFolder;
+
+  constructor(public payload?: Site) {}
+}
+export class DeleteApproveFolderAction implements Action {
+  readonly type = LibraryActionTypes.DeleteApproveFolder;
+
+  constructor(public payload?: string) {}
+}
+export class ApproveLibraryNodeAction implements Action {
+  readonly type = LibraryActionTypes.ApproveLibraryNode;
+
+  constructor(public payload?: MinimalNodeEntity) {}
+}
+export class RejectLibraryNodeAction implements Action {
+  readonly type = LibraryActionTypes.RejectLibraryNode;
+
+  constructor(public payload?: MinimalNodeEntity) {}
 }

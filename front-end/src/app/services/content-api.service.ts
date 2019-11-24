@@ -421,6 +421,20 @@ export class ContentApiService {
         )
     );
   }
+  createApproveFolder(siteguid: string) {
+    const body = {
+      name: "needApproveDocumentLibrary",
+      nodeType: "cm:folder",
+      aspectNames: ["cm:tagscope", "st:siteContainer", "cm:auditable"],
+      properties: {
+        "st:componentId": "needApproveDocumentLibrary"
+      }
+    };
+    return from(this.api.nodesApi.addNode(siteguid, body));
+  }
+  moveFile(nodeId: string, targetParentId: string, name?: string) {
+    return from(this.api.nodesApi.moveNode(nodeId, { targetParentId, name }));
+  }
 }
 function clean(obj) {
   var propNames = Object.getOwnPropertyNames(obj);

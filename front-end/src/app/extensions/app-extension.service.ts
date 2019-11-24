@@ -50,6 +50,7 @@ export class AppExtensionService implements CustomRuleContext {
     tasks: Array<DocumentListPresetRef>;
     siteMembers: DocumentListPresetRef[];
     siteMembersRequest: DocumentListPresetRef[];
+    siteNodeRequert: DocumentListPresetRef[];
   } = {
     files: [],
     libraries: [],
@@ -63,7 +64,8 @@ export class AppExtensionService implements CustomRuleContext {
     groups: [],
     tasks: [],
     siteMembers: [],
-    siteMembersRequest: []
+    siteMembersRequest: [],
+    siteNodeRequert: []
   };
 
   contentMetadata: any;
@@ -161,7 +163,8 @@ export class AppExtensionService implements CustomRuleContext {
       siteMembersRequest: this.getDocumentListPreset(
         config,
         "siteMembersRequest"
-      )
+      ),
+      siteNodeRequert: this.getDocumentListPreset(config, "siteNodeRequert")
     };
 
     if (config.features && config.features.viewer) {

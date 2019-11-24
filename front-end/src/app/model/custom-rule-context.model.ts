@@ -1,12 +1,12 @@
 import { RuleContext, NavigationState } from "@alfresco/adf-extensions";
-import { Site } from "@alfresco/js-api";
+import { CustomSite } from "./custom-site.model";
 
 export interface CustomRuleContext extends RuleContext {
   navigation: CustomNavigationState;
 }
 
 export interface CustomNavigationState extends NavigationState {
-  currentSite?: Site;
+  currentSite?: CustomSite;
   data?: DataNavigation;
 }
 export interface DataNavigation {
