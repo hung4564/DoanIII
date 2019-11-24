@@ -56,7 +56,7 @@ export class LibrariesApproveComponent extends PageComponent implements OnInit {
         this.libraySv.changeFolderInSite.next(node);
       }
 
-      if (node.entry.is) {
+      if (node.entry.id) {
         this.showPreview(node);
       }
     }
