@@ -7,7 +7,11 @@ import { appRoutes } from "./app.routes";
 import { AppComponent } from "./app.component";
 import { SharesModule } from "./layout/shares/shares.module";
 import { LoginModule } from "./pages/login/login.module";
-import { CoreModule, TRANSLATION_PROVIDER, TranslateLoaderService } from "@alfresco/adf-core";
+import {
+  CoreModule,
+  TRANSLATION_PROVIDER,
+  TranslateLoaderService
+} from "@alfresco/adf-core";
 import { ContentModule } from "@alfresco/adf-content-services";
 
 import { AppStoreModule } from "app/store/app-store.module";
@@ -37,6 +41,8 @@ import { GroupsModule } from "./pages/groups/groups.module";
 import { SearchResultModule } from "./pages/search-result/search-result.module";
 import { TaskModule } from "./pages/task/task.module";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { AppAdminRuleGuard } from "./routing/admin.guard";
+import { AppSharedRuleGuard } from "./routing/shared.guard";
 @NgModule({
   imports: [
     AppStoreModule,
@@ -72,6 +78,8 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
   ],
   providers: [
     AppService,
+    AppAdminRuleGuard,
+    AppSharedRuleGuard,
     HandleService,
     AppExtensionService,
     ContentApiService,

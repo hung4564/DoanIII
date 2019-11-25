@@ -29,6 +29,7 @@ import { FavoriteLibrariesComponent } from "./pages/libraries/favorite-libraries
 import { LibraiesPendingComponent } from "./pages/libraries/libraies-pending/libraies-pending.component";
 import { LibrariesSettingComponent } from "./pages/libraries/libraries-setting/libraries-setting.component";
 import { LibrariesApproveComponent } from "./pages/libraries/libraries-approve/libraries-approve.component";
+import { AppAdminRuleGuard } from "./routing/admin.guard";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -38,20 +39,6 @@ export const appRoutes: Routes = [
     }
   },
   {
-    path: "error",
-    children: [
-      {
-        path: "",
-        redirectTo: "/error/404",
-        pathMatch: "full"
-      },
-      {
-        path: ":id",
-        component: ErrorComponent
-      }
-    ]
-  },
-  {
     path: "preview/s/:id",
     component: SharedLinkViewComponent,
     data: {
@@ -59,6 +46,7 @@ export const appRoutes: Routes = [
       navigateMultiple: true
     }
   },
+  { path: "home", redirectTo: "personal-files" },
   {
     path: "",
     canActivate: [AuthGuardEcm],
@@ -302,12 +290,14 @@ export const appRoutes: Routes = [
       {
         path: "people",
         component: PeopleComponent,
-        data: { title: "APP.BROWSE.PEOPLE.TITLE" }
+        data: { title: "APP.BROWSE.PEOPLE.TITLE", disableShowInfoFile: true },
+        canActivate: [AppAdminRuleGuard]
       },
       {
         path: "groups",
         component: GroupsMainComponent,
-        data: { title: "APP.BROWSE.GROUPS.TITLE" }
+        data: { title: "APP.BROWSE.GROUPS.TITLE", disableShowInfoFile: true },
+        canActivate: [AppAdminRuleGuard]
       },
       {
         path: "search",
@@ -358,8 +348,22 @@ export const appRoutes: Routes = [
         ]
       }
     ]
+  },
+  { path: "**", redirectTo: "error", pathMatch: "full" },
+  {
+    path: "error",
+    children: [
+      {
+        path: "",
+        redirectTo: "404",
+        pathMatch: "full"
+      },
+      {
+        path: ":id",
+        component: ErrorComponent
+      }
+    ]
   }
-  // ...LayoutRoutes
 ];
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes)],

@@ -7,7 +7,11 @@
   "$license": "LGPL-3.0",
   "$runtime": "1.7.0",
   "$description": "Core application extensions and features",
-  "$references": ["app.documentList.json", "app.header.json", "app.navbar.json"],
+  "$references": [
+    "app.documentList.json",
+    "app.header.json",
+    "app.navbar.json"
+  ],
   "rules": [
     {
       "id": "app.toolbar.favorite.canAdd",
@@ -825,7 +829,7 @@
               "click": "DELETE_LIBRARY"
             },
             "rules": {
-              "visible": "app.selection.library"
+              "visible": "app.selection.library.canDelete"
             }
           }
         ]
@@ -864,6 +868,54 @@
         "component": "app.toolbar.viewNode",
         "rules": {
           "visible": "canViewFile"
+        }
+      },
+      {
+        "id": "app.people.edit",
+        "title": "APP.ACTIONS.EDIT",
+        "icon": "create",
+        "order": 201,
+        "actions": {
+          "click": "EDIT_PERSON"
+        },
+        "rules": {
+          "visible": "canShowPeople"
+        }
+      },
+      {
+        "id": "app.people.delete",
+        "title": "APP.ACTIONS.DELETE",
+        "icon": "delete",
+        "order": 202,
+        "actions": {
+          "click": "DELETE_PERSON"
+        },
+        "rules": {
+          "visible": "canShowPeople"
+        }
+      },
+      {
+        "id": "app.group.edit",
+        "title": "APP.ACTIONS.EDIT",
+        "icon": "create",
+        "order": 201,
+        "actions": {
+          "click": "EDIT_GROUP"
+        },
+        "rules": {
+          "visible": "canShowGroup"
+        }
+      },
+      {
+        "id": "app.group.delete",
+        "title": "APP.ACTIONS.DELETE",
+        "icon": "delete",
+        "order": 202,
+        "actions": {
+          "click": "DELETE_GROUP"
+        },
+        "rules": {
+          "visible": "canShowGroup"
         }
       },
       {
@@ -1048,7 +1100,8 @@
           "click": "DELETE_LIBRARY"
         },
         "rules": {
-          "visible": "app.selection.library"
+          "visible": "app.selection.library.canDelete",
+          "enabled": "app.selection.library.canDelete"
         }
       },
       {

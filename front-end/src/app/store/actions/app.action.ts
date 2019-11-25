@@ -2,6 +2,7 @@ import { Action } from "@ngrx/store";
 import { Node, Person, Group, RepositoryInfo, Site } from "@alfresco/js-api";
 import { AppState } from "../states/app.state";
 import { DataNavigation } from "app/model/custom-rule-context.model";
+import { CustomSite } from "app/model/custom-site.model";
 
 export enum AppActionTypes {
   SetInitialState = "SET_INITIAL_STATE",
@@ -87,5 +88,5 @@ export class SetSmallScreenAction implements Action {
 export class SetCurrentLibraryAction implements Action {
   readonly type = AppActionTypes.SetCurrentLibrary;
 
-  constructor(public payload: Site) {}
+  constructor(public payload: CustomSite) {}
 }

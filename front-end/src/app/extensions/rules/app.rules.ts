@@ -1,7 +1,11 @@
 import * as navigation from "./navigation.rules";
 import * as repository from "./repository.rules";
 import * as user from "./user.rules";
-import { CustomRuleContext, NavigationTypeEnum } from "app/model/custom-rule-context.model";
+import {
+  CustomRuleContext,
+  NavigationTypeEnum
+} from "app/model/custom-rule-context.model";
+import { Site } from "@alfresco/js-api";
 
 /**
  * Checks if user can copy selected node.
@@ -72,9 +76,11 @@ export function canShareFile(context: CustomRuleContext): boolean {
  * JSON ref: `canToggleJoinLibrary`
  */
 export function canToggleJoinLibrary(context: CustomRuleContext): boolean {
-  return [hasLibrarySelected(context), !isPrivateLibrary(context), hasNoLibraryRole(context)].every(
-    Boolean
-  );
+  return [
+    hasLibrarySelected(context),
+    !isPrivateLibrary(context),
+    hasNoLibraryRole(context)
+  ].every(Boolean);
 }
 
 /**
@@ -83,7 +89,10 @@ export function canToggleJoinLibrary(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canEditFolder(context: CustomRuleContext): boolean {
-  return [canUpdateSelectedFolder(context), navigation.isNotTrashcan(context)].every(Boolean);
+  return [
+    canUpdateSelectedFolder(context),
+    navigation.isNotTrashcan(context)
+  ].every(Boolean);
 }
 
 /**
@@ -95,7 +104,10 @@ export function isShared(context: CustomRuleContext): boolean {
     return true;
   }
 
-  if ((navigation.isNotTrashcan(context), !context.selection.isEmpty && context.selection.file)) {
+  if (
+    (navigation.isNotTrashcan(context),
+    !context.selection.isEmpty && context.selection.file)
+  ) {
     return !!(
       context.selection.file.entry &&
       context.selection.file.entry.properties &&
@@ -194,7 +206,10 @@ export function canUpload(context: CustomRuleContext): boolean {
 export function canDownloadSelection(context: CustomRuleContext): boolean {
   if (!context.selection.isEmpty && navigation.isNotTrashcan(context)) {
     return context.selection.nodes.every((node: any) => {
-      return node.entry && (node.entry.isFile || node.entry.isFolder || !!node.entry.nodeId);
+      return (
+        node.entry &&
+        (node.entry.isFile || node.entry.isFolder || !!node.entry.nodeId)
+      );
     });
   }
   return false;
@@ -225,7 +240,11 @@ export function hasLibrarySelected(context: CustomRuleContext): boolean {
 export function isPrivateLibrary(context: CustomRuleContext): boolean {
   const library = context.selection.library;
   return library
-    ? !!(library.entry && library.entry.visibility && library.entry.visibility === "PRIVATE")
+    ? !!(
+        library.entry &&
+        library.entry.visibility &&
+        library.entry.visibility === "PRIVATE"
+      )
     : false;
 }
 
@@ -283,7 +302,8 @@ export function canUpdateSelectedFolder(context: CustomRuleContext): boolean {
   if (folder) {
     return (
       // workaround for Favorites Api
-      navigation.isFavorites(context) || context.permissions.check(folder.entry, ["update"])
+      navigation.isFavorites(context) ||
+      context.permissions.check(folder.entry, ["update"])
     );
   }
   return false;
@@ -302,7 +322,8 @@ export function hasLockedFiles(context: CustomRuleContext): boolean {
 
       return (
         node.entry.isLocked ||
-        (node.entry.properties && node.entry.properties["cm:lockType"] === "READ_ONLY_LOCK")
+        (node.entry.properties &&
+          node.entry.properties["cm:lockType"] === "READ_ONLY_LOCK")
       );
     });
   }
@@ -322,7 +343,8 @@ export function isWriteLocked(context: CustomRuleContext): boolean {
     context.selection.file.entry &&
     context.selection.file.entry.properties &&
     (context.selection.file.entry.properties["cm:lockType"] === "WRITE_LOCK" ||
-      context.selection.file.entry.properties["cm:lockType"] === "READ_ONLY_LOCK")
+      context.selection.file.entry.properties["cm:lockType"] ===
+        "READ_ONLY_LOCK")
   );
 }
 
@@ -335,7 +357,8 @@ export function isUserWriteLockOwner(context: CustomRuleContext): boolean {
   return (
     isWriteLocked(context) &&
     context.selection.file.entry.properties["cm:lockOwner"] &&
-    context.selection.file.entry.properties["cm:lockOwner"].id === context.profile.id
+    context.selection.file.entry.properties["cm:lockOwner"].id ===
+      context.profile.id
   );
 }
 
@@ -355,7 +378,8 @@ export function canUnlockFile(context: CustomRuleContext): boolean {
   const { file } = context.selection;
   return (
     isWriteLocked(context) &&
-    (context.permissions.check(file.entry, ["delete"]) || isUserWriteLockOwner(context))
+    (context.permissions.check(file.entry, ["delete"]) ||
+      isUserWriteLockOwner(context))
   );
 }
 
@@ -371,7 +395,9 @@ export function canUploadVersion(context: CustomRuleContext): boolean {
   return [
     hasFileSelected(context),
     navigation.isNotTrashcan(context),
-    isWriteLocked(context) ? isUserWriteLockOwner(context) : canUpdateSelectedNode(context)
+    isWriteLocked(context)
+      ? isUserWriteLockOwner(context)
+      : canUpdateSelectedNode(context)
   ].every(Boolean);
 }
 
@@ -390,7 +416,9 @@ export function isTrashcanItemSelected(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canViewFile(context: CustomRuleContext): boolean {
-  return [hasFileSelected(context), navigation.isNotTrashcan(context)].every(Boolean);
+  return [hasFileSelected(context), navigation.isNotTrashcan(context)].every(
+    Boolean
+  );
 }
 
 /**
@@ -408,9 +436,10 @@ export function canLeaveLibrary(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canToggleSharedLink(context: CustomRuleContext): boolean {
-  return [hasFileSelected(context), [canShareFile(context), isShared(context)].some(Boolean)].every(
-    Boolean
-  );
+  return [
+    hasFileSelected(context),
+    [canShareFile(context), isShared(context)].some(Boolean)
+  ].every(Boolean);
 }
 
 /**
@@ -446,7 +475,10 @@ export function canManageFileVersions(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canManagePermissions(context: CustomRuleContext): boolean {
-  return [canUpdateSelectedNode(context), navigation.isNotTrashcan(context)].every(Boolean);
+  return [
+    canUpdateSelectedNode(context),
+    navigation.isNotTrashcan(context)
+  ].every(Boolean);
 }
 
 /**
@@ -458,7 +490,8 @@ export function canToggleEditOffline(context: CustomRuleContext): boolean {
   return [
     hasFileSelected(context),
     navigation.isNotTrashcan(context),
-    navigation.isNotFavorites(context) || navigation.isFavoritesPreview(context),
+    navigation.isNotFavorites(context) ||
+      navigation.isFavoritesPreview(context),
     navigation.isNotSharedFiles(context) || navigation.isSharedPreview(context),
     canLockFile(context) || canUnlockFile(context)
   ].every(Boolean);
@@ -487,9 +520,11 @@ export function canToggleFavorite(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canShowPeople(context: CustomRuleContext): boolean {
-  return [hasSelection(context), navigation.isPeople(context), user.isAdmin(context)].every(
-    Boolean
-  );
+  return [
+    hasSelection(context),
+    navigation.isPeople(context),
+    user.isAdmin(context)
+  ].every(Boolean);
 }
 
 /**
@@ -498,5 +533,21 @@ export function canShowPeople(context: CustomRuleContext): boolean {
  * @param context Rule execution context
  */
 export function canShowGroup(context: CustomRuleContext): boolean {
-  return [hasSelection(context), navigation.isGroup(context), user.isAdmin(context)].every(Boolean);
+  return [
+    hasSelection(context),
+    navigation.isGroup(context),
+    user.isAdmin(context)
+  ].every(Boolean);
+}
+
+/**
+ * Checks if user can delete the first selected library.
+ * JSON ref: `app.selection.library.canDelete`
+ */
+export function canDeleteSelectedLibrary(context: CustomRuleContext): boolean {
+  const { library } = context.selection;
+  if (library) {
+    return library && library.entry.role == Site.RoleEnum.SiteManager;
+  }
+  return false;
 }

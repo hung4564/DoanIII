@@ -114,6 +114,7 @@ export class CoreExtensionsModule {
       "app.selection.file.isLockOwner": rules.isUserWriteLockOwner,
       "app.selection.file.canUploadVersion": rules.canUploadVersion,
       "app.selection.library": rules.hasLibrarySelected,
+      "app.selection.library.canDelete": rules.canDeleteSelectedLibrary,
       "app.selection.isPrivateLibrary": rules.isPrivateLibrary,
       "app.selection.hasLibraryRole": rules.hasLibraryRole,
       "app.selection.hasNoLibraryRole": rules.hasNoLibraryRole,

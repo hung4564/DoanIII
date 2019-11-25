@@ -59,6 +59,7 @@ import {
 import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
 import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
 import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
+import { CustomSiteEntry } from "app/model/custom-site.model";
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;
@@ -73,7 +74,7 @@ export class ContentManagementService {
   reset = new Subject<any>();
   changeTaskForm = new Subject<any>();
   nodesDeleted = new Subject<any>();
-  libraryUpdated = new Subject<SiteEntry>();
+  libraryUpdated = new Subject<CustomSiteEntry>();
   libraryJoined = new Subject<string>();
   libraryLeft = new Subject<string>();
   library400Error = new Subject<any>();
