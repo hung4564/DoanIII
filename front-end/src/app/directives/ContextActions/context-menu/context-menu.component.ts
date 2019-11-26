@@ -31,7 +31,7 @@ import { getAppSelection } from 'app/store/selectors/app.selector';
 })
 export class ContextMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$: Subject<boolean> = new Subject<boolean>();
-  actions: Array<ContentActionRef> = [];
+  actions: ContentActionRef[] = [];
 
   @ViewChild(MatMenuTrigger)
   trigger: MatMenuTrigger;

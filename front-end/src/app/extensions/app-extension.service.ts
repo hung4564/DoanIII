@@ -10,14 +10,14 @@ import {
   reduceSeparators,
   sortByOrder,
   ContentActionType,
-  SelectionState,
-  NavigationState,
-  ProfileState,
-  RuleEvaluator,
   IconRef,
   NavBarGroupRef,
   SidebarTabRef,
-  mergeObjects
+  mergeObjects,
+  SelectionState,
+  NavigationState,
+  ProfileState,
+  RuleEvaluator
 } from "@alfresco/adf-extensions";
 import { Observable, BehaviorSubject } from "rxjs";
 import { Store } from "@ngrx/store";
@@ -37,17 +37,17 @@ export interface ViewerRules {
 })
 export class AppExtensionService implements CustomRuleContext {
   documentListPresets: {
-    files: Array<DocumentListPresetRef>;
-    libraries: Array<DocumentListPresetRef>;
-    favoriteLibraries: Array<DocumentListPresetRef>;
-    shared: Array<DocumentListPresetRef>;
-    recent: Array<DocumentListPresetRef>;
-    favorites: Array<DocumentListPresetRef>;
-    trashcan: Array<DocumentListPresetRef>;
-    searchLibraries: Array<DocumentListPresetRef>;
-    people: Array<DocumentListPresetRef>;
-    groups: Array<DocumentListPresetRef>;
-    tasks: Array<DocumentListPresetRef>;
+    files: DocumentListPresetRef[];
+    libraries: DocumentListPresetRef[];
+    favoriteLibraries: DocumentListPresetRef[];
+    shared: DocumentListPresetRef[];
+    recent: DocumentListPresetRef[];
+    favorites: DocumentListPresetRef[];
+    trashcan: DocumentListPresetRef[];
+    searchLibraries: DocumentListPresetRef[];
+    people: DocumentListPresetRef[];
+    groups: DocumentListPresetRef[];
+    tasks: DocumentListPresetRef[];
     siteMembers: DocumentListPresetRef[];
     siteMembersRequest: DocumentListPresetRef[];
     siteNodeRequert: DocumentListPresetRef[];
@@ -69,14 +69,15 @@ export class AppExtensionService implements CustomRuleContext {
   };
 
   contentMetadata: any;
-  openWithActions: Array<ContentActionRef> = [];
-  toolbarActions: Array<ContentActionRef> = [];
-  viewerToolbarActions: Array<ContentActionRef> = [];
-  contextMenuActions: Array<ContentActionRef> = [];
-  createActions: Array<ContentActionRef> = [];
-  navbar: Array<NavBarGroupRef> = [];
-  sidebar: Array<SidebarTabRef> = [];
-  sharedLinkViewerToolbarActions: Array<ContentActionRef> = [];
+  headerActions: ContentActionRef[] = [];
+  openWithActions: ContentActionRef[] = [];
+  toolbarActions: ContentActionRef[] = [];
+  viewerToolbarActions: ContentActionRef[] = [];
+  contextMenuActions: ContentActionRef[] = [];
+  createActions: ContentActionRef[] = [];
+  navbar: NavBarGroupRef[] = [];
+  sidebar: SidebarTabRef[] = [];
+  sharedLinkViewerToolbarActions: ContentActionRef[] = [];
   viewerRules: ViewerRules = {};
 
   selection: SelectionState;
@@ -114,6 +115,10 @@ export class AppExtensionService implements CustomRuleContext {
       console.error("Extension configuration not found");
       return;
     }
+    this.headerActions = this.loader.getContentActions(
+      config,
+      "features.header"
+    );
     this.openWithActions = this.loader.getContentActions(
       config,
       "features.viewer.openWith"
@@ -189,7 +194,7 @@ export class AppExtensionService implements CustomRuleContext {
       )
       .filter(entry => !entry.disabled);
   }
-  getCreateActions(): Array<ContentActionRef> {
+  getCreateActions(): ContentActionRef[] {
     return this.createActions
       .filter(action => this.filterVisible(action))
       .map(action => this.copyAction(action))
@@ -240,14 +245,14 @@ export class AppExtensionService implements CustomRuleContext {
 
     return actionRef;
   }
-  getAllowedToolbarActions(): Array<ContentActionRef> {
+  getAllowedToolbarActions(): ContentActionRef[] {
     return this.getAllowedActions(this.toolbarActions);
   }
 
-  getViewerToolbarActions(): Array<ContentActionRef> {
+  getViewerToolbarActions(): ContentActionRef[] {
     return this.getAllowedActions(this.viewerToolbarActions);
   }
-  getAllowedContextMenuActions(): Array<ContentActionRef> {
+  getAllowedContextMenuActions(): ContentActionRef[] {
     return this.getAllowedActions(this.contextMenuActions);
   }
   private getAllowedActions(actions: ContentActionRef[]): ContentActionRef[] {
@@ -304,7 +309,7 @@ export class AppExtensionService implements CustomRuleContext {
     }
   }
   protected registerIcons(config: ExtensionConfig) {
-    const icons: Array<IconRef> = this.loader
+    const icons: IconRef[] = this.loader
       .getElements<IconRef>(config, "features.icons")
       .filter(entry => !entry.disabled);
 
@@ -423,7 +428,7 @@ export class AppExtensionService implements CustomRuleContext {
 
     return false;
   }
-  getSharedLinkViewerToolbarActions(): Array<ContentActionRef> {
+  getSharedLinkViewerToolbarActions(): ContentActionRef[] {
     return this.getAllowedActions(this.sharedLinkViewerToolbarActions);
   }
   loadContentMetadata(config: ExtensionConfig): any {
@@ -467,5 +472,8 @@ export class AppExtensionService implements CustomRuleContext {
   }
   checkRule(ruleId: string): boolean {
     return this.extensions.evaluateRule(ruleId, this);
+  }
+  getHeaderActions(): Array<ContentActionRef> {
+    return this.headerActions.filter(action => this.filterVisible(action));
   }
 }

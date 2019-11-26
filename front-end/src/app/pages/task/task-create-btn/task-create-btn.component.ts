@@ -9,7 +9,7 @@ import { ContentApiService } from "app/services/content-api.service";
   styleUrls: ["./task-create-btn.component.scss"]
 })
 export class TaskCreateBtnComponent implements OnInit, OnDestroy {
-  createActions: Array<ContentActionRef> = [];
+  createActions: ContentActionRef[] = [];
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   isLoading = false;
   constructor(private contentApi: ContentApiService) {}

@@ -15,7 +15,7 @@ import { getCurrentFolder } from "app/store/selectors/app.selector";
   host: { class: "app-create-menu" }
 })
 export class CreateMenuComponent implements OnInit, OnDestroy {
-  createActions: Array<ContentActionRef> = [];
+  createActions: ContentActionRef[] = [];
   onDestroy$: Subject<boolean> = new Subject<boolean>();
 
   @Input()

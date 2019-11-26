@@ -43,6 +43,7 @@ import { TaskModule } from "./pages/task/task.module";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { AppAdminRuleGuard } from "./routing/admin.guard";
 import { AppSharedRuleGuard } from "./routing/shared.guard";
+import { AboutModule } from "./pages/about/about.module";
 @NgModule({
   imports: [
     AppStoreModule,
@@ -74,7 +75,8 @@ import { AppSharedRuleGuard } from "./routing/shared.guard";
     PeopleModule,
     GroupsModule,
     SearchResultModule,
-    TaskModule
+    TaskModule,
+    AboutModule
   ],
   providers: [
     AppService,

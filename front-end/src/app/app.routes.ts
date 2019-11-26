@@ -30,6 +30,7 @@ import { LibraiesPendingComponent } from "./pages/libraries/libraies-pending/lib
 import { LibrariesSettingComponent } from "./pages/libraries/libraries-setting/libraries-setting.component";
 import { LibrariesApproveComponent } from "./pages/libraries/libraries-approve/libraries-approve.component";
 import { AppAdminRuleGuard } from "./routing/admin.guard";
+import { AboutComponent } from "./pages/about/about.component";
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -346,6 +347,13 @@ export const appRoutes: Routes = [
             ]
           }
         ]
+      },
+      {
+        path: "about",
+        component: AboutComponent,
+        data: {
+          title: "APP.BROWSE.ABOUT.TITLE"
+        }
       }
     ]
   },

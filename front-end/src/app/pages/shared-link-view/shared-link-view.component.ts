@@ -18,7 +18,7 @@ import { getAppSelection } from 'app/store/selectors/app.selector';
 })
 export class SharedLinkViewComponent implements OnInit {
   sharedLinkId: string = null;
-  viewerToolbarActions: Array<ContentActionRef> = [];
+  viewerToolbarActions: ContentActionRef[] = [];
 
   constructor(
     private route: ActivatedRoute,

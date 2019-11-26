@@ -27,7 +27,7 @@ export class PageComponent implements OnInit, OnDestroy {
   documentList: DocumentListComponent;
   node: MinimalNodeEntryEntity;
   protected subscriptions: Subscription[] = [];
-  actions: Array<ContentActionRef> = [];
+  actions: ContentActionRef[] = [];
   pagination: PaginationModel = new PaginationModel();
   isSmallScreen = false;
   constructor(

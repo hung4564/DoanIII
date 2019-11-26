@@ -3,7 +3,7 @@ import { AppState, AppStore } from './app.state';
 export const INITIAL_APP_STATE: AppState = {
   appName: 'Alfresco Content Application',
   headerColor: '',
-  logoPath: 'assets/images/alfresco-logo-flower.svg',
+  logoPath: 'assets/images/favicon.ico',
   languagePicker: false,
   sharedUrl: '',
   user: {

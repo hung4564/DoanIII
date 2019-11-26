@@ -44,9 +44,9 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   previousNodeId: string;
   nextNodeId: string;
   navigateMultiple = false;
-  openWith: Array<ContentActionRef> = [];
+  openWith: ContentActionRef[] = [];
   contentExtensions: Array<ViewerExtensionRef> = [];
-  viewerToolbarActions: Array<ContentActionRef> = [];
+  viewerToolbarActions: ContentActionRef[] = [];
 
   recentFileFilters = [
     'TYPE:"content"',

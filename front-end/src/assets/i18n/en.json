@@ -247,7 +247,7 @@
       "EFFECTIVITY_GROUP_TITLE": "Effectivity",
       "EXIF_GROUP_TITLE": "Image EXIF"
     },
-    "COPYRIGHT": "© 2017 - 2019 Alfresco Software, Inc. All rights reserved.",
+    "COPYRIGHT": "© 2017 - 2019",
     "DIALOGS": {
       "CONFIRM_ACTION_USER": "Are you sure you want to {{ action }} user",
       "CONFIRM_LEAVE": {

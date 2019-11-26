@@ -6,7 +6,7 @@
   "providers": "ECM",
   "application": {
     "name": "Application",
-    "version": "1.9.0",
+    "version": "1.0.0",
     "logo": "assets/images/favicon.ico",
     "copyright": "APP.COPYRIGHT"
   },

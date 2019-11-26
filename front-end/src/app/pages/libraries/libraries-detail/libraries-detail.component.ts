@@ -48,7 +48,7 @@ export class LibrariesDetailComponent implements OnInit, OnDestroy {
     { link: "members", title: "Members", active: false }
   ];
   isAdmin = false;
-  actions: Array<ContentActionRef> = [];
+  actions: ContentActionRef[] = [];
   librariesId: string;
   onDestroy$: Subject<boolean> = new Subject<boolean>();
   node: MinimalNodeEntryEntity;

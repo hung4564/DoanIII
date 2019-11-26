@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProfileState } from '@alfresco/adf-extensions';
 import { Store } from '@ngrx/store';
-import { AppStore } from 'app/store/states/app.state';
-import { getUserProfile } from 'app/store/selectors/app.selector';
 import { Router } from '@angular/router';
 import { LoginErrorEvent } from '@alfresco/adf-core';
 import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';

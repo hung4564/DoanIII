@@ -11,14 +11,10 @@
     "skipLibCheck": true,
     "noUnusedLocals": false,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2016",
-      "dom"
-    ],
-    "module": "es2015"
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2016", "dom"],
+    "module": "es2015",
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "preserveWhitespaces": false

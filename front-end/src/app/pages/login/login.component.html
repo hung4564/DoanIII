@@ -1,10 +1,11 @@
 <adf-login
   [copyrightText]="'application.copyright' | adfAppConfig | translate"
   providers="ECM"
-  logoImageUrl="./assets/images/alfresco-logo.svg"
+  backgroundImageUrl="./assets/images/login-background.jpg"
   [showRememberMe]="false"
   [showLoginActions]="false"
   (error)="errorHandle($event)"
   (success)="mySuccessMethod($event)"
 >
+  <adf-login-header><ng-template>Login</ng-template></adf-login-header>
 </adf-login>
