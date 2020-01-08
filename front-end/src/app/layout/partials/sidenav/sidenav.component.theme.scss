@@ -3,12 +3,9 @@
   $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
-
-  $border: 1px solid mat-color($foreground, divider, 0.07);
   .adf-sidenav-linklist {
     .active {
       color: mat-color($primary);
-      border: $border;
     }
   }
 }

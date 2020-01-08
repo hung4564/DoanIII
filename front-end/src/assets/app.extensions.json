@@ -286,15 +286,6 @@
           "title": "APP.ACTIONS.MORE",
           "children": [
             {
-              "id": "app.viewer.toggleLock",
-              "order": 100,
-              "type": "custom",
-              "component": "app.toolbar.toggleEditOffline",
-              "rules": {
-                "visible": "canToggleEditOffline"
-              }
-            },
-            {
               "id": "app.toolbar.uploadNodeVersion",
               "order": 200,
               "title": "APP.ACTIONS.UPLOAD_VERSION",
@@ -675,15 +666,6 @@
         "title": "APP.ACTIONS.MORE",
         "children": [
           {
-            "id": "app.toolbar.toggleLock",
-            "order": 100,
-            "type": "custom",
-            "component": "app.toolbar.toggleEditOffline",
-            "rules": {
-              "visible": "canToggleEditOffline"
-            }
-          },
-          {
             "id": "app.toolbar.uploadNodeVersion",
             "order": 200,
             "title": "APP.ACTIONS.UPLOAD_VERSION",
@@ -922,15 +904,6 @@
         "id": "app.create.separator.1",
         "type": "separator",
         "order": 400
-      },
-      {
-        "id": "app.context.toggleLock",
-        "order": 500,
-        "type": "custom",
-        "component": "app.toolbar.toggleEditOffline",
-        "rules": {
-          "visible": "canToggleEditOffline"
-        }
       },
       {
         "id": "app.context.menu.editFolder",
