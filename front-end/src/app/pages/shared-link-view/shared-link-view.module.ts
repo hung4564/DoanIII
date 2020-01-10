@@ -1,22 +1,28 @@
-import { NgModule } from '@angular/core';
-import { SharedLinkViewComponent } from './shared-link-view.component';
-import { CoreModule } from '@alfresco/adf-core';
-import { Routes } from '@angular/router';
-import { CoreExtensionsModule } from '../../extensions/core.extensions.module';
-import { SharesModule } from 'app/layout/shares/shares.module';
+import { CoreModule } from "@alfresco/adf-core";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { SharesModule } from "app/layout/shares/shares.module";
+import { CoreExtensionsModule } from "../../extensions/core.extensions.module";
+import { SharedLinkViewComponent } from "./shared-link-view.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: SharedLinkViewComponent,
     data: {
-      title: 'APP.PREVIEW.TITLE'
+      title: "APP.PREVIEW.TITLE",
+      navigateMultiple: true
     }
   }
 ];
 
 @NgModule({
-  imports: [CoreModule.forChild(), CoreExtensionsModule.forChild(), SharesModule],
+  imports: [
+    RouterModule.forChild(routes),
+    CoreModule.forChild(),
+    CoreExtensionsModule.forChild(),
+    SharesModule
+  ],
   declarations: [SharedLinkViewComponent],
   exports: [SharedLinkViewComponent]
 })

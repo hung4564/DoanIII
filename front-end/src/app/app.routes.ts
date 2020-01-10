@@ -1,36 +1,14 @@
+import { AuthGuardEcm } from "@alfresco/adf-core";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-
-import { LoginComponent } from "./pages/login/login.component";
-import { ErrorComponent } from "./pages/error/error.component";
-import { AuthGuardEcm } from "@alfresco/adf-core";
 import { LayoutComponent } from "./layout/layout.component";
-import { FilesComponent } from "./pages/files/files.component";
-import { PreviewComponent } from "./pages/preview/preview.component";
-import { FileTrashComponent } from "./pages/file-trash/file-trash.component";
-import { SharedLinkViewComponent } from "./pages/shared-link-view/shared-link-view.component";
-import { AppSharedRuleGuard } from "./routing/shared.guard";
-import { FileShareComponent } from "./pages/file-share/file-share.component";
-import { FileRecentComponent } from "./pages/file-recent/file-recent.component";
-import { FileFavoriteComponent } from "./pages/file-favorite/file-favorite.component";
+import { ErrorComponent } from "./pages/error/error.component";
 import { FileDetailComponent } from "./pages/files/file-detail/file-detail.component";
-import { LibrariesComponent } from "./pages/libraries/libraries.component";
-import { PeopleComponent } from "./pages/people/people.component";
-import { GroupsMainComponent } from "./pages/groups/groups-main/groups-main.component";
-import { SearchResultsComponent } from "./pages/search-result/search-results/search-results.component";
-import { SearchLibrariesResultsComponent } from "./pages/search-result/search-libraries-results/search-libraries-results.component";
-import { TaskComponent } from "./pages/task/task.component";
-import { TaskDetailComponent } from "./pages/task/task-detail/task-detail.component";
-import { TaskCreateComponent } from "./pages/task/task-create/task-create.component";
-import { LibrariesDetailComponent } from "./pages/libraries/libraries-detail/libraries-detail.component";
-import { LibrariesDocumentComponent } from "./pages/libraries/libraries-document/libraries-document.component";
-import { LibrariesMemberComponent } from "./pages/libraries/libraries-member/libraries-member.component";
-import { FavoriteLibrariesComponent } from "./pages/libraries/favorite-libraries/favorite-libraries.component";
-import { LibraiesPendingComponent } from "./pages/libraries/libraies-pending/libraies-pending.component";
-import { LibrariesSettingComponent } from "./pages/libraries/libraries-setting/libraries-setting.component";
-import { LibrariesApproveComponent } from "./pages/libraries/libraries-approve/libraries-approve.component";
-import { AppAdminRuleGuard } from "./routing/admin.guard";
-import { AboutComponent } from "./pages/about/about.component";
+import { FilesComponent } from "./pages/files/files.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { PreviewComponent } from "./pages/preview/preview.component";
+import { AppSharedRuleGuard } from "./routing/shared.guard";
+
 export const appRoutes: Routes = [
   {
     path: "login",
@@ -41,11 +19,8 @@ export const appRoutes: Routes = [
   },
   {
     path: "preview/s/:id",
-    component: SharedLinkViewComponent,
-    data: {
-      title: "APP.PREVIEW.TITLE",
-      navigateMultiple: true
-    }
+    loadChildren:
+      "app/pages/shared-link-view/shared-link-view.module#AppSharedLinkViewModule"
   },
   { path: "home", redirectTo: "personal-files" },
   {
@@ -99,261 +74,44 @@ export const appRoutes: Routes = [
       },
       {
         path: "libraries",
-        children: [
-          {
-            path: "",
-            component: LibrariesComponent,
-            data: {
-              title: "APP.BROWSE.LIBRARIES.MENU.MY_LIBRARIES.TITLE"
-            }
-          },
-          {
-            path: ":id",
-            component: LibrariesDetailComponent,
-            children: [
-              {
-                path: "",
-                pathMatch: "full",
-                redirectTo: "library"
-              },
-              {
-                path: "library",
-                component: LibrariesDocumentComponent,
-                data: {
-                  useParent: true
-                }
-              },
-              {
-                path: "approve",
-                component: LibrariesApproveComponent,
-                data: {
-                  useParent: true,
-                  disableShowInfoFile: true,
-                  disableShowCopyNode: true,
-                  disableShowfavoriteNode: true
-                }
-              },
-              {
-                path: "members",
-                component: LibrariesMemberComponent,
-                data: {
-                  useParent: true,
-                  disableShowInfoFile: true,
-                  disableShowCopyNode: true,
-                  disableShowfavoriteNode: true
-                }
-              },
-              {
-                path: "pendings",
-                component: LibraiesPendingComponent,
-                data: {
-                  useParent: true,
-                  disableShowInfoFile: true,
-                  disableShowCopyNode: true,
-                  disableShowfavoriteNode: true
-                }
-              },
-              {
-                path: "setting",
-                component: LibrariesSettingComponent,
-                data: {
-                  useParent: true,
-                  disableShowInfoFile: true,
-                  disableShowCopyNode: true,
-                  disableShowfavoriteNode: true
-                }
-              },
-              {
-                path: "preview/:nodeId",
-                component: PreviewComponent,
-                data: {
-                  title: "APP.PREVIEW.TITLE"
-                }
-              }
-            ]
-          },
-          {
-            path: "preview/:nodeId",
-            component: PreviewComponent,
-            data: {
-              title: "APP.PREVIEW.TITLE"
-            }
-          }
-        ]
+        loadChildren: "app/pages/libraries/libraries.module#LibrariesModule"
       },
       {
         path: "favorites",
-        children: [
-          {
-            path: "",
-            component: FileFavoriteComponent,
-            data: {
-              title: "APP.BROWSE.FAVORITES.TITLE"
-            }
-          },
-          {
-            path: "preview/:nodeId",
-            component: PreviewComponent,
-            data: {
-              title: "APP.PREVIEW.TITLE",
-              navigateSource: "favorites"
-            }
-          }
-        ]
-      },
-      {
-        path: "favorite/libraries",
-        children: [
-          {
-            path: "",
-            component: FavoriteLibrariesComponent,
-            data: {
-              title: "APP.BROWSE.LIBRARIES.MENU.FAVORITE_LIBRARIES.TITLE"
-            }
-          }
-        ]
+        loadChildren:
+          "app/pages/file-favorite/file-favorite.module#FileFavoriteModule"
       },
       {
         path: "shared",
-        children: [
-          {
-            path: "",
-            component: FileShareComponent,
-            data: {
-              title: "APP.BROWSE.SHARED.TITLE"
-            }
-          },
-          {
-            path: "preview/:nodeId",
-            component: PreviewComponent,
-            data: {
-              title: "APP.PREVIEW.TITLE",
-              navigateSource: "personal-files"
-            }
-          }
-        ],
+        loadChildren: "app/pages/file-share/file-share.module#FileShareModule",
         canActivateChild: [AppSharedRuleGuard],
         canActivate: [AppSharedRuleGuard]
       },
       {
         path: "recent-files",
-        children: [
-          {
-            path: "",
-            component: FileRecentComponent,
-            data: {
-              title: "APP.BROWSE.RECENT.TITLE"
-            }
-          },
-          {
-            path: "preview/:nodeId",
-            component: FileRecentComponent,
-            data: {
-              title: "APP.BROWSE.RECENT.TITLE",
-              navigateSource: "recent-files"
-            }
-          }
-        ]
+        loadChildren:
+          "app/pages/file-recent/file-recent.module#FileRecentModule"
       },
       {
         path: "trashcan",
-        component: FileTrashComponent,
-        data: {
-          title: "APP.BROWSE.TRASHCAN.TITLE"
-        }
-      },
-      {
-        path: "tasks",
-        children: [
-          {
-            path: "",
-            component: TaskComponent,
-            data: {
-              title: "APP.BROWSE.TASKS.TITLE"
-            }
-          },
-          {
-            path: "create",
-            component: TaskCreateComponent,
-            data: {
-              title: "APP.BROWSE.TASKS.TITLE"
-            }
-          },
-          {
-            path: ":taskId",
-            component: TaskDetailComponent,
-            data: {
-              title: "APP.BROWSE.TASKS.TITLE"
-            }
-          }
-        ]
+        loadChildren: "app/pages/file-trash/file-trash.module#FileTrashModule"
       },
       {
         path: "people",
-        component: PeopleComponent,
-        data: { title: "APP.BROWSE.PEOPLE.TITLE", disableShowInfoFile: true },
-        canActivate: [AppAdminRuleGuard]
+        loadChildren: "app/pages/people/people.module#PeopleModule"
       },
       {
         path: "groups",
-        component: GroupsMainComponent,
-        data: { title: "APP.BROWSE.GROUPS.TITLE", disableShowInfoFile: true },
-        canActivate: [AppAdminRuleGuard]
+        loadChildren: "app/pages/groups/groups.module#GroupsModule"
       },
       {
         path: "search",
-        children: [
-          {
-            path: "",
-            component: SearchResultsComponent,
-            data: {
-              title: "APP.BROWSE.SEARCH.TITLE"
-            }
-          },
-          {
-            path: "preview/:nodeId",
-            children: [
-              {
-                path: "",
-                data: {
-                  navigateSource: "search"
-                },
-                component: PreviewComponent
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: "search-libraries",
-        children: [
-          {
-            path: "",
-            component: SearchLibrariesResultsComponent,
-            data: {
-              title: "APP.BROWSE.SEARCH.TITLE"
-            }
-          },
-          {
-            path: "preview/:nodeId",
-            children: [
-              {
-                path: "",
-                data: {
-                  navigateSource: "search-libraries"
-                },
-                component: PreviewComponent
-              }
-            ]
-          }
-        ]
+        loadChildren:
+          "app/pages/search-result/search-result.module#SearchResultModule"
       },
       {
         path: "about",
-        component: AboutComponent,
-        data: {
-          title: "APP.BROWSE.ABOUT.TITLE"
-        }
+        loadChildren: "app/pages/about/about.module#AboutModule"
       }
     ]
   },

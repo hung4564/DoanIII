@@ -1,19 +1,17 @@
-import { Injectable } from "@angular/core";
-import { Subject, Observable } from "rxjs";
 import {
   MinimalNodeEntity,
-  SiteEntry,
+  SiteContainerEntry,
   SiteContainerPaging,
-  SiteContainerEntry
+  SiteEntry
 } from "@alfresco/js-api";
-import { ContentApiService } from "app/services/content-api.service";
-import { shareReplay, mapTo, map } from "rxjs/operators";
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { CustomSite } from "app/model/custom-site.model";
+import { ContentApiService } from "app/services/content-api.service";
+import { Observable, Subject } from "rxjs";
+import { map, shareReplay } from "rxjs/operators";
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 export class LibraryService {
   changeFolderInSite = new Subject<MinimalNodeEntity>();
   changeFolderInBreadcrumb = new Subject<string>();

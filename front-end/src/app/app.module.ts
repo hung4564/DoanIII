@@ -1,49 +1,34 @@
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from "@angular/core";
-import { RouterModule, RouteReuseStrategy } from "@angular/router";
-import { appRoutes } from "./app.routes";
-
-// App components
-import { AppComponent } from "./app.component";
-import { SharesModule } from "./layout/shares/shares.module";
-import { LoginModule } from "./pages/login/login.module";
+import { ContentModule } from "@alfresco/adf-content-services";
 import {
   CoreModule,
-  TRANSLATION_PROVIDER,
-  TranslateLoaderService
+  TranslateLoaderService,
+  TRANSLATION_PROVIDER
 } from "@alfresco/adf-core";
-import { ContentModule } from "@alfresco/adf-content-services";
-
+import { NgModule } from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouteReuseStrategy, RouterModule } from "@angular/router";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { ContentApiService } from "app/services/content-api.service";
 import { AppStoreModule } from "app/store/app-store.module";
-import { AppService } from "./services/app.service";
-import { HandleService } from "./services/api.service";
-import { AppRouteReuseStrategy } from "./routing/app.routes.strategy";
-import { LayoutModule } from "./layout/layout.module";
-import { HomeModule } from "./pages/home/home.module";
-import { FilesModule } from "./pages/files/files.module";
-import { ErrorModule } from "./pages/error/error.module";
+// App components
+import { AppComponent } from "./app.component";
+import { appRoutes } from "./app.routes";
 import { AppExtensionService } from "./extensions/app-extension.service";
 import { CoreExtensionsModule } from "./extensions/core.extensions.module";
-
-import { ContentApiService } from "app/services/content-api.service";
-import { NodePermissionService } from "./services/node-permission.service";
-import { NodeActionsService } from "./services/node-actions.service";
-import { ContentManagementService } from "./services/content-management.service";
-import { PreviewComponent } from "./pages/preview/preview.component";
-import { FileTrashModule } from "./pages/file-trash/file-trash.module";
-import { AppSharedLinkViewModule } from "./pages/shared-link-view/shared-link-view.module";
-import { FileShareModule } from "./pages/file-share/file-share.module";
-import { FileRecentModule } from "./pages/file-recent/file-recent.module";
-import { FileFavoriteModule } from "./pages/file-favorite/file-favorite.module";
-import { LibrariesModule } from "./pages/libraries/libraries.module";
-import { PeopleModule } from "./pages/people/people.module";
-import { GroupsModule } from "./pages/groups/groups.module";
-import { SearchResultModule } from "./pages/search-result/search-result.module";
-import { TaskModule } from "./pages/task/task.module";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { LayoutModule } from "./layout/layout.module";
+import { SharesModule } from "./layout/shares/shares.module";
+import { ErrorModule } from "./pages/error/error.module";
+import { FilesModule } from "./pages/files/files.module";
+import { LoginModule } from "./pages/login/login.module";
 import { AppAdminRuleGuard } from "./routing/admin.guard";
+import { AppRouteReuseStrategy } from "./routing/app.routes.strategy";
 import { AppSharedRuleGuard } from "./routing/shared.guard";
-import { AboutModule } from "./pages/about/about.module";
+import { HandleService } from "./services/api.service";
+import { AppService } from "./services/app.service";
+import { ContentManagementService } from "./services/content-management.service";
+import { NodeActionsService } from "./services/node-actions.service";
+import { NodePermissionService } from "./services/node-permission.service";
+
 @NgModule({
   imports: [
     AppStoreModule,
@@ -63,20 +48,8 @@ import { AboutModule } from "./pages/about/about.module";
       loader: { provide: TranslateLoader, useClass: TranslateLoaderService }
     }),
     LayoutModule,
-    HomeModule,
     FilesModule,
-    ErrorModule,
-    FileTrashModule,
-    AppSharedLinkViewModule,
-    FileShareModule,
-    FileRecentModule,
-    FileFavoriteModule,
-    LibrariesModule,
-    PeopleModule,
-    GroupsModule,
-    SearchResultModule,
-    TaskModule,
-    AboutModule
+    ErrorModule
   ],
   providers: [
     AppService,
@@ -98,7 +71,7 @@ import { AboutModule } from "./pages/about/about.module";
       }
     }
   ],
-  declarations: [AppComponent, PreviewComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,12 +1,12 @@
+import { UserPreferencesService } from "@alfresco/adf-core";
+import { SiteMemberPaging } from "@alfresco/js-api";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { LibraryService } from "../library.service";
-import { PageComponent } from "app/pages/page.component";
-import { AppExtensionService } from "app/extensions/app-extension.service";
-import { ContentManagementService } from "app/services/content-management.service";
 import { Store } from "@ngrx/store";
-import { SiteMemberPaging } from "@alfresco/js-api";
-import { UserPreferencesService } from "@alfresco/adf-core";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { PageComponent } from "app/pages/page.component";
+import { ContentManagementService } from "app/services/content-management.service";
+import { LibraryService } from "../library.service";
 
 @Component({
   selector: "app-libraries-member",

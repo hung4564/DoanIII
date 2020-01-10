@@ -1,31 +1,34 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material';
-import { SearchQueryBuilderService } from '@alfresco/adf-content-services';
-import { AppConfigService } from '@alfresco/adf-core';
-import { ContentManagementService } from 'app/services/content-management.service';
+import { SearchQueryBuilderService } from "@alfresco/adf-content-services";
+import { AppConfigService } from "@alfresco/adf-core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { MatMenuTrigger } from "@angular/material";
 import {
+  NavigationEnd,
+  PRIMARY_OUTLET,
   Router,
+  RouterEvent,
   UrlSegment,
   UrlSegmentGroup,
-  UrlTree,
-  NavigationEnd,
-  RouterEvent,
-  PRIMARY_OUTLET
-} from '@angular/router';
-import { AppStore } from 'app/store/states/app.state';
-import { Store } from '@ngrx/store';
-import { takeUntil, filter } from 'rxjs/operators';
-import { SearchInputControlComponent } from './search-input-control/search-input-control.component';
-import { SearchLibrariesQueryBuilderService } from './search-libraries-query-builder.service';
-import { SearchByTermAction } from 'app/store/actions/search.actions';
-import { SearchOptionModel, SearchOptionIds } from 'app/model/search-option.model';
+  UrlTree
+} from "@angular/router";
+import { Store } from "@ngrx/store";
+import {
+  SearchOptionIds,
+  SearchOptionModel
+} from "app/model/search-option.model";
+import { ContentManagementService } from "app/services/content-management.service";
+import { SearchByTermAction } from "app/store/actions/search.actions";
+import { AppStore } from "app/store/states/app.state";
+import { Subject } from "rxjs";
+import { filter, takeUntil } from "rxjs/operators";
+import { SearchInputControlComponent } from "./search-input-control/search-input-control.component";
+import { SearchLibrariesQueryBuilderService } from "./search-libraries-query-builder.service";
 
 @Component({
-  selector: 'app-search-input',
-  templateUrl: './search-input.component.html',
-  styleUrls: ['./search-input.component.scss'],
-  host: { class: 'app-search-input' }
+  selector: "app-search-input",
+  templateUrl: "./search-input.component.html",
+  styleUrls: ["./search-input.component.scss"],
+  host: { class: "app-search-input" }
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -39,24 +42,24 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   searchOptions: Array<SearchOptionModel> = [
     {
       id: SearchOptionIds.Files,
-      key: 'SEARCH.INPUT.FILES',
+      key: "SEARCH.INPUT.FILES",
       value: false,
       shouldDisable: this.isLibrariesChecked.bind(this)
     },
     {
       id: SearchOptionIds.Folders,
-      key: 'SEARCH.INPUT.FOLDERS',
+      key: "SEARCH.INPUT.FOLDERS",
       value: false,
       shouldDisable: this.isLibrariesChecked.bind(this)
     },
     {
       id: SearchOptionIds.Libraries,
-      key: 'SEARCH.INPUT.LIBRARIES',
+      key: "SEARCH.INPUT.LIBRARIES",
       value: false,
       shouldDisable: this.isContentChecked.bind(this)
     }
   ];
-  @ViewChild('searchInputControl')
+  @ViewChild("searchInputControl")
   searchInputControl: SearchInputControlComponent;
 
   @ViewChild(MatMenuTrigger)
@@ -69,7 +72,10 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppStore>
   ) {
-    this.searchOnChange = this.config.get<boolean>('search.app:triggeredOnChange', true);
+    this.searchOnChange = this.config.get<boolean>(
+      "search.app:triggeredOnChange",
+      true
+    );
   }
 
   ngOnInit() {
@@ -84,9 +90,11 @@ export class SearchInputComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.content.library400Error.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      this.has400LibraryError = true;
-    });
+    this.content.library400Error
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.has400LibraryError = true;
+      });
   }
   showInputValue() {
     this.has400LibraryError = false;
@@ -113,7 +121,9 @@ export class SearchInputComponent implements OnInit, OnDestroy {
    * @param event Parameters relating to the search
    */
   onSearchSubmit(event: any) {
-    const searchTerm = event.target ? (event.target as HTMLInputElement).value : event;
+    const searchTerm = event.target
+      ? (event.target as HTMLInputElement).value
+      : event;
     if (searchTerm) {
       this.searchedWord = searchTerm;
 
@@ -143,7 +153,9 @@ export class SearchInputComponent implements OnInit, OnDestroy {
 
     this.navigationTimer = setTimeout(() => {
       if (searchTerm) {
-        this.store.dispatch(new SearchByTermAction(searchTerm, this.searchOptions));
+        this.store.dispatch(
+          new SearchByTermAction(searchTerm, this.searchOptions)
+        );
       }
       this.hasOneChange = false;
     }, 1000);
@@ -156,7 +168,9 @@ export class SearchInputComponent implements OnInit, OnDestroy {
       if (this.onLibrariesSearchResults && this.isSameSearchTerm()) {
         this.queryLibrariesBuilder.update();
       } else if (this.searchedWord) {
-        this.store.dispatch(new SearchByTermAction(this.searchedWord, this.searchOptions));
+        this.store.dispatch(
+          new SearchByTermAction(this.searchedWord, this.searchOptions)
+        );
       }
     } else {
       if (this.isFoldersChecked() && !this.isFilesChecked()) {
@@ -170,17 +184,21 @@ export class SearchInputComponent implements OnInit, OnDestroy {
       if (this.onSearchResults && this.isSameSearchTerm()) {
         this.queryBuilder.update();
       } else if (this.searchedWord) {
-        this.store.dispatch(new SearchByTermAction(this.searchedWord, this.searchOptions));
+        this.store.dispatch(
+          new SearchByTermAction(this.searchedWord, this.searchOptions)
+        );
       }
     }
   }
 
   get onLibrariesSearchResults() {
-    return this.router.url.indexOf('/search-libraries') === 0;
+    return this.router.url.indexOf("/search/libraries") === 0;
   }
 
   get onSearchResults() {
-    return !this.onLibrariesSearchResults && this.router.url.indexOf('/search') === 0;
+    return (
+      !this.onLibrariesSearchResults && this.router.url.indexOf("/search") === 0
+    );
   }
 
   isFilesChecked(): boolean {
@@ -206,14 +224,18 @@ export class SearchInputComponent implements OnInit, OnDestroy {
 
   hasLibraryConstraint(): boolean {
     if (this.isLibrariesChecked()) {
-      return this.has400LibraryError || this.searchInputControl.isTermTooShort();
+      return (
+        this.has400LibraryError || this.searchInputControl.isTermTooShort()
+      );
     }
     return false;
   }
 
   filterContent(option: SearchOptionIds.Folders | SearchOptionIds.Files) {
     const oppositeOption =
-      option === SearchOptionIds.Folders ? SearchOptionIds.Files : SearchOptionIds.Folders;
+      option === SearchOptionIds.Folders
+        ? SearchOptionIds.Files
+        : SearchOptionIds.Folders;
 
     this.queryBuilder.addFilterQuery(`+TYPE:'cm:${option}'`);
     this.queryBuilder.removeFilterQuery(`+TYPE:'cm:${oppositeOption}'`);
@@ -221,7 +243,9 @@ export class SearchInputComponent implements OnInit, OnDestroy {
 
   removeContentFilters() {
     this.queryBuilder.removeFilterQuery(`+TYPE:'cm:${SearchOptionIds.Files}'`);
-    this.queryBuilder.removeFilterQuery(`+TYPE:'cm:${SearchOptionIds.Folders}'`);
+    this.queryBuilder.removeFilterQuery(
+      `+TYPE:'cm:${SearchOptionIds.Folders}'`
+    );
   }
 
   syncInputValues() {
@@ -235,16 +259,17 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   }
 
   getUrlSearchTerm(): string {
-    let searchTerm = '';
+    let searchTerm = "";
     if (this.onSearchResults || this.onLibrariesSearchResults) {
       const urlTree: UrlTree = this.router.parseUrl(this.router.url);
-      const urlSegmentGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
+      const urlSegmentGroup: UrlSegmentGroup =
+        urlTree.root.children[PRIMARY_OUTLET];
 
       if (urlSegmentGroup) {
         const urlSegments: UrlSegment[] = urlSegmentGroup.segments;
-        searchTerm = urlSegments[0].parameters['q']
-          ? decodeURIComponent(urlSegments[0].parameters['q'])
-          : '';
+        searchTerm = urlSegments[0].parameters["q"]
+          ? decodeURIComponent(urlSegments[0].parameters["q"])
+          : "";
       }
     }
 

@@ -1,15 +1,15 @@
-import { Directive, HostListener } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { DocumentListComponent } from '@alfresco/adf-content-services';
-import { UserPreferencesService } from '@alfresco/adf-core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { SetSelectedNodesAction } from 'app/store/actions/node.actions';
+import { DocumentListComponent } from "@alfresco/adf-content-services";
+import { UserPreferencesService } from "@alfresco/adf-core";
+import { Directive, HostListener } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { ContentManagementService } from "app/services/content-management.service";
+import { SetSelectedNodesAction } from "app/store/actions/node.actions";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Directive({
-  selector: '[appDocumentList]'
+  selector: "[appDocumentList]"
 })
 export class DocumentListDirective {
   private isLibrary = false;
@@ -28,15 +28,17 @@ export class DocumentListDirective {
 
   ngOnInit() {
     this.documentList.stickyHeader = true;
-    this.documentList.includeFields = ['isFavorite', 'aspectNames'];
+    this.documentList.includeFields = ["isFavorite", "aspectNames"];
     this.isLibrary =
-      this.documentList.currentFolderId === '-mysites-' ||
+      this.documentList.currentFolderId === "-mysites-" ||
       // workaround for custom node list
-      this.router.url.endsWith('/libraries') ||
-      this.router.url.startsWith('/search-libraries');
-    this.isPeople = this.router.url.startsWith('/people');
-    this.isGroup = this.router.url.startsWith('/groups');
-    this.documentList.ready.pipe(takeUntil(this.onDestroy$)).subscribe(() => this.onReady());
+      this.router.url.endsWith("/libraries") ||
+      this.router.url.startsWith("/search/libraries");
+    this.isPeople = this.router.url.startsWith("/people");
+    this.isGroup = this.router.url.startsWith("/groups");
+    this.documentList.ready
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => this.onReady());
 
     this.content.reload.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
       this.reload();
@@ -51,14 +53,14 @@ export class DocumentListDirective {
     this.onDestroy$.complete();
   }
 
-  @HostListener('node-select', ['$event'])
+  @HostListener("node-select", ["$event"])
   onNodeSelect(event: CustomEvent) {
     if (!!event.detail && !!event.detail.node) {
       this.updateSelection();
     }
   }
 
-  @HostListener('node-unselect')
+  @HostListener("node-unselect")
   onNodeUnselect() {
     this.updateSelection();
   }
@@ -69,9 +71,9 @@ export class DocumentListDirective {
 
   private updateSelection() {
     const selection = this.documentList.selection.map(node => {
-      node['isLibrary'] = this.isLibrary;
-      node['isPeople'] = this.isPeople;
-      node['isGroup'] = this.isGroup;
+      node["isLibrary"] = this.isLibrary;
+      node["isPeople"] = this.isPeople;
+      node["isGroup"] = this.isGroup;
       return node;
     });
 
