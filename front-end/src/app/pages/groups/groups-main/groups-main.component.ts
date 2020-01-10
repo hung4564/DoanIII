@@ -1,33 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ObjectDataTableAdapter,
-  TranslationService,
-  ObjectDataRow,
-  DataCellEvent,
-  DataRowActionEvent,
-  PaginationModel,
-  AppConfigService,
-  UserPreferencesService
-} from '@alfresco/adf-core';
-import { GroupsService } from '../groups.service';
-import { MatDialog } from '@angular/material';
-import { ConfirmDialogComponent } from '@alfresco/adf-content-services';
-import { GroupsDetailComponent } from '../groups-detail/groups-detail.component';
-import { GroupViewListComponent } from '../group-view-list/group-view-list.component';
-import { PageComponent } from 'app/pages/page.component';
-import { GroupPaging } from '@alfresco/js-api';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { AppStore } from 'app/store/states/app.state';
-import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { ContentApiService } from 'app/services/content-api.service';
-import { Store } from '@ngrx/store';
+import { PaginationModel, UserPreferencesService } from "@alfresco/adf-core";
+import { GroupPaging } from "@alfresco/js-api";
+import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { PageComponent } from "app/pages/page.component";
+import { ContentApiService } from "app/services/content-api.service";
+import { ContentManagementService } from "app/services/content-management.service";
+import { AppStore } from "app/store/states/app.state";
 
 @Component({
-  selector: 'app-groups-main',
-  templateUrl: './groups-main.component.html',
-  styleUrls: ['./groups-main.component.scss'],
+  selector: "app-groups-main",
+  templateUrl: "./groups-main.component.html",
+  styleUrls: ["./groups-main.component.scss"],
   host: {
-    class: 'app-layout'
+    class: "app-layout"
   }
 })
 export class GroupsMainComponent extends PageComponent implements OnInit {

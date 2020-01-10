@@ -5,11 +5,13 @@ import { NgModule } from "@angular/core";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DirectivesModule } from "app/directives/directives.module";
+import { GroupViewListComponent } from "app/layout/shares/group-view-list/group-view-list.component";
 import { PreviewComponent } from "app/pages/preview/preview.component";
 import { MainPipe } from "app/pipes/pipe.module";
 import { ChangeLibraryRoleComponent } from "./changeLibraryRole/changeLibraryRole.component";
 import { CreateMenuComponent } from "./create-menu/create-menu.component";
 import { CustomBtnComponent } from "./custom-btn/custom-btn.component";
+import { GroupsDetailComponent } from "./groups-detail/groups-detail.component";
 import { AppInfoDrawerModule } from "./info-drawer/info.drawer.module";
 import { LocationLinkComponent } from "./location-link/location-link.component";
 import { LockByComponent } from "./locked-by/locked-by.component";
@@ -20,6 +22,7 @@ import { NodeVersionUploadDialogComponent } from "./node-version-upload/node-ver
 import { NodeVersionsDialogComponent } from "./node-versions/node-versions.dialog";
 import { NodePermissionsDialogComponent } from "./permission-dialog/node-permissions.dialog";
 import { PermissionsManagerComponent } from "./permission-manager/permission-manager.component";
+import { PersonDetailComponent } from "./person-detail/person-detail.component";
 import { PersonSearchComponent } from "./person-search/person-search.component";
 import { AppToolbarModule } from "./toolbar/toolbar.module";
 export function components() {
@@ -32,6 +35,9 @@ export function components() {
 }
 export function dialogcomponents() {
   return [
+    PersonDetailComponent,
+    GroupsDetailComponent,
+    GroupViewListComponent,
     PersonSearchComponent,
     ChangeLibraryRoleComponent,
     CustomBtnComponent,

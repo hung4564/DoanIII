@@ -6,7 +6,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { SharesModule } from "app/layout/shares/shares.module";
 import { AppAdminRuleGuard } from "app/routing/admin.guard";
 import { PeopleComponent } from "./people.component";
-import { PersonDetailComponent } from "./person-detail/person-detail.component";
 
 const routes: Routes = [
   {
@@ -24,7 +23,6 @@ const routes: Routes = [
     CoreModule.forChild(),
     ContentModule.forChild()
   ],
-  declarations: [PeopleComponent, PersonDetailComponent],
-  entryComponents: [PersonDetailComponent]
+  declarations: [PeopleComponent]
 })
 export class PeopleModule {}

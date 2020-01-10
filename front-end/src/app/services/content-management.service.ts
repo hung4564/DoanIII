@@ -24,16 +24,16 @@ import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
+import { GroupsDetailComponent } from "app/layout/shares/groups-detail/groups-detail.component";
 import { NodeVersionUploadDialogComponent } from "app/layout/shares/node-version-upload/node-version-upload.dialog";
 import { NodeVersionsDialogComponent } from "app/layout/shares/node-versions/node-versions.dialog";
 import { NodePermissionsDialogComponent } from "app/layout/shares/permission-dialog/node-permissions.dialog";
+import { PersonDetailComponent } from "app/layout/shares/person-detail/person-detail.component";
 import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
 import { CustomSiteEntry } from "app/model/custom-site.model";
 import { DeleteStatus } from "app/model/delete-status.model";
 import { DeletedNodeInfo } from "app/model/deleted-node-info.model";
 import { NodeInfo } from "app/model/node-info.model";
-import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
-import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
 import { ReloadDocumentListAction } from "app/store/actions/app.actions";
 import {
   SetSelectedNodesAction,

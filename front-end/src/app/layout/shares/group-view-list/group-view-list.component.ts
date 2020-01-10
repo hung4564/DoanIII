@@ -1,17 +1,17 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { GroupsService } from '../groups.service';
-import { GroupsDetailComponent } from '../groups-detail/groups-detail.component';
-import { GroupMember, GroupMembershipBodyCreate } from '@alfresco/js-api';
+import { GroupMember, GroupMembershipBodyCreate } from "@alfresco/js-api";
+import { Component, Inject, OnInit } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { GroupsService } from "../../../pages/groups/groups.service";
+import { GroupsDetailComponent } from "../groups-detail/groups-detail.component";
 
 @Component({
-  selector: 'app-group-view-list',
-  templateUrl: './group-view-list.component.html',
-  styleUrls: ['./group-view-list.component.scss']
+  selector: "app-group-view-list",
+  templateUrl: "./group-view-list.component.html",
+  styleUrls: ["./group-view-list.component.scss"]
 })
 export class GroupViewListComponent implements OnInit {
   title: string;
-  groupId = '';
+  groupId = "";
   members: GroupMember[];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,14 +37,20 @@ export class GroupViewListComponent implements OnInit {
   selectPerson(person) {
     if (person) {
       this._groupSv
-        .addGroupMember(this.groupId, person.id, GroupMembershipBodyCreate.MemberTypeEnum.PERSON)
+        .addGroupMember(
+          this.groupId,
+          person.id,
+          GroupMembershipBodyCreate.MemberTypeEnum.PERSON
+        )
         .then(result => {
           this.getMember();
         });
     }
   }
   getIcon(membertype) {
-    return membertype == GroupMembershipBodyCreate.MemberTypeEnum.PERSON ? 'person' : 'groups';
+    return membertype == GroupMembershipBodyCreate.MemberTypeEnum.PERSON
+      ? "person"
+      : "groups";
   }
   ngOnInit() {}
 }

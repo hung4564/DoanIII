@@ -1,14 +1,14 @@
-import { Directive, OnInit, OnDestroy } from '@angular/core';
 import {
+  AppConfigService,
   PaginationComponent,
-  UserPreferencesService,
   PaginationModel,
-  AppConfigService
-} from '@alfresco/adf-core';
-import { Subscription } from 'rxjs';
+  UserPreferencesService
+} from "@alfresco/adf-core";
+import { Directive, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
 
 @Directive({
-  selector: '[appPagination]'
+  selector: "[appPagination]"
 })
 export class PaginationDirective implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -20,7 +20,9 @@ export class PaginationDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.pagination.supportedPageSizes = this.config.get('pagination.supportedPageSizes');
+    this.pagination.supportedPageSizes = this.config.get(
+      "pagination.supportedPageSizes"
+    );
     this.subscriptions.push(
       this.pagination.changePageSize.subscribe((event: PaginationModel) => {
         this.preferences.paginationSize = event.maxItems;
