@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { ContentManagementService } from '../../services/content-management.service';
 import { ViewUtilService } from '@alfresco/adf-core';
-import { ShareNodeAction, NodeActionTypes, UnshareNodesAction, PurgeDeletedNodesAction, RestoreDeletedNodesAction, DeleteNodesAction, UndoDeleteNodesAction, CreateFolderAction, EditFolderAction, CopyNodesAction, MoveNodesAction, ManagePermissionsAction, ManageVersionsAction, PrintFileAction, UnlockWriteAction } from '../actions/node.action';
+import { ShareNodeAction, NodeActionTypes, UnshareNodesAction, PurgeDeletedNodesAction, RestoreDeletedNodesAction, DeleteNodesAction, UndoDeleteNodesAction, CreateFolderAction, EditFolderAction, CopyNodesAction, MoveNodesAction, ManagePermissionsAction, ManageVersionsAction, PrintFileAction, UnlockWriteAction } from '../actions/node.actions';
 import { getAppSelection, getCurrentFolder } from '../selectors/app.selector';
 
 @Injectable()

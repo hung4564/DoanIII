@@ -1,10 +1,14 @@
-import { Component, Input, OnChanges, OnInit, OnDestroy } from "@angular/core";
-import { MinimalNodeEntity, MinimalNodeEntryEntity, SiteEntry } from "@alfresco/js-api";
 import { SidebarTabRef } from "@alfresco/adf-extensions";
+import {
+  MinimalNodeEntity,
+  MinimalNodeEntryEntity,
+  SiteEntry
+} from "@alfresco/js-api";
+import { Component, Input, OnChanges, OnDestroy, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { ContentApiService } from "app/services/content-api.service";
-import { SetInfoDrawerStateAction } from "app/store/actions/app.action";
 import { AppExtensionService } from "app/extensions/app-extension.service";
+import { ContentApiService } from "app/services/content-api.service";
+import { SetInfoDrawerStateAction } from "app/store/actions/app.actions";
 
 @Component({
   selector: "app-info-drawer",

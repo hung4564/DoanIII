@@ -4,62 +4,61 @@ import {
   LibraryDialogComponent,
   ShareDialogComponent
 } from "@alfresco/adf-content-services";
-import { TranslationService, AlfrescoApiService } from "@alfresco/adf-core";
+import { AlfrescoApiService, TranslationService } from "@alfresco/adf-core";
 import {
   DeletedNodesPaging,
+  GroupEntry,
   MinimalNodeEntity,
   MinimalNodeEntryEntity,
   Node,
   NodeEntry,
   PathInfoEntity,
+  PersonEntry,
+  Site,
   SiteBody,
   SiteEntry,
-  PersonEntry,
-  GroupEntry,
-  SiteMembershipBodyUpdate,
   SiteMembershipBodyCreate,
-  Site
+  SiteMembershipBodyUpdate
 } from "@alfresco/js-api";
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
-import { forkJoin, Observable, of, Subject, zip } from "rxjs";
-import { catchError, flatMap, map, mergeMap, take, tap } from "rxjs/operators";
-import { ContentApiService } from "./content-api.service";
-import { NodePermissionService } from "./node-permission.service";
-import { NodeInfo } from "app/model/node-info.model";
-import { DeleteStatus } from "app/model/delete-status.model";
-import { NodeActionsService } from "./node-actions.service";
-import { DeletedNodeInfo } from "app/model/deleted-node-info.model";
-import { NodePermissionsDialogComponent } from "app/layout/shares/permission-dialog/node-permissions.dialog";
-import { NodeVersionsDialogComponent } from "app/layout/shares/node-versions/node-versions.dialog";
 import { NodeVersionUploadDialogComponent } from "app/layout/shares/node-version-upload/node-version-upload.dialog";
-import { AppStore } from "app/store/states/app.state";
+import { NodeVersionsDialogComponent } from "app/layout/shares/node-versions/node-versions.dialog";
+import { NodePermissionsDialogComponent } from "app/layout/shares/permission-dialog/node-permissions.dialog";
+import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
+import { CustomSiteEntry } from "app/model/custom-site.model";
+import { DeleteStatus } from "app/model/delete-status.model";
+import { DeletedNodeInfo } from "app/model/deleted-node-info.model";
+import { NodeInfo } from "app/model/node-info.model";
+import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
+import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
+import { ReloadDocumentListAction } from "app/store/actions/app.actions";
 import {
   SetSelectedNodesAction,
   UndoDeleteNodesAction
-} from "app/store/actions/node.action";
-import { ReloadDocumentListAction } from "app/store/actions/app.action";
+} from "app/store/actions/node.actions";
 import {
+  NavigateRouteAction,
+  NavigateToParentFolder
+} from "app/store/actions/router.actions";
+import {
+  SnackbarAction,
   SnackbarErrorAction,
   SnackbarInfoAction,
   SnackbarUserAction,
-  SnackbarAction,
   SnackbarWarningAction
 } from "app/store/actions/snackbar.actions";
 import {
-  getSharedUrl,
-  getAppSelection
+  getAppSelection,
+  getSharedUrl
 } from "app/store/selectors/app.selector";
-import {
-  NavigateToParentFolder,
-  NavigateRouteAction
-} from "app/store/actions/router.actions";
-import { PersonDetailComponent } from "app/pages/people/person-detail/person-detail.component";
-import { GroupsDetailComponent } from "app/pages/groups/groups-detail/groups-detail.component";
-import { PersonSearchComponent } from "app/layout/shares/person-search/person-search.component";
-import { CustomSiteEntry } from "app/model/custom-site.model";
+import { forkJoin, Observable, of, Subject, zip } from "rxjs";
+import { catchError, flatMap, map, mergeMap, take, tap } from "rxjs/operators";
+import { ContentApiService } from "./content-api.service";
+import { NodeActionsService } from "./node-actions.service";
+import { NodePermissionService } from "./node-permission.service";
 interface RestoredNode {
   status: number;
   entry: MinimalNodeEntryEntity;

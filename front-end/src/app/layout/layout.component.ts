@@ -1,18 +1,21 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
 import {
+  AppConfigService,
   SidenavLayoutComponent,
-  UserPreferencesService,
-  AppConfigService
+  UserPreferencesService
 } from "@alfresco/adf-core";
-import { Subject, Observable } from "rxjs";
-import { Directionality } from "@angular/cdk/bidi";
-import { Store } from "@ngrx/store";
-import { Router, NavigationEnd, NavigationStart } from "@angular/router";
-import { BreakpointObserver } from "@angular/cdk/layout";
-import { map, withLatestFrom, filter, takeUntil } from "rxjs/operators";
-import { ResetSelectionAction } from "app/store/actions/app.action";
 import { SelectionState } from "@alfresco/adf-extensions";
-import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.selector";
+import { Directionality } from "@angular/cdk/bidi";
+import { BreakpointObserver } from "@angular/cdk/layout";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { NavigationEnd, NavigationStart, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { ResetSelectionAction } from "app/store/actions/app.actions";
+import {
+  getAppSelection,
+  isInfoDrawerOpened
+} from "app/store/selectors/app.selector";
+import { Observable, Subject } from "rxjs";
+import { filter, map, takeUntil, withLatestFrom } from "rxjs/operators";
 
 @Component({
   selector: "app-layout",
@@ -50,7 +53,9 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.infoDrawerOpened$ = this.store.select(isInfoDrawerOpened);
-    this.userPreferenceService.paginationSize = this.appConfigService.get("pagination.size");
+    this.userPreferenceService.paginationSize = this.appConfigService.get(
+      "pagination.size"
+    );
     this.isSmallScreen$ = this.breakpointObserver
       .observe(["(max-width: 600px)"])
       .pipe(map(result => result.matches));
@@ -77,7 +82,10 @@ export class LayoutComponent implements OnInit {
     this.router.events
       .pipe(
         withLatestFrom(this.isSmallScreen$),
-        filter(([event, isSmallScreen]) => isSmallScreen && event instanceof NavigationEnd),
+        filter(
+          ([event, isSmallScreen]) =>
+            isSmallScreen && event instanceof NavigationEnd
+        ),
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
@@ -92,7 +100,9 @@ export class LayoutComponent implements OnInit {
         this.minimizeSidenav = this.minimizeConditions.some(el =>
           event.urlAfterRedirects.includes(el)
         );
-        this.hideSidenav = this.hideConditions.some(el => event.urlAfterRedirects.includes(el));
+        this.hideSidenav = this.hideConditions.some(el =>
+          event.urlAfterRedirects.includes(el)
+        );
 
         this.updateState();
       });
@@ -135,16 +145,28 @@ export class LayoutComponent implements OnInit {
   }
 
   onExpanded(state: boolean) {
-    if (!this.minimizeSidenav && this.appConfigService.get("sideNav.preserveState")) {
+    if (
+      !this.minimizeSidenav &&
+      this.appConfigService.get("sideNav.preserveState")
+    ) {
       this.userPreferenceService.set("expandedSidenav", state);
     }
   }
 
   private getSidenavState(): boolean {
-    const expand = this.appConfigService.get<boolean>("sideNav.expandedSidenav", true);
-    const preserveState = this.appConfigService.get<boolean>("sideNav.preserveState", true);
+    const expand = this.appConfigService.get<boolean>(
+      "sideNav.expandedSidenav",
+      true
+    );
+    const preserveState = this.appConfigService.get<boolean>(
+      "sideNav.preserveState",
+      true
+    );
     if (preserveState) {
-      return this.userPreferenceService.get("expandedSidenav", expand.toString()) === "true";
+      return (
+        this.userPreferenceService.get("expandedSidenav", expand.toString()) ===
+        "true"
+      );
     }
 
     return expand;

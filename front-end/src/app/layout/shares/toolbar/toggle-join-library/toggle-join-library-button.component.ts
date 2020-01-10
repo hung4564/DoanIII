@@ -9,7 +9,7 @@ import {
 import { ContentManagementService } from 'app/services/content-management.service';
 import { getAppSelection } from 'app/store/selectors/app.selector';
 import { SnackbarInfoAction, SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
-import { SetSelectedNodesAction } from 'app/store/actions/node.action';
+import { SetSelectedNodesAction } from 'app/store/actions/node.actions';
 
 @Component({
   selector: 'app-toggle-join-library-button',

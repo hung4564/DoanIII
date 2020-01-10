@@ -6,7 +6,7 @@ import { UserPreferencesService } from '@alfresco/adf-core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ContentManagementService } from 'app/services/content-management.service';
-import { SetSelectedNodesAction } from 'app/store/actions/node.action';
+import { SetSelectedNodesAction } from 'app/store/actions/node.actions';
 
 @Directive({
   selector: '[appDocumentList]'

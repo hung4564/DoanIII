@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { forkJoin, from, of } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { AppExtensionService } from 'app/extensions/app-extension.service';
-import { SetSelectedNodesAction } from 'app/store/actions/node.action';
+import { SetSelectedNodesAction } from 'app/store/actions/node.actions';
 import { getAppSelection } from 'app/store/selectors/app.selector';
 @Component({
   selector: 'app-shared-link-view',

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SelectionState } from '@alfresco/adf-extensions';
 import { getAppSelection } from 'app/store/selectors/app.selector';
-import { ShareNodeAction } from 'app/store/actions/node.action';
+import { ShareNodeAction } from 'app/store/actions/node.actions';
 
 @Component({
   selector: 'app-toggle-shared',

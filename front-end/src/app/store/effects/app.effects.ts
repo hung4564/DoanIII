@@ -1,17 +1,17 @@
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { AuthenticationService } from '@alfresco/adf-core';
-import { Router } from '@angular/router';
-import { ContentManagementService } from 'app/services/content-management.service';
+import { AuthenticationService } from "@alfresco/adf-core";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { ContentManagementService } from "app/services/content-management.service";
+import { map } from "rxjs/operators";
 import {
-  ResetSelectionAction,
   AppActionTypes,
+  LogoutAction,
   ReloadDocumentListAction,
-  LogoutAction
-} from '../actions/app.action';
-import { Store } from '@ngrx/store';
-import { SetSelectedNodesAction } from '../actions/node.action';
+  ResetSelectionAction
+} from "../actions/app.actions";
+import { SetSelectedNodesAction } from "../actions/node.actions";
 
 @Injectable()
 export class AppEffects {
@@ -42,11 +42,14 @@ export class AppEffects {
   logout$ = this.actions$.pipe(
     ofType<LogoutAction>(AppActionTypes.Logout),
     map(() => {
-      this.auth.logout().subscribe(() => this.redirectToLogin(), () => this.redirectToLogin());
+      this.auth.logout().subscribe(
+        () => this.redirectToLogin(),
+        () => this.redirectToLogin()
+      );
     })
   );
 
   private redirectToLogin() {
-    this.router.navigate(['login']);
+    this.router.navigate(["login"]);
   }
 }

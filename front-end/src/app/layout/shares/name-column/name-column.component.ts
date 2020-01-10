@@ -12,7 +12,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { isLocked } from 'app/utils/node.utils';
-import { NodeActionTypes } from 'app/store/actions/node.action';
+import { NodeActionTypes } from 'app/store/actions/node.actions';
 
 @Component({
   selector: 'app-custom-name-column',

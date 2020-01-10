@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Site } from "@alfresco/js-api";
-import { LibraryService } from "../library.service";
+import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import {
-  UpdateLibraryAction,
-  AddApproveFolderAction,
-  DeleteApproveFolderAction
-} from "app/store/actions/library.actions";
 import { ContentManagementService } from "app/services/content-management.service";
-import { SetCurrentLibraryAction } from "app/store/actions/app.action";
+import { SetCurrentLibraryAction } from "app/store/actions/app.actions";
+import {
+  AddApproveFolderAction,
+  DeleteApproveFolderAction,
+  UpdateLibraryAction
+} from "app/store/actions/library.actions";
+import { LibraryService } from "../library.service";
 
 @Component({
   selector: "app-libraries-setting",

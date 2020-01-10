@@ -1,22 +1,17 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
 import { DocumentListComponent, ShareDataRow } from "@alfresco/adf-content-services";
-import { UploadService, FileUploadEvent } from "@alfresco/adf-core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageComponent } from "../page.component";
-import { AppExtensionService } from "app/extensions/app-extension.service";
+import { FileUploadEvent, UploadService } from "@alfresco/adf-core";
+import { MinimalNodeEntity, MinimalNodeEntryEntity, PathElement, PathElementEntity } from "@alfresco/js-api";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import {
-  MinimalNodeEntity,
-  PathElement,
-  MinimalNodeEntryEntity,
-  PathElementEntity
-} from "@alfresco/js-api";
+import { AppExtensionService } from "app/extensions/app-extension.service";
 import { ContentApiService } from "app/services/content-api.service";
-import { NodeActionsService } from "app/services/node-actions.service";
-import { debounceTime, takeUntil } from "rxjs/operators";
 import { ContentManagementService } from "app/services/content-management.service";
+import { NodeActionsService } from "app/services/node-actions.service";
+import { SetCurrentFolderAction } from "app/store/actions/app.actions";
 import { isAdmin } from "app/store/selectors/app.selector";
-import { SetCurrentFolderAction } from "app/store/actions/app.action";
+import { debounceTime, takeUntil } from "rxjs/operators";
+import { PageComponent } from "../page.component";
 
 @Component({
   selector: "app-files",

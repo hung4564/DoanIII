@@ -24,7 +24,7 @@ import { Actions, ofType } from "@ngrx/effects";
 import { AppExtensionService } from "app/extensions/app-extension.service";
 import { ContentApiService } from "app/services/content-api.service";
 import { ClosePreviewAction, ViewerActionTypes } from "app/store/actions/viewer.actions";
-import { SetSelectedNodesAction } from "app/store/actions/node.action";
+import { SetSelectedNodesAction } from "app/store/actions/node.actions";
 import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.selector";
 
 @Component({

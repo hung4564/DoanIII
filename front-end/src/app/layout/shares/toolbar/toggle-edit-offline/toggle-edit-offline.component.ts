@@ -2,7 +2,7 @@ import { MinimalNodeEntity } from '@alfresco/js-api';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAppSelection } from 'app/store/selectors/app.selector';
-import { DownloadNodesAction, EditOfflineAction } from 'app/store/actions/node.action';
+import { DownloadNodesAction, EditOfflineAction } from 'app/store/actions/node.actions';
 import { SnackbarErrorAction } from 'app/store/actions/snackbar.actions';
 
 @Component({

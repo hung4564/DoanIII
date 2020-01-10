@@ -1,23 +1,27 @@
-import { OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { Subject, Subscription, Observable } from "rxjs";
-import { DocumentListComponent, ShareDataRow } from "@alfresco/adf-content-services";
-import { Store } from "@ngrx/store";
-import { AppStore } from "app/store/states/app.state";
-import { AppExtensionService } from "app/extensions/app-extension.service";
+import {
+  DocumentListComponent,
+  ShareDataRow
+} from "@alfresco/adf-content-services";
+import { PaginationModel } from "@alfresco/adf-core";
+import { ContentActionRef } from "@alfresco/adf-extensions";
 import { MinimalNodeEntity, MinimalNodeEntryEntity } from "@alfresco/js-api";
-import { ContentActionRef, SelectionState } from "@alfresco/adf-extensions";
-import { takeUntil } from "rxjs/operators";
+import { OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { AppExtensionService } from "app/extensions/app-extension.service";
 import { ContentManagementService } from "app/services/content-management.service";
-import { isLocked, isLibrary } from "app/utils/node.utils";
-import { ViewFileAction, ViewNodeAction, ViewNodeExtras } from "app/store/actions/viewer.actions";
-import { ReloadDocumentListAction } from "app/store/actions/app.action";
+import { ReloadDocumentListAction } from "app/store/actions/app.actions";
+import {
+  ViewNodeAction,
+  ViewNodeExtras
+} from "app/store/actions/viewer.actions";
 import {
   getAppSelection,
   getCurrentFolder,
-  isInfoDrawerOpened,
   isSmallScreenSelector
 } from "app/store/selectors/app.selector";
-import { PaginationModel } from "@alfresco/adf-core";
+import { isLibrary, isLocked } from "app/utils/node.utils";
+import { Subject, Subscription } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 export class PageComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<boolean> = new Subject<boolean>();
@@ -39,7 +43,8 @@ export class PageComponent implements OnInit, OnDestroy {
   }
   showPreview(node: MinimalNodeEntity, extras?: ViewNodeExtras) {
     if (node && node.entry) {
-      const id = (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
+      const id =
+        (<any>node).entry.nodeId || (<any>node).entry.guid || node.entry.id;
 
       this.store.dispatch(new ViewNodeAction(id, extras));
     }

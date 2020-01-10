@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ContentManagementService } from '../../services/content-management.service';
 import { AppStore } from '../states/app.state';
-import { AddFavoriteAction, NodeActionTypes, RemoveFavoriteAction } from '../actions/node.action';
+import { AddFavoriteAction, NodeActionTypes, RemoveFavoriteAction } from '../actions/node.actions';
 import { getAppSelection } from '../selectors/app.selector';
 
 @Injectable()

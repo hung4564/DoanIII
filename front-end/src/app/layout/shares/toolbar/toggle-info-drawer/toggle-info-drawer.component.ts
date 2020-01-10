@@ -1,12 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { isInfoDrawerOpened } from 'app/store/selectors/app.selector';
-import { ToggleInfoDrawerAction } from 'app/store/actions/app.action';
-
+import { Component, ViewEncapsulation } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { ToggleInfoDrawerAction } from "app/store/actions/app.actions";
+import { isInfoDrawerOpened } from "app/store/selectors/app.selector";
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'app-toggle-info-drawer',
+  selector: "app-toggle-info-drawer",
   template: `
     <button
       mat-icon-button
@@ -18,7 +17,7 @@ import { ToggleInfoDrawerAction } from 'app/store/actions/app.action';
     </button>
   `,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-toggle-info-drawer' }
+  host: { class: "app-toggle-info-drawer" }
 })
 export class ToggleInfoDrawerComponent {
   infoDrawerOpened$: Observable<boolean>;

@@ -1,13 +1,19 @@
-import { Component, OnInit } from "@angular/core";
 import { ProfileState } from "@alfresco/adf-extensions";
-import { Observable } from "rxjs";
-import { AppService } from "app/services/app.service";
-import { Store } from "@ngrx/store";
-import { getUserProfile } from "app/store/selectors/app.selector";
 import { Person } from "@alfresco/js-api";
-import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
+import { Store } from "@ngrx/store";
+import { AppService } from "app/services/app.service";
 import { ContentApiService } from "app/services/content-api.service";
-import { SetUserProfileAction } from "app/store/actions/app.action";
+import { SetUserProfileAction } from "app/store/actions/app.actions";
+import { getUserProfile } from "app/store/selectors/app.selector";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-current-profile",
@@ -41,7 +47,10 @@ export class CurrentProfileComponent implements OnInit {
   createPasswordForm() {
     return this.fb.group(
       {
-        password: new FormControl("", [Validators.required, Validators.minLength(8)]),
+        password: new FormControl("", [
+          Validators.required,
+          Validators.minLength(8)
+        ]),
         confirmPassword: new FormControl("", [Validators.required]),
         oldPassword: new FormControl("", [Validators.required])
       },
@@ -52,8 +61,13 @@ export class CurrentProfileComponent implements OnInit {
   }
   createForm(user: Person) {
     return this.fb.group({
-      id: new FormControl({ value: user.id, disabled: true }, [Validators.required]),
-      email: new FormControl(user.email, [Validators.required, Validators.email]),
+      id: new FormControl({ value: user.id, disabled: true }, [
+        Validators.required
+      ]),
+      email: new FormControl(user.email, [
+        Validators.required,
+        Validators.email
+      ]),
       firstName: new FormControl(user.firstName, [Validators.required]),
       lastName: new FormControl(user.lastName)
     });
@@ -79,11 +93,13 @@ export class CurrentProfileComponent implements OnInit {
         this.contentApi.editPerson(this.profile.id, data).subscribe(
           person => {
             this.store.dispatch(
-              new SetUserProfileAction({ person: person.entry, groups: this.profile.groups })
+              new SetUserProfileAction({
+                person: person.entry,
+                groups: this.profile.groups
+              })
             );
           },
-          err => {
-          }
+          err => {}
         );
       } else {
         Object.keys(currentForm.controls).forEach(field => {

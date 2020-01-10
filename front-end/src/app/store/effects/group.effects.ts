@@ -1,15 +1,15 @@
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ContentManagementService } from 'app/services/content-management.service';
+import { Injectable } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { ContentManagementService } from "app/services/content-management.service";
+import { map, take } from "rxjs/operators";
 import {
-  EditGroupAction,
-  GroupActionTypes,
+  CreateGroupAction,
   DeleteGroupAction,
-  CreateGroupAction
-} from '../actions/group.action';
-import { map, take } from 'rxjs/operators';
-import { getAppSelection } from '../selectors/app.selector';
+  EditGroupAction,
+  GroupActionTypes
+} from "../actions/group.actions";
+import { getAppSelection } from "../selectors/app.selector";
 
 @Injectable()
 export class GroupEffects {
@@ -37,7 +37,7 @@ export class GroupEffects {
           .select(getAppSelection)
           .pipe(take(1))
           .subscribe(selection => {
-            if (selection && selection.first && selection.first['isGroup']) {
+            if (selection && selection.first && selection.first["isGroup"]) {
               this.content.editGroup(<any>selection.first);
             }
           });
@@ -55,7 +55,7 @@ export class GroupEffects {
           .select(getAppSelection)
           .pipe(take(1))
           .subscribe(selection => {
-            if (selection && selection.first && selection.first['isGroup']) {
+            if (selection && selection.first && selection.first["isGroup"]) {
               this.content.deleteGroup(selection.first.entry.id);
             }
           });

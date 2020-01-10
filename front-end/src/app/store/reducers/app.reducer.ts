@@ -1,21 +1,9 @@
 import { Action } from "@ngrx/store";
-import { AppState } from "../states/app.state";
-import {
-  AppActionTypes,
-  SetUserProfileAction,
-  SetLanguagePickerAction,
-  SetInitialStateAction,
-  SetCurrentUrlAction,
-  SetRepositoryInfoAction,
-  SetCurrentFolderAction,
-  SetInfoDrawerStateAction,
-  SetInfoDrawerMetadataAspectAction,
-  SetSmallScreenAction,
-  SetCurrentLibraryAction
-} from "../actions/app.action";
-import { INITIAL_APP_STATE } from "../states/initial-state";
-import { NodeActionTypes, SetSelectedNodesAction } from "../actions/node.action";
+import { AppActionTypes, SetCurrentFolderAction, SetCurrentLibraryAction, SetCurrentUrlAction, SetInfoDrawerMetadataAspectAction, SetInfoDrawerStateAction, SetInitialStateAction, SetRepositoryInfoAction, SetSmallScreenAction, SetUserProfileAction } from "../actions/app.actions";
+import { NodeActionTypes, SetSelectedNodesAction } from "../actions/node.actions";
 import { SearchActionTypes } from "../actions/search.actions";
+import { AppState } from "../states/app.state";
+import { INITIAL_APP_STATE } from "../states/initial-state";
 
 export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action): AppState {
   let newState: AppState;

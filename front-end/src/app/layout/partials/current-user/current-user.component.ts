@@ -1,13 +1,15 @@
+import { ProfileState } from "@alfresco/adf-extensions";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { Observable } from "rxjs";
+import { MatDialog } from "@angular/material";
 import { Store } from "@ngrx/store";
 import { AppService } from "app/services/app.service";
-import { getUserProfile, getLanguagePickerState } from "app/store/selectors/app.selector";
-import { ProfileState } from "@alfresco/adf-extensions";
-import { LogoutAction } from "app/store/actions/app.action";
-import { MatDialog } from "@angular/material";
+import { LogoutAction } from "app/store/actions/app.actions";
+import {
+  getLanguagePickerState,
+  getUserProfile
+} from "app/store/selectors/app.selector";
+import { Observable } from "rxjs";
 import { CurrentProfileComponent } from "../current-profile/current-profile.component";
-import { ContentApiService } from "app/services/content-api.service";
 
 @Component({
   selector: "app-current-user",

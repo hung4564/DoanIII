@@ -4,30 +4,30 @@ import {
   AuthenticationService,
   FileUploadErrorEvent,
   PageTitleService,
-  UploadService,
   SharedLinksApiService,
-  TranslationService
+  TranslationService,
+  UploadService
 } from "@alfresco/adf-core";
+import { DiscoveryEntry, Group, GroupsApi } from "@alfresco/js-api";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { ActivatedRoute, Router, ActivationEnd } from "@angular/router";
+import { ActivatedRoute, ActivationEnd, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-
-import { filter, takeUntil, map } from "rxjs/operators";
+import { from, Subject } from "rxjs";
+import { filter, takeUntil } from "rxjs/operators";
 import { AppService } from "./services/app.service";
-import { GroupsApi, Group, DiscoveryEntry } from "@alfresco/js-api";
-import { Subject, from } from "rxjs";
-import { AppState } from "./store/states/app.state";
+import { ContentApiService } from "./services/content-api.service";
 import {
-  SetUserProfileAction,
+  SetCurrentUrlAction,
   SetInitialStateAction,
   SetRepositoryInfoAction,
-  SetCurrentUrlAction,
-  SetSmallScreenAction
-} from "./store/actions/app.action";
-import { INITIAL_APP_STATE } from "./store/states/initial-state";
+  SetSmallScreenAction,
+  SetUserProfileAction
+} from "./store/actions/app.actions";
 import { SnackbarErrorAction } from "./store/actions/snackbar.actions";
-import { ContentApiService } from "./services/content-api.service";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { AppState } from "./store/states/app.state";
+import { INITIAL_APP_STATE } from "./store/states/initial-state";
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -55,22 +55,24 @@ export class AppComponent implements OnInit {
     this.transSV.use("en");
   }
   ngOnInit() {
-    this.alfrescoApiService.getInstance().on("error", (error: { status: number }) => {
-      if (error.status === 401) {
-        if (!this.authenticationService.isLoggedIn()) {
-          // this.store.dispatch(new CloseModalDialogsAction());
+    this.alfrescoApiService
+      .getInstance()
+      .on("error", (error: { status: number }) => {
+        if (error.status === 401) {
+          if (!this.authenticationService.isLoggedIn()) {
+            // this.store.dispatch(new CloseModalDialogsAction());
 
-          let redirectUrl = this.route.snapshot.queryParams["redirectUrl"];
-          if (!redirectUrl) {
-            redirectUrl = this.router.url;
+            let redirectUrl = this.route.snapshot.queryParams["redirectUrl"];
+            if (!redirectUrl) {
+              redirectUrl = this.router.url;
+            }
+
+            this.router.navigate(["/login"], {
+              queryParams: { redirectUrl: redirectUrl }
+            });
           }
-
-          this.router.navigate(["/login"], {
-            queryParams: { redirectUrl: redirectUrl }
-          });
         }
-      }
-    });
+      });
 
     this.loadAppSettings();
 
@@ -91,10 +93,17 @@ export class AppComponent implements OnInit {
 
         this.pageHeading = data.title || "";
         if (!data.useParent) pageTitle.setTitle(data.title || "");
-        this.store.dispatch(new SetCurrentUrlAction(router.url, data || { disableShowInfoFile: true }));
+        this.store.dispatch(
+          new SetCurrentUrlAction(
+            router.url,
+            data || { disableShowInfoFile: true }
+          )
+        );
       });
 
-    this.uploadService.fileUploadError.subscribe(error => this.onFileUploadedError(error));
+    this.uploadService.fileUploadError.subscribe(error =>
+      this.onFileUploadedError(error)
+    );
 
     this.sharedLinksApiService.error
       .pipe(takeUntil(this.onDestroy$))
@@ -102,12 +111,14 @@ export class AppComponent implements OnInit {
         this.store.dispatch(new SnackbarErrorAction(err.message));
       });
 
-    this.appService.ready$.pipe(takeUntil(this.onDestroy$)).subscribe(isReady => {
-      if (isReady) {
-        this.loadRepositoryStatus();
-        this.loadUserProfile();
-      }
-    });
+    this.appService.ready$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(isReady => {
+        if (isReady) {
+          this.loadRepositoryStatus();
+          this.loadUserProfile();
+        }
+      });
     this.breakpointObserver
       .observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape])
       .subscribe(result => {
@@ -128,9 +139,13 @@ export class AppComponent implements OnInit {
       if (paging && paging.list && paging.list.entries) {
         groups.push(...paging.list.entries.map(obj => obj.entry));
       }
-      from(this.alfrescoApiService.peopleApi.getPerson("-me-")).subscribe(person => {
-        this.store.dispatch(new SetUserProfileAction({ person: person.entry, groups }));
-      });
+      from(this.alfrescoApiService.peopleApi.getPerson("-me-")).subscribe(
+        person => {
+          this.store.dispatch(
+            new SetUserProfileAction({ person: person.entry, groups })
+          );
+        }
+      );
     } catch (err) {
       let redirectUrl = this.route.snapshot.queryParams["redirectUrl"];
       if (!redirectUrl) {
@@ -157,9 +172,13 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new SetInitialStateAction(state));
   }
   private loadRepositoryStatus() {
-    this.contentApi.getRepositoryInformation().subscribe((response: DiscoveryEntry) => {
-      this.store.dispatch(new SetRepositoryInfoAction(response.entry.repository));
-    });
+    this.contentApi
+      .getRepositoryInformation()
+      .subscribe((response: DiscoveryEntry) => {
+        this.store.dispatch(
+          new SetRepositoryInfoAction(response.entry.repository)
+        );
+      });
   }
   onFileUploadedError(error: FileUploadErrorEvent) {
     let message = "APP.MESSAGES.UPLOAD.ERROR.GENERIC";

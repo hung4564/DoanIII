@@ -1,11 +1,15 @@
-import { Effect, Actions, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators";
-import { CreateTaskAction, TaskActionTypes, ChangeFormTaskAction } from "../actions/task.action";
+import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { AppStore } from "../states/app.state";
-import { NavigateRouteAction } from "../actions/router.actions";
 import { ContentManagementService } from "app/services/content-management.service";
+import { map } from "rxjs/operators";
+import { NavigateRouteAction } from "../actions/router.actions";
+import {
+  ChangeFormTaskAction,
+  CreateTaskAction,
+  TaskActionTypes
+} from "../actions/task.actions";
+import { AppStore } from "../states/app.state";
 
 @Injectable()
 export class TaskEffects {

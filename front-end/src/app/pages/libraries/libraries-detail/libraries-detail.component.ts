@@ -1,31 +1,31 @@
-import { Component, OnInit, OnDestroy, OnChanges } from "@angular/core";
-import { AppExtensionService } from "app/extensions/app-extension.service";
-import { Store } from "@ngrx/store";
-import { AppStore } from "app/store/states/app.state";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ContentApiService } from "app/services/content-api.service";
 import {
-  SetCurrentFolderAction,
-  ReloadDocumentListAction,
-  SetCurrentLibraryAction
-} from "app/store/actions/app.action";
+  FileUploadEvent,
+  PageTitleService,
+  UploadService
+} from "@alfresco/adf-core";
 import { ContentActionRef } from "@alfresco/adf-extensions";
-import { getAppSelection, isAdmin } from "app/store/selectors/app.selector";
-import { takeUntil, debounceTime } from "rxjs/operators";
-import { Subject, Subscription } from "rxjs";
 import {
   MinimalNodeEntity,
-  PathElementEntity,
   MinimalNodeEntryEntity,
   PathElement,
+  PathElementEntity,
   Site
 } from "@alfresco/js-api";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { AppExtensionService } from "app/extensions/app-extension.service";
+import { ContentApiService } from "app/services/content-api.service";
 import { NodeActionsService } from "app/services/node-actions.service";
 import {
-  UploadService,
-  FileUploadEvent,
-  PageTitleService
-} from "@alfresco/adf-core";
+  ReloadDocumentListAction,
+  SetCurrentFolderAction,
+  SetCurrentLibraryAction
+} from "app/store/actions/app.actions";
+import { getAppSelection, isAdmin } from "app/store/selectors/app.selector";
+import { AppStore } from "app/store/states/app.state";
+import { Subject, Subscription } from "rxjs";
+import { debounceTime, takeUntil } from "rxjs/operators";
 import { LibraryService } from "../library.service";
 
 @Component({

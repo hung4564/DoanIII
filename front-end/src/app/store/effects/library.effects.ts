@@ -1,36 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import { ContentApiService } from "app/services/content-api.service";
 import { map, mergeMap, take } from "rxjs/operators";
 import { ContentManagementService } from "../../services/content-management.service";
-import { AppStore } from "../states/app.state";
-import {
-  DeleteLibraryAction,
-  LibraryActionTypes,
-  LeaveLibraryAction,
-  CreateLibraryAction,
-  NavigateLibraryAction,
-  UpdateLibraryAction,
-  UpdateMemberLibraryAction,
-  DeleteMemberLibraryAction,
-  AddMemberLibraryAction,
-  ApproveMemberLibraryAction,
-  RejectMemberLibraryAction,
-  AddApproveFolderAction,
-  DeleteApproveFolderAction,
-  RejectLibraryNodeAction,
-  ApproveLibraryNodeAction
-} from "../actions/library.actions";
-import {
-  getAppSelection,
-  getRepositoryStatus,
-  getNavigationState,
-  getCurrentSite
-} from "../selectors/app.selector";
+import { ReloadDocumentListAction } from "../actions/app.actions";
+import { AddApproveFolderAction, AddMemberLibraryAction, ApproveLibraryNodeAction, ApproveMemberLibraryAction, CreateLibraryAction, DeleteApproveFolderAction, DeleteLibraryAction, DeleteMemberLibraryAction, LeaveLibraryAction, LibraryActionTypes, NavigateLibraryAction, RejectLibraryNodeAction, RejectMemberLibraryAction, UpdateLibraryAction, UpdateMemberLibraryAction } from "../actions/library.actions";
 import { NavigateRouteAction } from "../actions/router.actions";
 import { SnackbarErrorAction } from "../actions/snackbar.actions";
-import { ContentApiService } from "app/services/content-api.service";
-import { ReloadDocumentListAction } from "../actions/app.action";
+import { getAppSelection, getCurrentSite, getNavigationState } from "../selectors/app.selector";
+import { AppStore } from "../states/app.state";
 
 @Injectable()
 export class LibraryEffects {

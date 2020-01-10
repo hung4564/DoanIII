@@ -13,7 +13,7 @@ import {
 } from "../actions/upload.actions";
 import { SnackbarErrorAction } from "../actions/snackbar.actions";
 import { getNavigationState } from "../selectors/app.selector";
-import { UnlockWriteAction } from "../actions/node.action";
+import { UnlockWriteAction } from "../actions/node.actions";
 
 @Injectable()
 export class UploadEffects {

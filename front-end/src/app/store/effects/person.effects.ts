@@ -1,14 +1,14 @@
-import { Effect, Actions, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { ContentManagementService } from "app/services/content-management.service";
-import {
-  EditPersonAction,
-  PersonActionTypes,
-  DeletePersonAction,
-  CreatePersonAction
-} from "../actions/person.action";
 import { map, take } from "rxjs/operators";
+import {
+  CreatePersonAction,
+  DeletePersonAction,
+  EditPersonAction,
+  PersonActionTypes
+} from "../actions/person.actions";
 import { getAppSelection } from "../selectors/app.selector";
 
 @Injectable()
@@ -63,4 +63,3 @@ export class PersonEffects {
     })
   );
 }
-

@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { PageComponent } from "../page.component";
-import { AppStore } from "app/store/states/app.state";
-import { Store } from "@ngrx/store";
 import { SiteEntry } from "@alfresco/js-api";
-import { NavigateLibraryAction } from "app/store/actions/library.actions";
-import { ContentManagementService } from "app/services/content-management.service";
+import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { AppExtensionService } from "app/extensions/app-extension.service";
-import { SetCurrentFolderAction } from "app/store/actions/app.action";
+import { ContentManagementService } from "app/services/content-management.service";
+import { SetCurrentFolderAction } from "app/store/actions/app.actions";
+import { NavigateLibraryAction } from "app/store/actions/library.actions";
+import { AppStore } from "app/store/states/app.state";
+import { PageComponent } from "../page.component";
 
 @Component({
   selector: "app-libraries",

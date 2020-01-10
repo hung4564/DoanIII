@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { ContentApiService } from 'app/services/content-api.service';
 import { NodeInfo } from 'app/model/node-info.model';
-import { DownloadNodesAction, NodeActionTypes } from '../actions/node.action';
+import { DownloadNodesAction, NodeActionTypes } from '../actions/node.actions';
 import { getAppSelection } from '../selectors/app.selector';
 
 @Injectable()
