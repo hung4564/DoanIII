@@ -1,14 +1,14 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { SelectionState } from '@alfresco/adf-extensions';
-import { ContentManagementService } from 'app/services/content-management.service';
-import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { getAppSelection } from 'app/store/selectors/app.selector';
+import { SelectionState } from "@alfresco/adf-extensions";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { ContentManagementService } from "app/services/content-management.service";
+import { getAppSelection } from "app/store/selectors/app.selector";
+import { Observable } from "rxjs";
+import { distinctUntilChanged, map } from "rxjs/operators";
 
 @Component({
-  selector: 'app-toggle-favorite-library',
+  selector: "app-toggle-favorite-library",
   template: `
     <button
       mat-menu-item
@@ -24,13 +24,15 @@ import { getAppSelection } from 'app/store/selectors/app.selector';
       <mat-icon *ngIf="favoriteLibrary.isFavorite()">star</mat-icon>
       <mat-icon *ngIf="!favoriteLibrary.isFavorite()">star_border</mat-icon>
       <span>{{
-        (favoriteLibrary.isFavorite() ? "APP.ACTIONS.REMOVE_FAVORITE" : "APP.ACTIONS.FAVORITE")
-          | translate
+        (favoriteLibrary.isFavorite()
+          ? "APP.ACTIONS.REMOVE_FAVORITE"
+          : "APP.ACTIONS.FAVORITE"
+        ) | translate
       }}</span>
     </button>
   `,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-toggle-favorite-library' }
+  host: { class: "app-toggle-favorite-library" }
 })
 export class ToggleFavoriteLibraryComponent implements OnInit {
   selection$: Observable<SelectionState>;
@@ -42,12 +44,13 @@ export class ToggleFavoriteLibraryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const isFavoriteLibraries = this.router.url.startsWith('/favorite/libraries');
+    const isFavoriteLibraries = this.router.url.startsWith(
+      "/favorite/libraries"
+    );
 
     this.selection$ = this.store.select(getAppSelection).pipe(
       distinctUntilChanged(),
       map(selection => {
-        // favorite libraries list should already be marked as favorite
         if (selection.library && isFavoriteLibraries) {
           (<any>selection.library).isFavorite = true;
           return selection;

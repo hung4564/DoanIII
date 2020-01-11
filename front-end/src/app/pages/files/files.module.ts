@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { FilesComponent } from './files.component';
-import { SharesModule } from 'app/layout/shares/shares.module';
-import { CoreModule } from '@alfresco/adf-core';
-import { ContentModule } from '@alfresco/adf-content-services';
-import { FileDetailComponent } from './file-detail/file-detail.component';
-import { ExtensionsModule } from '@alfresco/adf-extensions';
+import { ContentModule } from "@alfresco/adf-content-services";
+import { CoreModule } from "@alfresco/adf-core";
+import { ExtensionsModule } from "@alfresco/adf-extensions";
+import { NgModule } from "@angular/core";
+import { SharesModule } from "app/layout/shares/shares.module";
+import { FilesComponent } from "./files.component";
 
 @NgModule({
   imports: [
@@ -13,9 +12,6 @@ import { ExtensionsModule } from '@alfresco/adf-extensions';
     CoreModule.forChild(),
     ContentModule.forChild()
   ],
-  declarations: [
-    FilesComponent,
-    FileDetailComponent,
-  ]
+  declarations: [FilesComponent]
 })
 export class FilesModule {}

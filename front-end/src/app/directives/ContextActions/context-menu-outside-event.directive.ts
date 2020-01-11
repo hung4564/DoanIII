@@ -1,15 +1,15 @@
 import {
   Directive,
-  Output,
   EventEmitter,
+  OnDestroy,
   OnInit,
-  OnDestroy
-} from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+  Output
+} from "@angular/core";
+import { fromEvent, Subscription } from "rxjs";
+import { filter } from "rxjs/operators";
 
 @Directive({
-  selector: '[appContextMenuOutsideEvent]'
+  selector: "[appContextMenuOutsideEvent]"
 })
 export class OutsideEventDirective implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -21,7 +21,7 @@ export class OutsideEventDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = this.subscriptions.concat([
-      fromEvent(document.body, 'click')
+      fromEvent(document.body, "click")
         .pipe(filter(event => !this.findAncestor(event.target as Element)))
         .subscribe(() => this.clickOutside.next())
     ]);
@@ -33,12 +33,11 @@ export class OutsideEventDirective implements OnInit, OnDestroy {
   }
 
   private findAncestor(el: Element): boolean {
-    const className = 'app-context-menu';
+    const className = "app-context-menu";
 
     if (el.classList.contains(className)) {
       return true;
     }
-    // tslint:disable-next-line:curly
     while ((el = el.parentElement) && !el.classList.contains(className));
     return !!el;
   }

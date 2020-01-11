@@ -1,12 +1,27 @@
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
-import { map, take } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-
-import { ContentManagementService } from '../../services/content-management.service';
-import { ViewUtilService } from '@alfresco/adf-core';
-import { ShareNodeAction, NodeActionTypes, UnshareNodesAction, PurgeDeletedNodesAction, RestoreDeletedNodesAction, DeleteNodesAction, UndoDeleteNodesAction, CreateFolderAction, EditFolderAction, CopyNodesAction, MoveNodesAction, ManagePermissionsAction, ManageVersionsAction, PrintFileAction, UnlockWriteAction } from '../actions/node.actions';
-import { getAppSelection, getCurrentFolder } from '../selectors/app.selector';
+import { ViewUtilService } from "@alfresco/adf-core";
+import { Injectable } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { map, take } from "rxjs/operators";
+import { ContentManagementService } from "../../services/content-management.service";
+import {
+  CopyNodesAction,
+  CreateFolderAction,
+  DeleteNodesAction,
+  EditFolderAction,
+  ManagePermissionsAction,
+  ManageVersionsAction,
+  MoveNodesAction,
+  NodeActionTypes,
+  PrintFileAction,
+  PurgeDeletedNodesAction,
+  RestoreDeletedNodesAction,
+  ShareNodeAction,
+  UndoDeleteNodesAction,
+  UnlockWriteAction,
+  UnshareNodesAction
+} from "../actions/node.actions";
+import { getAppSelection, getCurrentFolder } from "../selectors/app.selector";
 
 @Injectable()
 export class NodeEffects {
@@ -183,7 +198,7 @@ export class NodeEffects {
   moveNodes$ = this.actions$.pipe(
     ofType<MoveNodesAction>(NodeActionTypes.Move),
     map(action => {
-    console.log("TCL: NodeEffects -> action", action)
+      console.log("TCL: NodeEffects -> action", action);
       if (action.payload && action.payload.length > 0) {
         this.contentService.moveNodes(action.payload);
       } else {
@@ -277,7 +292,6 @@ export class NodeEffects {
 
   printFile(node: any) {
     if (node && node.entry) {
-      // shared and favorite
       const id = node.entry.nodeId || node.entry.guid || node.entry.id;
       const mimeType = node.entry.content.mimeType;
 

@@ -31,7 +31,6 @@ export class DocumentListDirective {
     this.documentList.includeFields = ["isFavorite", "aspectNames"];
     this.isLibrary =
       this.documentList.currentFolderId === "-mysites-" ||
-      // workaround for custom node list
       this.router.url.endsWith("/libraries") ||
       this.router.url.startsWith("/search/libraries");
     this.isPeople = this.router.url.startsWith("/people");

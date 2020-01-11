@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { LayoutComponent } from "./layout/layout.component";
 import { ErrorComponent } from "./pages/error/error.component";
-import { FileDetailComponent } from "./pages/files/file-detail/file-detail.component";
 import { FilesComponent } from "./pages/files/files.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { PreviewComponent } from "./pages/preview/preview.component";
@@ -38,13 +37,6 @@ export const appRoutes: Routes = [
             data: {
               title: "APP.BROWSE.PERSONAL.TITLE",
               defaultNodeId: "-my-"
-            }
-          },
-          {
-            path: "file/:nodeId",
-            component: FileDetailComponent,
-            data: {
-              title: "APP.BROWSE.PERSONAL.TITLE"
             }
           },
           {

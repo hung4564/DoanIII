@@ -1,6 +1,14 @@
-import { DocumentListComponent, ShareDataRow } from "@alfresco/adf-content-services";
+import {
+  DocumentListComponent,
+  ShareDataRow
+} from "@alfresco/adf-content-services";
 import { FileUploadEvent, UploadService } from "@alfresco/adf-core";
-import { MinimalNodeEntity, MinimalNodeEntryEntity, PathElement, PathElementEntity } from "@alfresco/js-api";
+import {
+  MinimalNodeEntity,
+  MinimalNodeEntryEntity,
+  PathElement,
+  PathElementEntity
+} from "@alfresco/js-api";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
@@ -21,7 +29,6 @@ import { PageComponent } from "../page.component";
 })
 export class FilesComponent extends PageComponent implements OnInit {
   private nodePath: PathElement[];
-  isValidPath = true;
   isAdmin = false;
   columns: any[] = [];
   nodeId = "-my-";
@@ -49,23 +56,20 @@ export class FilesComponent extends PageComponent implements OnInit {
     route.params.subscribe(({ folderId }: Params) => {
       const nodeId = folderId || data.defaultNodeId;
       this.nodeId = nodeId;
-      this.contentApi.getNode(nodeId).subscribe(
-        node => {
-          this.isValidPath = true;
-
-          if (node.entry && node.entry.isFolder) {
-            this.updateCurrentNode(node.entry);
-          } else {
-            this.router.navigate(["/personal-files", node.entry.parentId], {
-              replaceUrl: true
-            });
-          }
-        },
-        () => (this.isValidPath = false)
-      );
+      this.contentApi.getNode(nodeId).subscribe(node => {
+        if (node.entry && node.entry.isFolder) {
+          this.updateCurrentNode(node.entry);
+        } else {
+          this.router.navigate(["/personal-files", node.entry.parentId], {
+            replaceUrl: true
+          });
+        }
+      });
     });
     this.subscriptions = this.subscriptions.concat([
-      nodeActionsService.contentCopied.subscribe(nodes => this.onContentCopied(nodes)),
+      nodeActionsService.contentCopied.subscribe(nodes =>
+        this.onContentCopied(nodes)
+      ),
       uploadService.fileUploadComplete
         .pipe(debounceTime(300))
         .subscribe(file => this.onFileUploadedEvent(file)),
@@ -114,7 +118,8 @@ export class FilesComponent extends PageComponent implements OnInit {
 
   displayFolderParent(filePath = "", index: number) {
     const parentName = filePath.split("/")[index];
-    const currentFoldersDisplayed = <ShareDataRow[]>this.documentList.data.getRows() || [];
+    const currentFoldersDisplayed =
+      <ShareDataRow[]>this.documentList.data.getRows() || [];
 
     const alreadyDisplayedParentFolder = currentFoldersDisplayed.find(
       row => row.node.entry.isFolder && row.node.entry.name === parentName
@@ -128,14 +133,14 @@ export class FilesComponent extends PageComponent implements OnInit {
 
   onContentCopied(nodes: MinimalNodeEntity[]) {
     const newNode = nodes.find(node => {
-      return node && node.entry && node.entry.parentId === this.getParentNodeId();
+      return (
+        node && node.entry && node.entry.parentId === this.getParentNodeId()
+      );
     });
     if (newNode) {
       this.reload();
     }
   }
-
-  // todo: review this approach once 5.2.3 is out
   private async updateCurrentNode(node: MinimalNodeEntryEntity) {
     this.nodePath = null;
 
@@ -169,7 +174,9 @@ export class FilesComponent extends PageComponent implements OnInit {
     if (this.isSiteContainer(node)) {
       // rename 'documentLibrary' entry to the target site display name
       // clicking on the breadcrumb entry loads the site content
-      const parentNode = await this.contentApi.getNodeInfo(node.parentId).toPromise();
+      const parentNode = await this.contentApi
+        .getNodeInfo(node.parentId)
+        .toPromise();
       node.name = parentNode.properties["cm:title"] || parentNode.name;
 
       // remove the site entry
@@ -179,7 +186,9 @@ export class FilesComponent extends PageComponent implements OnInit {
       const docLib = elements.findIndex(el => el.name === "documentLibrary");
       if (docLib > -1) {
         const siteFragment = elements[docLib - 1];
-        const siteNode = await this.contentApi.getNodeInfo(siteFragment.id).toPromise();
+        const siteNode = await this.contentApi
+          .getNodeInfo(siteFragment.id)
+          .toPromise();
 
         // apply Site Name to the parent fragment
         siteFragment.name = siteNode.properties["cm:title"] || siteNode.name;
@@ -193,18 +202,6 @@ export class FilesComponent extends PageComponent implements OnInit {
     }
     return false;
   }
-  goDetail(e: MinimalNodeEntity) {
-    if (e && e.entry) {
-      if (e.entry.isFolder) {
-        this.navigate(e.entry.id);
-      }
-
-      if (e.entry.isFile) {
-        const node = e.entry;
-        this.router.navigate([`personal-files/file/${node.id}`]);
-      }
-    }
-  }
   onNodeDoubleClick(node: MinimalNodeEntity) {
     if (node && node.entry) {
       if (node.entry.isFolder) {
@@ -217,9 +214,11 @@ export class FilesComponent extends PageComponent implements OnInit {
     }
   }
   onBreadcrumbNavigate(route: PathElementEntity) {
-    // todo: review this approach once 5.2.3 is out
     if (this.nodePath && this.nodePath.length > 2) {
-      if (this.nodePath[1].name === "Sites" && this.nodePath[2].id === route.id) {
+      if (
+        this.nodePath[1].name === "Sites" &&
+        this.nodePath[2].id === route.id
+      ) {
         return this.navigate(this.nodePath[3].id);
       }
     }

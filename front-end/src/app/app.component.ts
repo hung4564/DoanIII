@@ -60,8 +60,6 @@ export class AppComponent implements OnInit {
       .on("error", (error: { status: number }) => {
         if (error.status === 401) {
           if (!this.authenticationService.isLoggedIn()) {
-            // this.store.dispatch(new CloseModalDialogsAction());
-
             let redirectUrl = this.route.snapshot.queryParams["redirectUrl"];
             if (!redirectUrl) {
               redirectUrl = this.router.url;

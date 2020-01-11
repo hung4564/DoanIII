@@ -1,31 +1,39 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, HostListener } from "@angular/core";
 import {
-  ActivatedRoute,
-  Router,
-  UrlTree,
-  UrlSegmentGroup,
-  UrlSegment,
-  PRIMARY_OUTLET
-} from "@angular/router";
-import { debounceTime, map, takeUntil } from "rxjs/operators";
-import {
-  UserPreferencesService,
+  AlfrescoApiService,
   ObjectUtils,
   UploadService,
-  AlfrescoApiService
+  UserPreferencesService
 } from "@alfresco/adf-core";
-import { Store } from "@ngrx/store";
-import { PageComponent } from "../page.component";
-import { ContentManagementService } from "../../services/content-management.service";
-import { ContentActionRef, ViewerExtensionRef, SelectionState } from "@alfresco/adf-extensions";
+import { ContentActionRef, ViewerExtensionRef } from "@alfresco/adf-extensions";
 import { SearchRequest } from "@alfresco/js-api";
-import { from, Observable } from "rxjs";
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from "@angular/core";
+import {
+  ActivatedRoute,
+  PRIMARY_OUTLET,
+  Router,
+  UrlSegment,
+  UrlSegmentGroup,
+  UrlTree
+} from "@angular/router";
 import { Actions, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { AppExtensionService } from "app/extensions/app-extension.service";
 import { ContentApiService } from "app/services/content-api.service";
-import { ClosePreviewAction, ViewerActionTypes } from "app/store/actions/viewer.actions";
 import { SetSelectedNodesAction } from "app/store/actions/node.actions";
-import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.selector";
+import {
+  ClosePreviewAction,
+  ViewerActionTypes
+} from "app/store/actions/viewer.actions";
+import { getAppSelection } from "app/store/selectors/app.selector";
+import { debounceTime, map, takeUntil } from "rxjs/operators";
+import { ContentManagementService } from "../../services/content-management.service";
+import { PageComponent } from "../page.component";
 
 @Component({
   selector: "app-preview",
@@ -34,11 +42,18 @@ import { isInfoDrawerOpened, getAppSelection } from "app/store/selectors/app.sel
   encapsulation: ViewEncapsulation.None,
   host: { class: "app-preview" }
 })
-export class PreviewComponent extends PageComponent implements OnInit, OnDestroy {
+export class PreviewComponent extends PageComponent
+  implements OnInit, OnDestroy {
   previewLocation: string = null;
   routesSkipNavigation = ["shared", "recent-files", "favorites"];
   navigateSource: string = null;
-  navigationSources = ["favorites", "libraries", "personal-files", "recent-files", "shared"];
+  navigationSources = [
+    "favorites",
+    "libraries",
+    "personal-files",
+    "recent-files",
+    "shared"
+  ];
   folderId: string = null;
   nodeId: string = null;
   previousNodeId: string;
@@ -120,9 +135,13 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     });
 
     this.subscriptions = this.subscriptions.concat([
-      this.content.nodesDeleted.subscribe(() => this.navigateToFileLocation(true)),
+      this.content.nodesDeleted.subscribe(() =>
+        this.navigateToFileLocation(true)
+      ),
 
-      this.uploadService.fileUploadDeleted.subscribe(() => this.navigateToFileLocation(true)),
+      this.uploadService.fileUploadDeleted.subscribe(() =>
+        this.navigateToFileLocation(true)
+      ),
 
       this.uploadService.fileUploadComplete
         .pipe(debounceTime(300))
@@ -154,7 +173,10 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
         this.store.dispatch(new SetSelectedNodesAction([{ entry: this.node }]));
 
         if (this.node && this.node.isFile) {
-          const nearest = await this.getNearestNodes(this.node.id, this.node.parentId);
+          const nearest = await this.getNearestNodes(
+            this.node.id,
+            this.node.parentId
+          );
 
           this.previousNodeId = nearest.left;
           this.nextNodeId = nearest.right;
@@ -192,7 +214,9 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   }
 
   navigateToFileLocation(shouldNavigate: boolean) {
-    const shouldSkipNavigation = this.routesSkipNavigation.includes(this.previewLocation);
+    const shouldSkipNavigation = this.routesSkipNavigation.includes(
+      this.previewLocation
+    );
 
     if (shouldNavigate) {
       const route = this.getNavigationCommands(this.previewLocation);
@@ -208,7 +232,9 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
   /** Handles navigation to a previous document */
   onNavigateBefore(): void {
     if (this.previousNodeId) {
-      this.router.navigate(this.getPreviewPath(this.folderId, this.previousNodeId));
+      this.router.navigate(
+        this.getPreviewPath(this.folderId, this.previousNodeId)
+      );
     }
   }
 
@@ -280,11 +306,12 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
    */
   async getFileIds(source: string, folderId?: string): Promise<string[]> {
     if ((source === "personal-files" || source === "libraries") && folderId) {
-      const sortKey = this.preferences.get("personal-files.sorting.key") || "modifiedAt";
-      const sortDirection = this.preferences.get("personal-files.sorting.direction") || "desc";
+      const sortKey =
+        this.preferences.get("personal-files.sorting.key") || "modifiedAt";
+      const sortDirection =
+        this.preferences.get("personal-files.sorting.direction") || "desc";
       const nodes = await this.contentApi
         .getNodeChildren(folderId, {
-          // orderBy: `${sortKey} ${sortDirection}`,
           fields: ["id", this.getRootField(sortKey)],
           where: "(isFile=true)"
         })
@@ -304,8 +331,10 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
         })
         .toPromise();
 
-      const sortKey = this.preferences.get("favorites.sorting.key") || "modifiedAt";
-      const sortDirection = this.preferences.get("favorites.sorting.direction") || "desc";
+      const sortKey =
+        this.preferences.get("favorites.sorting.key") || "modifiedAt";
+      const sortDirection =
+        this.preferences.get("favorites.sorting.direction") || "desc";
       const files = nodes.list.entries.map(obj => obj.entry.target.file);
       this.sort(files, sortKey, sortDirection);
 
@@ -313,8 +342,10 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     }
 
     if (source === "shared") {
-      const sortingKey = this.preferences.get("shared.sorting.key") || "modifiedAt";
-      const sortingDirection = this.preferences.get("shared.sorting.direction") || "desc";
+      const sortingKey =
+        this.preferences.get("shared.sorting.key") || "modifiedAt";
+      const sortingDirection =
+        this.preferences.get("shared.sorting.direction") || "desc";
 
       const nodes = await this.contentApi
         .findSharedLinks({
@@ -331,8 +362,10 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     if (source === "recent-files") {
       const person = await this.contentApi.getPerson("-me-").toPromise();
       const username = person.entry.id;
-      const sortingKey = this.preferences.get("recent-files.sorting.key") || "modifiedAt";
-      const sortingDirection = this.preferences.get("recent-files.sorting.direction") || "desc";
+      const sortingKey =
+        this.preferences.get("recent-files.sorting.key") || "modifiedAt";
+      const sortingDirection =
+        this.preferences.get("recent-files.sorting.direction") || "desc";
 
       const query: SearchRequest = {
         query: {
@@ -377,14 +410,16 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
     items.sort((a: any, b: any) => {
       let left = ObjectUtils.getValue(a, key);
       if (left) {
-        left = left instanceof Date ? left.valueOf().toString() : left.toString();
+        left =
+          left instanceof Date ? left.valueOf().toString() : left.toString();
       } else {
         left = "";
       }
 
       let right = ObjectUtils.getValue(b, key);
       if (right) {
-        right = right instanceof Date ? right.valueOf().toString() : right.toString();
+        right =
+          right instanceof Date ? right.valueOf().toString() : right.toString();
       } else {
         right = "";
       }
@@ -409,7 +444,8 @@ export class PreviewComponent extends PageComponent implements OnInit, OnDestroy
 
   private getNavigationCommands(url: string): any[] {
     const urlTree: UrlTree = this.router.parseUrl(url);
-    const urlSegmentGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
+    const urlSegmentGroup: UrlSegmentGroup =
+      urlTree.root.children[PRIMARY_OUTLET];
 
     if (!urlSegmentGroup) {
       return [url];

@@ -1,30 +1,29 @@
-import { CoreModule, AuthGuardEcm } from "@alfresco/adf-core";
-import { CommonModule } from "@angular/common";
-import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core";
-import { ExtensionsModule, ExtensionService } from "@alfresco/adf-extensions";
-import { AppExtensionService } from "./app-extension.service";
-import * as rules from "./rules";
-import { CustomNameColumnComponent } from "app/layout/shares/name-column/name-column.component";
 import {
   LibraryNameColumnComponent,
   LibraryRoleColumnComponent,
   LibraryStatusColumnComponent,
   TrashcanNameColumnComponent
 } from "@alfresco/adf-content-services";
-import { ToggleFavoriteComponent } from "app/layout/shares/toolbar/toggle-favorite/toggle-favorite.component";
+import { CoreModule } from "@alfresco/adf-core";
+import { ExtensionService, ExtensionsModule } from "@alfresco/adf-extensions";
+import { CommonModule } from "@angular/common";
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core";
+import { ChangeLibraryRoleComponent } from "app/layout/shares/changeLibraryRole/changeLibraryRole.component";
+import { CustomBtnComponent } from "app/layout/shares/custom-btn/custom-btn.component";
+import { CommentsTabComponent } from "app/layout/shares/info-drawer/comments-tab/comments-tab.component";
+import { LibraryMetadataTabComponent } from "app/layout/shares/info-drawer/library-metadata-tab/library-metadata-tab.component";
+import { MetadataTabComponent } from "app/layout/shares/info-drawer/metadata-tab/metadata-tab.component";
+import { VersionsTabComponent } from "app/layout/shares/info-drawer/versions-tab/versions-tab.component";
+import { LocationLinkComponent } from "app/layout/shares/location-link/location-link.component";
+import { CustomNameColumnComponent } from "app/layout/shares/name-column/name-column.component";
 import { ToggleFavoriteLibraryComponent } from "app/layout/shares/toolbar/toggle-favorite-library/toggle-favorite-library.component";
+import { ToggleFavoriteComponent } from "app/layout/shares/toolbar/toggle-favorite/toggle-favorite.component";
+import { ToggleInfoDrawerComponent } from "app/layout/shares/toolbar/toggle-info-drawer/toggle-info-drawer.component";
 import { ToggleJoinLibraryButtonComponent } from "app/layout/shares/toolbar/toggle-join-library/toggle-join-library-button.component";
 import { ToggleJoinLibraryMenuComponent } from "app/layout/shares/toolbar/toggle-join-library/toggle-join-library-menu.component";
 import { ToggleSharedComponent } from "app/layout/shares/toolbar/toggle-shared/toggle-shared.component";
-import { LocationLinkComponent } from "app/layout/shares/location-link/location-link.component";
-import { ToggleEditOfflineComponent } from "app/layout/shares/toolbar/toggle-edit-offline/toggle-edit-offline.component";
-import { ToggleInfoDrawerComponent } from "app/layout/shares/toolbar/toggle-info-drawer/toggle-info-drawer.component";
-import { LibraryMetadataTabComponent } from "app/layout/shares/info-drawer/library-metadata-tab/library-metadata-tab.component";
-import { CommentsTabComponent } from "app/layout/shares/info-drawer/comments-tab/comments-tab.component";
-import { VersionsTabComponent } from "app/layout/shares/info-drawer/versions-tab/versions-tab.component";
-import { MetadataTabComponent } from "app/layout/shares/info-drawer/metadata-tab/metadata-tab.component";
-import { CustomBtnComponent } from "app/layout/shares/custom-btn/custom-btn.component";
-import { ChangeLibraryRoleComponent } from "app/layout/shares/changeLibraryRole/changeLibraryRole.component";
+import { AppExtensionService } from "./app-extension.service";
+import * as rules from "./rules";
 
 export function setupExtensions(service: AppExtensionService): Function {
   return () => service.load();
@@ -56,7 +55,6 @@ export class CoreExtensionsModule {
 
   constructor(extensions: ExtensionService) {
     extensions.setComponents({
-      // 'app.layout.main': AppLayoutComponent,
       "app.components.tabs.metadata": MetadataTabComponent,
       "app.components.tabs.library.metadata": LibraryMetadataTabComponent,
       "app.components.tabs.comments": CommentsTabComponent,
@@ -66,7 +64,6 @@ export class CoreExtensionsModule {
       "app.toolbar.toggleFavoriteLibrary": ToggleFavoriteLibraryComponent,
       "app.toolbar.toggleJoinLibrary": ToggleJoinLibraryButtonComponent,
       "app.columns.button": CustomBtnComponent,
-      // 'app.toolbar.cardView': DocumentDisplayModeComponent,
       "app.menu.toggleJoinLibrary": ToggleJoinLibraryMenuComponent,
       "app.shared-link.toggleSharedLink": ToggleSharedComponent,
       "app.columns.name": CustomNameColumnComponent,
@@ -75,14 +72,8 @@ export class CoreExtensionsModule {
       "app.columns.libraryStatus": LibraryStatusColumnComponent,
       "app.columns.trashcanName": TrashcanNameColumnComponent,
       "app.columns.location": LocationLinkComponent,
-      "app.columns.changeLibraryRole": ChangeLibraryRoleComponent,
-      "app.toolbar.toggleEditOffline": ToggleEditOfflineComponent
+      "app.columns.changeLibraryRole": ChangeLibraryRoleComponent
     });
-
-    extensions.setAuthGuards({
-      "app.auth": AuthGuardEcm
-    });
-
     extensions.setEvaluators({
       canCopyNode: rules.canCopyNode,
       canToggleJoinLibrary: rules.canToggleJoinLibrary,

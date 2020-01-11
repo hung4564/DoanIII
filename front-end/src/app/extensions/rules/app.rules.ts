@@ -1,11 +1,11 @@
-import * as navigation from "./navigation.rules";
-import * as repository from "./repository.rules";
-import * as user from "./user.rules";
+import { Site } from "@alfresco/js-api";
 import {
   CustomRuleContext,
   NavigationTypeEnum
 } from "app/model/custom-rule-context.model";
-import { Site } from "@alfresco/js-api";
+import * as navigation from "./navigation.rules";
+import * as repository from "./repository.rules";
+import * as user from "./user.rules";
 
 /**
  * Checks if user can copy selected node.
@@ -133,7 +133,6 @@ export function canDeleteSelection(context: CustomRuleContext): boolean {
       return false;
     }
 
-    // temp workaround for Search api
     if (navigation.isFavorites(context)) {
       return true;
     }
@@ -142,7 +141,6 @@ export function canDeleteSelection(context: CustomRuleContext): boolean {
       return context.permissions.check(context.selection.nodes, ["delete"]);
     }
 
-    // workaround for Shared Files
     if (navigation.isSharedFiles(context)) {
       return context.permissions.check(context.selection.nodes, ["delete"], {
         target: "allowableOperationsOnTarget"
@@ -301,7 +299,6 @@ export function canUpdateSelectedFolder(context: CustomRuleContext): boolean {
   const { folder } = context.selection;
   if (folder) {
     return (
-      // workaround for Favorites Api
       navigation.isFavorites(context) ||
       context.permissions.check(folder.entry, ["update"])
     );

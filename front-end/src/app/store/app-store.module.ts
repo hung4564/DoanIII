@@ -17,8 +17,8 @@ import { TaskEffects } from "./effects/task.effects";
 import { UploadEffects } from "./effects/upload.effects";
 import { ViewerEffects } from "./effects/viewer.effects";
 import { appReducer } from "./reducers/app.reducer";
+import * as fromEntity from "./reducers/entity.reducer";
 import { INITIAL_STATE } from "./states/initial-state";
-import * as fromEntity from './reducers/entity.reducer';
 
 @NgModule({
   imports: [
@@ -39,8 +39,8 @@ import * as fromEntity from './reducers/entity.reducer';
     ]),
     StoreModule.forRoot({ app: appReducer }, { initialState: INITIAL_STATE }),
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production // Restrict extension to log-only mode
+      maxAge: 25,
+      logOnly: environment.production
     }),
     StoreModule.forFeature(fromEntity.entitiesFeatureKey, fromEntity.reducer)
   ],

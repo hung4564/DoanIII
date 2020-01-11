@@ -1,11 +1,28 @@
 import { Action } from "@ngrx/store";
-import { AppActionTypes, SetCurrentFolderAction, SetCurrentLibraryAction, SetCurrentUrlAction, SetInfoDrawerMetadataAspectAction, SetInfoDrawerStateAction, SetInitialStateAction, SetRepositoryInfoAction, SetSmallScreenAction, SetUserProfileAction } from "../actions/app.actions";
-import { NodeActionTypes, SetSelectedNodesAction } from "../actions/node.actions";
+import {
+  AppActionTypes,
+  SetCurrentFolderAction,
+  SetCurrentLibraryAction,
+  SetCurrentUrlAction,
+  SetInfoDrawerMetadataAspectAction,
+  SetInfoDrawerStateAction,
+  SetInitialStateAction,
+  SetRepositoryInfoAction,
+  SetSmallScreenAction,
+  SetUserProfileAction
+} from "../actions/app.actions";
+import {
+  NodeActionTypes,
+  SetSelectedNodesAction
+} from "../actions/node.actions";
 import { SearchActionTypes } from "../actions/search.actions";
 import { AppState } from "../states/app.state";
 import { INITIAL_APP_STATE } from "../states/initial-state";
 
-export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action): AppState {
+export function appReducer(
+  state: AppState = INITIAL_APP_STATE,
+  action: Action
+): AppState {
   let newState: AppState;
   switch (action.type) {
     case AppActionTypes.SetInitialState:
@@ -43,7 +60,10 @@ export function appReducer(state: AppState = INITIAL_APP_STATE, action: Action):
       newState = setInfoDrawer(state, <SetInfoDrawerStateAction>action);
       break;
     case AppActionTypes.SetInfoDrawerMetadataAspect:
-      newState = setInfoDrawerAspect(state, <SetInfoDrawerMetadataAspectAction>action);
+      newState = setInfoDrawerAspect(
+        state,
+        <SetInfoDrawerMetadataAspectAction>action
+      );
       break;
     case AppActionTypes.SetSmallScreen:
       newState = setSmallScreen(state, <SetSmallScreenAction>action);
@@ -78,9 +98,7 @@ function updateUser(state: AppState, action: SetUserProfileAction): AppState {
 
     const capabilities = (<any>user).capabilities;
     const isAdmin = capabilities ? capabilities.isAdmin : true;
-
-    // todo: remove <any>
-    newState.user = <any>{
+    newState.user = {
       firstName,
       lastName,
       userName,
@@ -103,12 +121,18 @@ function updateCurrentUrl(state: AppState, action: SetCurrentUrlAction) {
   return newState;
 }
 
-function updateRepositoryStatus(state: AppState, action: SetRepositoryInfoAction) {
+function updateRepositoryStatus(
+  state: AppState,
+  action: SetRepositoryInfoAction
+) {
   const newState = Object.assign({}, state);
   newState.repository = action.payload;
   return newState;
 }
-function updateSelectedNodes(state: AppState, action: SetSelectedNodesAction): AppState {
+function updateSelectedNodes(
+  state: AppState,
+  action: SetSelectedNodesAction
+): AppState {
   const newState = Object.assign({}, state);
   const nodes = [...action.payload];
   const count = nodes.length;
@@ -126,8 +150,9 @@ function updateSelectedNodes(state: AppState, action: SetSelectedNodesAction): A
 
     if (nodes.length === 1) {
       file = nodes.find((entity: any) => {
-        // workaround Shared
-        return entity.entry.isFile || entity.entry.nodeId || entity.entry.sharedByUser
+        return entity.entry.isFile ||
+          entity.entry.nodeId ||
+          entity.entry.sharedByUser
           ? true
           : false;
       });
@@ -135,14 +160,12 @@ function updateSelectedNodes(state: AppState, action: SetSelectedNodesAction): A
     }
   }
 
-  const libraries: any[] = [...action.payload].filter((node: any) => node.isLibrary);
+  const libraries: any[] = [...action.payload].filter(
+    (node: any) => node.isLibrary
+  );
   if (libraries.length === 1) {
     library = libraries[0];
   }
-
-  // if (isEmpty) {
-  //   newState.infoDrawerOpened = false;
-  // }
 
   newState.selection = {
     count,
@@ -183,7 +206,10 @@ function setInfoDrawer(state: AppState, action: SetInfoDrawerStateAction) {
   return newState;
 }
 
-function setInfoDrawerAspect(state: AppState, action: SetInfoDrawerMetadataAspectAction) {
+function setInfoDrawerAspect(
+  state: AppState,
+  action: SetInfoDrawerMetadataAspectAction
+) {
   const newState = Object.assign({}, state);
   newState.infoDrawerMetadataAspect = action.payload;
   return newState;
@@ -210,7 +236,10 @@ function showSearchFilter(state: AppState): AppState {
   newState.showFacetFilter = true;
   return newState;
 }
-function updateCurrentLibrary(state: AppState, action: SetCurrentLibraryAction): AppState {
+function updateCurrentLibrary(
+  state: AppState,
+  action: SetCurrentLibraryAction
+): AppState {
   const newState = Object.assign({}, state);
   newState.navigation.currentSite = action.payload;
   return newState;

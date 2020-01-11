@@ -1,16 +1,25 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { MinimalNodeEntryEntity, PathInfoEntity } from '@alfresco/js-api';
-import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { NavigateUrlAction, RouterActionTypes, NavigateRouteAction, NavigateToFolder, NavigateToParentFolder } from '../actions/router.actions';
-import { SnackbarErrorAction } from '../actions/snackbar.actions';
-
+import { MinimalNodeEntryEntity, PathInfoEntity } from "@alfresco/js-api";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
+import {
+  NavigateRouteAction,
+  NavigateToFolder,
+  NavigateToParentFolder,
+  NavigateUrlAction,
+  RouterActionTypes
+} from "../actions/router.actions";
+import { SnackbarErrorAction } from "../actions/snackbar.actions";
 
 @Injectable()
 export class RouterEffects {
-  constructor(private store: Store<any>, private actions$: Actions, private router: Router) {}
+  constructor(
+    private store: Store<any>,
+    private actions$: Actions,
+    private router: Router
+  ) {}
 
   @Effect({ dispatch: false })
   navigateUrl$ = this.actions$.pipe(
@@ -58,20 +67,19 @@ export class RouterEffects {
       const isLibraryPath = this.isLibraryContent(<PathInfoEntity>path);
 
       const parent = path.elements[path.elements.length - 1];
-      const area = isLibraryPath ? '/libraries' : '/personal-files';
+      const area = isLibraryPath ? "/libraries" : "/personal-files";
 
       if (!isLibraryPath) {
         link = [area, id];
       } else {
-        // parent.id could be 'Site' folder or child as 'documentLibrary'
-        link = [area, parent.name === 'Sites' ? {} : id];
+        link = [area, parent.name === "Sites" ? {} : id];
       }
 
       setTimeout(() => {
         this.router.navigate(link);
       }, 10);
     } else {
-      this.router.navigate(['/personal-files', node.id]);
+      this.router.navigate(["/personal-files", node.id]);
     }
   }
 
@@ -83,25 +91,30 @@ export class RouterEffects {
       const isLibraryPath = this.isLibraryContent(<PathInfoEntity>path);
 
       const parent = path.elements[path.elements.length - 1];
-      const area = isLibraryPath ? '/libraries' : '/personal-files';
+      const area = isLibraryPath ? "/libraries" : "/personal-files";
 
       if (!isLibraryPath) {
         link = [area, parent.id];
       } else {
-        // parent.id could be 'Site' folder or child as 'documentLibrary'
-        link = [area, parent.name === 'Sites' ? {} : parent.id];
+        link = [area, parent.name === "Sites" ? {} : parent.id];
       }
 
       setTimeout(() => {
         this.router.navigate(link);
       }, 10);
     } else {
-      this.store.dispatch(new SnackbarErrorAction('APP.MESSAGES.ERRORS.CANNOT_NAVIGATE_LOCATION'));
+      this.store.dispatch(
+        new SnackbarErrorAction("APP.MESSAGES.ERRORS.CANNOT_NAVIGATE_LOCATION")
+      );
     }
   }
 
   private isLibraryContent(path: PathInfoEntity): boolean {
-    if (path && path.elements.length >= 2 && path.elements[1].name === 'Sites') {
+    if (
+      path &&
+      path.elements.length >= 2 &&
+      path.elements[1].name === "Sites"
+    ) {
       return true;
     }
 

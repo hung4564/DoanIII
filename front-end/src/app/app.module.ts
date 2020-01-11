@@ -10,7 +10,6 @@ import { RouteReuseStrategy, RouterModule } from "@angular/router";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { ContentApiService } from "app/services/content-api.service";
 import { AppStoreModule } from "app/store/app-store.module";
-// App components
 import { AppComponent } from "./app.component";
 import { appRoutes } from "./app.routes";
 import { AppExtensionService } from "./extensions/app-extension.service";
@@ -38,9 +37,8 @@ import { NodePermissionService } from "./services/node-permission.service";
     LoginModule,
     RouterModule.forRoot(appRoutes, {
       useHash: false,
-      enableTracing: false // enable for debug only
+      enableTracing: false
     }),
-    // ADF modules
     CoreModule.forRoot(),
     ContentModule.forRoot(),
     CoreExtensionsModule.forRoot(),
