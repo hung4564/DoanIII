@@ -1,14 +1,15 @@
-import { Action } from "@ngrx/store";
 import {
+  MinimalNodeEntity,
+  Site,
   SiteBody,
   SiteEntry,
-  Site,
   SiteMemberEntry,
-  SiteMembershipRequestWithPersonEntry,
-  MinimalNodeEntity
+  SiteMembershipRequestWithPersonEntry
 } from "@alfresco/js-api";
+import { Action } from "@ngrx/store";
 
 export enum LibraryActionTypes {
+  GetDataFavorite = "GET_DATA_FAVORITE_LIBRARY",
   Delete = "DELETE_LIBRARY",
   Create = "CREATE_LIBRARY",
   Navigate = "NAVIGATE_LIBRARY",
@@ -25,6 +26,10 @@ export enum LibraryActionTypes {
   RejectLibraryNode = "REJECT_LIBRARY_NODE"
 }
 
+export class GetDataFavoriteLibraryAction implements Action {
+  readonly type = LibraryActionTypes.GetDataFavorite;
+  constructor(public payload: { filter: any }) {}
+}
 export class DeleteLibraryAction implements Action {
   readonly type = LibraryActionTypes.Delete;
 

@@ -1,12 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import { ContentApiService } from "app/services/content-api.service";
 import { ContentManagementService } from "app/services/content-management.service";
 import { map, take } from "rxjs/operators";
+import { loadPaging } from "../actions/entity.actions";
 import {
   CreatePersonAction,
   DeletePersonAction,
   EditPersonAction,
+  GetDataPersonAction,
   PersonActionTypes
 } from "../actions/person.actions";
 import { getAppSelection } from "../selectors/app.selector";
@@ -16,9 +19,18 @@ export class PersonEffects {
   constructor(
     private store: Store<any>,
     private actions$: Actions,
-    private content: ContentManagementService
+    private content: ContentManagementService,
+    private contentApi: ContentApiService
   ) {}
-
+  @Effect({ dispatch: false })
+  getdataPerson$ = this.actions$.pipe(
+    ofType<GetDataPersonAction>(PersonActionTypes.GetData),
+    map(action => {
+      this.contentApi.getPeople(action.payload.filter).subscribe(result => {
+        this.store.dispatch(loadPaging({ paging: result }));
+      });
+    })
+  );
   @Effect({ dispatch: false })
   createPerson$ = this.actions$.pipe(
     ofType<CreatePersonAction>(PersonActionTypes.Create),

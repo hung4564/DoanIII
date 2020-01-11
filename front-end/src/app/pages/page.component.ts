@@ -10,6 +10,7 @@ import { Store } from "@ngrx/store";
 import { AppExtensionService } from "app/extensions/app-extension.service";
 import { ContentManagementService } from "app/services/content-management.service";
 import { ReloadDocumentListAction } from "app/store/actions/app.actions";
+import { loadPaging } from "app/store/actions/entity.actions";
 import {
   ViewNodeAction,
   ViewNodeExtras
@@ -83,6 +84,7 @@ export class PageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.subscriptions = [];
+    this.store.dispatch(loadPaging({ paging: {} }));
 
     this.onDestroy$.next(true);
     this.onDestroy$.complete();

@@ -5,10 +5,32 @@ import { ContentApiService } from "app/services/content-api.service";
 import { map, mergeMap, take } from "rxjs/operators";
 import { ContentManagementService } from "../../services/content-management.service";
 import { ReloadDocumentListAction } from "../actions/app.actions";
-import { AddApproveFolderAction, AddMemberLibraryAction, ApproveLibraryNodeAction, ApproveMemberLibraryAction, CreateLibraryAction, DeleteApproveFolderAction, DeleteLibraryAction, DeleteMemberLibraryAction, LeaveLibraryAction, LibraryActionTypes, NavigateLibraryAction, RejectLibraryNodeAction, RejectMemberLibraryAction, UpdateLibraryAction, UpdateMemberLibraryAction } from "../actions/library.actions";
+import { loadPaging } from "../actions/entity.actions";
+import {
+  AddApproveFolderAction,
+  AddMemberLibraryAction,
+  ApproveLibraryNodeAction,
+  ApproveMemberLibraryAction,
+  CreateLibraryAction,
+  DeleteApproveFolderAction,
+  DeleteLibraryAction,
+  DeleteMemberLibraryAction,
+  GetDataFavoriteLibraryAction,
+  LeaveLibraryAction,
+  LibraryActionTypes,
+  NavigateLibraryAction,
+  RejectLibraryNodeAction,
+  RejectMemberLibraryAction,
+  UpdateLibraryAction,
+  UpdateMemberLibraryAction
+} from "../actions/library.actions";
 import { NavigateRouteAction } from "../actions/router.actions";
 import { SnackbarErrorAction } from "../actions/snackbar.actions";
-import { getAppSelection, getCurrentSite, getNavigationState } from "../selectors/app.selector";
+import {
+  getAppSelection,
+  getCurrentSite,
+  getNavigationState
+} from "../selectors/app.selector";
 import { AppStore } from "../states/app.state";
 
 @Injectable()
@@ -19,7 +41,17 @@ export class LibraryEffects {
     private content: ContentManagementService,
     private contentApi: ContentApiService
   ) {}
-
+  @Effect({ dispatch: false })
+  getdataFavoriteLibrary$ = this.actions$.pipe(
+    ofType<GetDataFavoriteLibraryAction>(LibraryActionTypes.GetDataFavorite),
+    map(action => {
+      this.contentApi
+        .getFavoriteLibraries("-me-", action.payload.filter)
+        .subscribe(result => {
+          this.store.dispatch(loadPaging({ paging: result }));
+        });
+    })
+  );
   @Effect({ dispatch: false })
   deleteLibrary$ = this.actions$.pipe(
     ofType<DeleteLibraryAction>(LibraryActionTypes.Delete),

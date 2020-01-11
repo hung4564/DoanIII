@@ -1,12 +1,14 @@
+import { PaginationModel, UserPreferencesService } from "@alfresco/adf-core";
+import { PersonPaging } from "@alfresco/js-api";
 import { Component, OnInit } from "@angular/core";
-import { PageComponent } from "../page.component";
-import { ContentManagementService } from "app/services/content-management.service";
-import { AppStore } from "app/store/states/app.state";
 import { Store } from "@ngrx/store";
 import { AppExtensionService } from "app/extensions/app-extension.service";
-import { PaginationModel, UserPreferencesService } from "@alfresco/adf-core";
-import { ContentApiService } from "app/services/content-api.service";
-import { PersonPaging } from "@alfresco/js-api";
+import { ContentManagementService } from "app/services/content-management.service";
+import { GetDataPersonAction } from "app/store/actions/person.actions";
+import { getEntityPaging } from "app/store/selectors/entity.selector";
+import { AppStore } from "app/store/states/app.state";
+import { takeUntil } from "rxjs/operators";
+import { PageComponent } from "../page.component";
 
 @Component({
   selector: "app-people",
@@ -24,8 +26,7 @@ export class PeopleComponent extends PageComponent implements OnInit {
     content: ContentManagementService,
     private userPreferenceService: UserPreferencesService,
     store: Store<AppStore>,
-    extensions: AppExtensionService,
-    private contentApi: ContentApiService
+    extensions: AppExtensionService
   ) {
     super(store, extensions, content);
     this.pagination.maxItems = this.userPreferenceService.paginationSize;
@@ -37,23 +38,21 @@ export class PeopleComponent extends PageComponent implements OnInit {
       this.getList(this.pagination);
     });
     this.columns = this.extensions.documentListPresets.people || [];
+
+    this.store
+      .select(getEntityPaging)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(result => {
+        this.list = result;
+        this.isLoading = false;
+        this.pagination = (result.list || {}).pagination || {};
+      });
   }
   onChangePagination(e: PaginationModel) {
     this.getList(e);
   }
   getList(opt) {
     this.isLoading = true;
-    this.contentApi.getPeople(opt).subscribe(
-      result => {
-        this.list = result;
-        this.pagination = result.list.pagination;
-        this.isLoading = false;
-      },
-      err => {
-        this.list = null;
-        this.pagination = null;
-        this.isLoading = false;
-      }
-    );
+    this.store.dispatch(new GetDataPersonAction({ filter: opt }));
   }
 }

@@ -18,6 +18,7 @@ import { UploadEffects } from "./effects/upload.effects";
 import { ViewerEffects } from "./effects/viewer.effects";
 import { appReducer } from "./reducers/app.reducer";
 import { INITIAL_STATE } from "./states/initial-state";
+import * as fromEntity from './reducers/entity.reducer';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { INITIAL_STATE } from "./states/initial-state";
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
-    })
+    }),
+    StoreModule.forFeature(fromEntity.entitiesFeatureKey, fromEntity.reducer)
   ],
   declarations: []
 })

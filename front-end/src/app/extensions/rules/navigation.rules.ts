@@ -1,4 +1,7 @@
-import { CustomRuleContext, NavigationTypeEnum } from "app/model/custom-rule-context.model";
+import {
+  CustomRuleContext,
+  NavigationTypeEnum
+} from "app/model/custom-rule-context.model";
 
 /**
  * Checks if a Preview route is activated.
@@ -106,7 +109,10 @@ export function isLibraryFiles(context: CustomRuleContext): boolean {
  */
 export function isLibraries(context: CustomRuleContext): boolean {
   const { url } = context.navigation;
-  return url && (url.endsWith("/libraries") || url.startsWith("/search-libraries"));
+  return (
+    url &&
+    (url.endsWith("/libraries/all") || url.startsWith("/search-libraries"))
+  );
 }
 
 /**

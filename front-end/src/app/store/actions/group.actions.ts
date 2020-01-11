@@ -1,9 +1,15 @@
-import { Action } from '@ngrx/store';
-import { GroupEntry } from '@alfresco/js-api';
+import { GroupEntry } from "@alfresco/js-api";
+import { Action } from "@ngrx/store";
 export enum GroupActionTypes {
-  Delete = 'DELETE_GROUP',
-  Create = 'CREATE_GROUP',
-  Edit = 'EDIT_GROUP'
+  GetData = "GET_DATA_GROUP",
+  Delete = "DELETE_GROUP",
+  Create = "CREATE_GROUP",
+  Edit = "EDIT_GROUP"
+}
+export class GetDataGroupAction implements Action {
+  readonly type = GroupActionTypes.GetData;
+
+  constructor(public payload: { filter: any }) {}
 }
 export class DeleteGroupAction implements Action {
   readonly type = GroupActionTypes.Delete;
